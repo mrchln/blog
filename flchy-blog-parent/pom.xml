@@ -8,7 +8,7 @@
 	<packaging>pom</packaging>
 	<modules>
 		<module>flchy-blog-utils</module>
-		<module>flchy-blog-inlet</module>
+		<module>flchy-blog-inlets</module>
 	</modules>
 	<properties>
 		<!-- :::::::::::::::: 子模块version :::::::::::::::: -->
