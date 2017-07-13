@@ -12,14 +12,8 @@
 	</modules>
 	<properties>
 		<!-- :::::::::::::::: 子模块version :::::::::::::::: -->
-		<zuobiao-analysis-common.version>0.0.1-SNAPSHOT</zuobiao-analysis-common.version>
-		<zuobiao-analysis-base.version>0.0.1-SNAPSHOT</zuobiao-analysis-base.version>
-		<zuobiao-analysis-logging.version>0.0.1-SNAPSHOT</zuobiao-analysis-logging.version>
-		<zuobiao-analysis-export.version>0.0.1-SNAPSHOT</zuobiao-analysis-export.version>
-		<zuobiao-analysis-dimension.version>0.0.1-SNAPSHOT</zuobiao-analysis-dimension.version>
-		<zuobiao-analysis-privilege.version>0.0.1-SNAPSHOT</zuobiao-analysis-privilege.version>
-		<zuobiao-analysis-shiro.version>0.0.1-SNAPSHOT</zuobiao-analysis-shiro.version>
-		<zuobiao-analysis-utils.version>0.0.1-SNAPSHOT</zuobiao-analysis-utils.version>
+		<flchy-blog-inlets.version>0.0.1-SNAPSHOT</flchy-blog-inlets.version>
+		<flchy-blog-utils.version>0.0.1-SNAPSHOT</flchy-blog-utils.version>
 
 		<!-- :::::::::::::::: 核心框架version :::::::::::::::: -->
 		<!-- 基础框架 -->
@@ -55,6 +49,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
 		<mybatis-spring-boot>1.3.0</mybatis-spring-boot>
+		<mybatisplus-spring-boot-starter>1.0.4</mybatisplus-spring-boot-starter>
 		<mysql-connector>5.1.39</mysql-connector>
 		<druid>1.0.29</druid>
 		<source-plugin.version>2.2.1</source-plugin.version>
@@ -369,7 +364,7 @@
 		<dependency>
 			<groupId>com.baomidou</groupId>
 			<artifactId>mybatisplus-spring-boot-starter</artifactId>
-			<version>1.0.1</version>
+			<version>${mybatisplus-spring-boot-starter}</version>
 		</dependency>
 
 		</dependencies>
