@@ -9,6 +9,7 @@
 	<modules>
 		<module>flchy-blog-utils</module>
 		<module>flchy-blog-inlets</module>
+		<module>flchy-blog-privilege</module>
 	</modules>
 	<properties>
 		<!-- :::::::::::::::: 子模块version :::::::::::::::: -->
