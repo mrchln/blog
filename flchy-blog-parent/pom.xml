@@ -15,6 +15,7 @@
 		<!-- :::::::::::::::: 子模块version :::::::::::::::: -->
 		<flchy-blog-inlets.version>0.0.1-SNAPSHOT</flchy-blog-inlets.version>
 		<flchy-blog-utils.version>0.0.1-SNAPSHOT</flchy-blog-utils.version>
+		<flchy-blog-privilege.version>0.0.1-SNAPSHOT</flchy-blog-privilege.version>
 
 		<!-- :::::::::::::::: 核心框架version :::::::::::::::: -->
 		<!-- 基础框架 -->
