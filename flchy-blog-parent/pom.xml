@@ -19,7 +19,7 @@
 
 		<!-- :::::::::::::::: 核心框架version :::::::::::::::: -->
 		<!-- 基础框架 -->
-		<spring-boot.version>1.5.3.RELEASE</spring-boot.version>
+		<spring-boot.version>1.5.4.RELEASE</spring-boot.version>
 		<ehcache.version>2.6.6</ehcache.version>
 		<guava.version>22.0</guava.version>
 
@@ -107,6 +107,16 @@
 
 	<dependencyManagement>
 		<dependencies>
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-jersey</artifactId>
+				<version>${spring-boot.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.glassfish.jersey.media</groupId>
+				<artifactId>jersey-media-json-jackson</artifactId>
+			</dependency>
+
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-starter-web</artifactId>
@@ -363,11 +373,11 @@
 				<scope>provided</scope>
 			</dependency>
 
-		<dependency>
-			<groupId>com.baomidou</groupId>
-			<artifactId>mybatisplus-spring-boot-starter</artifactId>
-			<version>${mybatisplus-spring-boot-starter}</version>
-		</dependency>
+			<dependency>
+				<groupId>com.baomidou</groupId>
+				<artifactId>mybatisplus-spring-boot-starter</artifactId>
+				<version>${mybatisplus-spring-boot-starter}</version>
+			</dependency>
 
 		</dependencies>
 	</dependencyManagement>
