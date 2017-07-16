@@ -14,7 +14,6 @@ public class Application {
 		SpringApplication springApplication = new SpringApplication(Application.class);
 		// springApplication.addListeners(new ApplicationStartupListener());
 		springApplication.run(args);
-
 		// org.springframework.boot.autoconfigure
 	}
 

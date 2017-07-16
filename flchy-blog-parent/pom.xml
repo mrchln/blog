@@ -7,6 +7,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<modules>
+		<module>flchy-blog-base</module>
 		<module>flchy-blog-utils</module>
 		<module>flchy-blog-inlets</module>
 		<module>flchy-blog-privilege</module>
@@ -16,6 +17,7 @@
 		<flchy-blog-inlets.version>0.0.1-SNAPSHOT</flchy-blog-inlets.version>
 		<flchy-blog-utils.version>0.0.1-SNAPSHOT</flchy-blog-utils.version>
 		<flchy-blog-privilege.version>0.0.1-SNAPSHOT</flchy-blog-privilege.version>
+		<flchy-blog-base.version>0.0.1-SNAPSHOT</flchy-blog-base.version>
 
 		<!-- :::::::::::::::: 核心框架version :::::::::::::::: -->
 		<!-- 基础框架 -->
@@ -51,9 +53,9 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
 		<mybatis-spring-boot>1.3.0</mybatis-spring-boot>
-		<mybatisplus-spring-boot-starter>1.0.4</mybatisplus-spring-boot-starter>
+		<mybatisplus-spring-boot-starter>1.0.1</mybatisplus-spring-boot-starter>
 		<mysql-connector>5.1.39</mysql-connector>
-		<druid>1.0.29</druid>
+		<druid>1.1.1</druid>
 		<source-plugin.version>2.2.1</source-plugin.version>
 		<resources-plugin.version>2.6</resources-plugin.version>
 		<compiler-plugin.version>3.1</compiler-plugin.version>
@@ -168,7 +170,7 @@
 			<dependency>
 				<groupId>mysql</groupId>
 				<artifactId>mysql-connector-java</artifactId>
-				<version>5.1.26</version>
+				<version>${mysql-connector}</version>
 			</dependency>
 
 
