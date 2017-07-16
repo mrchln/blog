@@ -41,7 +41,7 @@ public class BaseDataSource {
 	// 连接Url路径
 	@Value("${base.datasource.url}")
 	private String url;
-	// 用户名
+	// 用户名 
 	@Value("${base.datasource.username}")
 	private String user;
 	// 密码
