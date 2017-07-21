@@ -1,5 +1,6 @@
 package com.flchy.blog.base.datasource.dbconfig.service.impl;
 
+import org.apache.ibatis.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,7 @@ public class TestServiceImpl extends ServiceImpl<TestDao, test> implements ITest
 	
 	@Override
 	public Integer insertAll(test test){
+		LogFactory.useLog4JLogging();
 	return 	baseMapper.insert(test);
 	}
 

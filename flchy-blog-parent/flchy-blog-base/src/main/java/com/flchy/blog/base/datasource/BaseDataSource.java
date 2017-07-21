@@ -193,6 +193,7 @@ public class BaseDataSource {
 		p.setProperty("defaultExecutorType", "BATCH");
 		// <!-- 数据库超过25000秒仍未响应则超时 -->
 		p.setProperty("defaultStatementTimeout", "25000");
+		p.setProperty("logImpl", "STDOUT_LOGGING");
 
 		PaginationInterceptor paginationInterceptor=new PaginationInterceptor();
 		paginationInterceptor.setDialectType("mysql");
