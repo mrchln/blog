@@ -8,6 +8,7 @@ import javax.sql.DataSource;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -17,12 +18,16 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import com.baomidou.mybatisplus.MybatisConfiguration;
+import com.baomidou.mybatisplus.MybatisXMLLanguageDriver;
 import com.baomidou.mybatisplus.entity.GlobalConfiguration;
+import com.baomidou.mybatisplus.enums.DBType;
 import com.baomidou.mybatisplus.generator.config.rules.DbType;
 import com.baomidou.mybatisplus.plugins.PaginationInterceptor;
 import com.baomidou.mybatisplus.plugins.PerformanceInterceptor;
 import com.baomidou.mybatisplus.plugins.SqlExplainInterceptor;
 import com.baomidou.mybatisplus.spring.MybatisSqlSessionFactoryBean;
+import com.baomidou.mybatisplus.spring.boot.starter.SpringBootVFS;
 import com.flchy.blog.base.datasource.annotation.BaseRepository;
 
 /**
@@ -36,7 +41,6 @@ import com.flchy.blog.base.datasource.annotation.BaseRepository;
 // 鎵弿 Mapper 鎺ュ彛骞跺鍣ㄧ鐞�
 @MapperScan(basePackages = BaseDataSource.PACKAGE, sqlSessionFactoryRef = "masterSqlSessionFactory", annotationClass = BaseRepository.class)
 public class BaseDataSource {
-
 	static final String PACKAGE = "com.flchy.**.dao";
 	static final String MAPPER_LOCATION = "classpath*:conf/mapper/**/*.xml";
 	// 杩炴帴Url璺緞
@@ -137,7 +141,7 @@ public class BaseDataSource {
 		return null;
 	}
 	
-    @Bean
+   /* @Bean
     public GlobalConfiguration globalConfig(){
         GlobalConfiguration globalConfiguration=new GlobalConfiguration();
 //          <!-- 涓婚敭绛栫暐閰嶇疆 -->
@@ -166,7 +170,19 @@ public class BaseDataSource {
         globalConfiguration.setRefresh(true);
 
         return globalConfiguration;
-    }
+    }*/
+    
+    /**
+
+	 *	 mybatis-plus分页插件
+
+	 */
+	@Bean
+	public PaginationInterceptor paginationInterceptor() {
+		PaginationInterceptor page = new PaginationInterceptor();
+		page.setDialectType("mysql");
+		return page;
+	}
 
 	@Bean(name = "masterSqlSessionFactory")
 	@Primary
@@ -176,8 +192,25 @@ public class BaseDataSource {
 		sessionFactory.setDataSource(masterDataSource);
 		sessionFactory.setMapperLocations(
 				new PathMatchingResourcePatternResolver().getResources(BaseDataSource.MAPPER_LOCATION));
+		sessionFactory.setVfs(SpringBootVFS.class);
 
-		Properties p = new Properties();
+		// MP 全局配置，更多内容进入类看注释
+		GlobalConfiguration globalConfig = new GlobalConfiguration();
+		//配置公共字段自动填写
+		//globalConfig.setMetaObjectHandler(myMetaObjectHandler);
+		globalConfig.setDbType(DBType.MYSQL.name());
+		// ID 策略 AUTO->`0`("数据库ID自增") INPUT->`1`(用户输入ID") ID_WORKER->`2`("全局唯一ID") UUID->`3`("全局唯一ID")
+		globalConfig.setIdType(2);
+		sessionFactory.setGlobalConfig(globalConfig);
+		 SqlExplainInterceptor sqlExplainInterceptor=new SqlExplainInterceptor();
+	        sqlExplainInterceptor.setStopProceed(true);
+		//分页
+		sessionFactory.setPlugins(new Interceptor[]{paginationInterceptor(),sqlExplainInterceptor});
+		MybatisConfiguration mc = new MybatisConfiguration();
+		mc.setDefaultScriptingLanguage(MybatisXMLLanguageDriver.class);
+		sessionFactory.setConfiguration(mc);
+		
+		/*Properties p = new Properties();
 		p.setProperty("cacheEnabled", "true");
 		// <!-- 鏌ヨ鏃讹紝鍏抽棴鍏宠仈瀵硅薄鍗虫椂鍔犺浇浠ユ彁楂樻�ц兘 -->
 		p.setProperty("lazyLoadingEnabled", "false");
@@ -223,7 +256,7 @@ public class BaseDataSource {
 	        
 	        sessionFactory.setPlugins(interceptors);
 	        sessionFactory.setGlobalConfig(globalConfig());
-		
+		*/
 		return sessionFactory.getObject();
 	}
 

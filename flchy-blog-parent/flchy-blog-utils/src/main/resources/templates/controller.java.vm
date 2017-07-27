@@ -1,0 +1,28 @@
+package ${package.Controller};
+
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import org.springframework.stereotype.Component;
+#if(${superControllerClassPackage})
+import ${superControllerClassPackage};
+#end
+
+/**
+ * <p>
+ * $!{table.comment} 前端控制器
+ * </p>
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+@Path("#if(${package.ModuleName})/${package.ModuleName}#end/${table.entityPath}")
+@Component
+@Produces(MediaType.APPLICATION_JSON) 
+#if(${superControllerClass})
+public class ${table.controllerName} extends ${superControllerClass} {
+#else
+public class ${table.controllerName} {
+#end
+	
+}

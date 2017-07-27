@@ -31,7 +31,7 @@ public class TestController  {
 	@Path("ttt")
 	@GET
 	public Object test1(){
-		Page<com.flchy.blog.base.datasource.dbconfig.entity.test> page=new Page<>(1,20);
+		Page<com.flchy.blog.base.datasource.dbconfig.entity.test> page=new Page<>(1,10);
 		return iTestService.selectPages(page);
 	}
 	
