@@ -8,6 +8,7 @@ import javax.ws.rs.core.MediaType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.baomidou.mybatisplus.plugins.Page;
 import com.flchy.blog.base.datasource.dbconfig.service.ITestService;
 
 @Path("/")
@@ -24,6 +25,14 @@ public class TestController  {
 		t.setName("sssssss");
 		int a= iTestService.insertAll(t);
 		return t;
+	}
+	
+	
+	@Path("ttt")
+	@GET
+	public Object test1(){
+		Page<com.flchy.blog.base.datasource.dbconfig.entity.test> page=new Page<>(1,20);
+		return iTestService.selectPages(page);
 	}
 	
 }
