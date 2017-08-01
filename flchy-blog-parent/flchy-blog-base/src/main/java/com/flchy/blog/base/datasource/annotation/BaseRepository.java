@@ -5,8 +5,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 /**
- * è¯¥ç±»æ˜¯æ³¨è§£,ç”¨æ¥è¡¨ç¤ºmybatisçš„æ•°æ®æº,å°†è¯¥æ³¨è§£å®šä¹‰åœ¨ä½¿ç”¨è€…çš„æ¥å£ä¸Š, æ¥å£é‡Œçš„æ‰€æœ‰æ–¹æ³•éƒ½ä¼šä½¿ç”¨springä¸­é…ç½®çš„baseæ•°æ®æº, ç›®çš„æ˜¯ä¸ºäº†æ”¯æŒ é¡¹ç›®å¤šæ•°æ®æºçš„åŠŸèƒ½,åœ¨æ¥å£ä¸Šé¢é…ç½®@BaseRepositoryã€‚
- * @author KingXu
+ * ¸ÃÀàÊÇ×¢½â,ÓÃÀ´±íÊ¾mybatisµÄÊı¾İÔ´,½«¸Ã×¢½â¶¨ÒåÔÚÊ¹ÓÃÕßµÄ½Ó¿ÚÉÏ, ½Ó¿ÚÀïµÄËùÓĞ·½·¨¶¼»áÊ¹ÓÃspringÖĞÅäÖÃµÄbaseÊı¾İÔ´, Ä¿µÄÊÇÎªÁËÖ§³Ö ÏîÄ¿¶àÊı¾İÔ´µÄ¹¦ÄÜ,ÔÚ½Ó¿ÚÉÏÃæÅäÖÃ@BaseRepository¡£
  */
 @Documented
 @Inherited
