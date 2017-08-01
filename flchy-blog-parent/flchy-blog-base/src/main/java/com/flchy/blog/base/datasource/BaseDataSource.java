@@ -31,80 +31,76 @@ import com.baomidou.mybatisplus.spring.boot.starter.SpringBootVFS;
 import com.flchy.blog.base.datasource.annotation.BaseRepository;
 
 /**
- * @Primary 鏍囧織杩欎釜 Bean 濡傛灉鍦ㄥ涓悓绫� Bean 鍊欓�夋椂锛岃 Bean
- *          浼樺厛琚�冭檻銆傘�屽鏁版嵁婧愰厤缃殑鏃跺�欐敞鎰忥紝蹇呴』瑕佹湁涓�涓富鏁版嵁婧愶紝鐢� @Primary 鏍囧織璇� Bean銆�
- * @MapperScan 鎵弿 Mapper 鎺ュ彛骞跺鍣ㄧ鐞嗭紝鍖呰矾寰勭簿纭埌 base锛屼负浜嗗拰涓嬮潰 ods 鏁版嵁婧愬仛鍒扮簿纭尯鍒�
- * @Value 鑾峰彇鍏ㄥ眬閰嶇疆鏂囦欢 application.properties 鐨� kv 閰嶇疆,骞惰嚜鍔ㄨ閰� sqlSessionFactoryRef
- *        琛ㄧず瀹氫箟浜� key 锛岃〃绀轰竴涓敮涓� SqlSessionFactory 瀹炰緥
+ * @Primary 标志这个 Bean 如果在多个同类 Bean 候选时，该 Bean 优先被考虑。「多数据源配置的时候注意，必须要有一个主数据源，用 @Primary 标志该 Bean」
+ * @MapperScan 扫描 Mapper 接口并容器管理，包路径精确到 base，为了和下面 ods 数据源做到精确区分
+ * @Value 获取全局配置文件 application.properties 的 kv 配置,并自动装配 sqlSessionFactoryRef 表示定义了 key ，表示一个唯一 SqlSessionFactory 实例
  */
 @Configuration
-// 鎵弿 Mapper 鎺ュ彛骞跺鍣ㄧ鐞�
+//扫描 Mapper 接口并容器管理
 @MapperScan(basePackages = BaseDataSource.PACKAGE, sqlSessionFactoryRef = "masterSqlSessionFactory", annotationClass = BaseRepository.class)
 public class BaseDataSource {
 	static final String PACKAGE = "com.flchy.**.dao";
 	static final String MAPPER_LOCATION = "classpath*:conf/mapper/**/*.xml";
-	// 杩炴帴Url璺緞
-	@Value("${base.datasource.url}")
-	private String url;
-	// 鐢ㄦ埛鍚� 
-	@Value("${base.datasource.username}")
-	private String user;
-	// 瀵嗙爜
-	@Value("${base.datasource.password}")
-	private String password;
-	// 椹卞姩绫昏矾寰�
-	@Value("${base.datasource.driverClassName}")
-	private String driverClass;
+	// 连接Url路径
+		@Value("${base.datasource.url}")
+		private String url;
+		// 用户名
+		@Value("${base.datasource.username}")
+		private String user;
+		// 密码
+		@Value("${base.datasource.password}")
+		private String password;
+		// 驱动类路径
+		@Value("${base.datasource.driverClassName}")
+		private String driverClass;
 
-	// 甯哥敤鐨勬彃浠舵湁锛� 鐩戞帶缁熻鐢ㄧ殑filter:stat,鏃ュ織鐢ㄧ殑filter:log4j,闃插尽sql娉ㄥ叆鐨刦ilter:wall
-	@Value("${base.datasource.druid.filters}")
-	private String filters;
+		// 常用的插件有： 监控统计用的filter:stat,日志用的filter:log4j,防御sql注入的filter:wall
+		@Value("${base.datasource.druid.filters}")
+		private String filters;
 
-	// 鍒濆鍖栬繛鎺ユ暟閲�
-	@Value("${base.datasource.druid.initialSize}")
-	private int initialSize;
+		// 初始化连接数量
+		@Value("${base.datasource.druid.initialSize}")
+		private int initialSize;
 
-	// 鏈�澶ц繛鎺ユ睜鏁伴噺
-	@Value("${base.datasource.druid.maxActive}")
-	private int maxActive;
+		// 最大连接池数量
+		@Value("${base.datasource.druid.maxActive}")
+		private int maxActive;
 
-	// 閰嶇疆鑾峰彇杩炴帴绛夊緟瓒呮椂鐨勬椂闂�
-	@Value("${base.datasource.druid.maxWait}")
-	private int maxWait;
+		// 配置获取连接等待超时的时间
+		@Value("${base.datasource.druid.maxWait}")
+		private int maxWait;
 
-	// 閰嶇疆闂撮殧澶氫箙鎵嶈繘琛屼竴娆℃娴嬶紝妫�娴嬮渶瑕佸叧闂殑绌洪棽杩炴帴锛屽崟浣嶆槸姣
-	@Value("${base.datasource.druid.timeBetweenEvictionRunsMillis}")
-	private int timeBetweenEvictionRunsMillis;
+		// 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+		@Value("${base.datasource.druid.timeBetweenEvictionRunsMillis}")
+		private int timeBetweenEvictionRunsMillis;
 
-	// 閰嶇疆涓�涓繛鎺ュ湪姹犱腑鏈�灏忕敓瀛樼殑鏃堕棿锛屽崟浣嶆槸姣
-	@Value("${base.datasource.druid.minEvictableIdleTimeMillis}")
-	private int minEvictableIdleTimeMillis;
+		// 配置一个连接在池中最小生存的时间，单位是毫秒
+		@Value("${base.datasource.druid.minEvictableIdleTimeMillis}")
+		private int minEvictableIdleTimeMillis;
 
-	// 鐢ㄦ潵妫�娴嬭繛鎺ユ槸鍚︽湁鏁堢殑sql锛岃姹傛槸涓�涓煡璇㈣鍙�
-	@Value("${base.datasource.druid.validationQuery}")
-	private String validationQuery;
+		// 用来检测连接是否有效的sql，要求是一个查询语句
+		@Value("${base.datasource.druid.validationQuery}")
+		private String validationQuery;
 
-	// 寤鸿閰嶇疆涓簍rue锛屼笉褰卞搷鎬ц兘锛屽苟涓斾繚璇佸畨鍏ㄦ�с�傜敵璇疯繛鎺ョ殑鏃跺�欐娴嬶紝濡傛灉绌洪棽鏃堕棿澶т簬 timeBetweenEvictionRunsMillis锛�
-	// 鎵цvalidationQuery妫�娴嬭繛鎺ユ槸鍚︽湁鏁堛��
-	@Value("${base.datasource.druid.testWhileIdle}")
-	private boolean testWhileIdle;
+		// 建议配置为true，不影响性能，并且保证安全性。申请连接的时候检测，如果空闲时间大于 timeBetweenEvictionRunsMillis， 执行validationQuery检测连接是否有效。
+		@Value("${base.datasource.druid.testWhileIdle}")
+		private boolean testWhileIdle;
 
-	// 鐢宠杩炴帴鏃舵墽琛寁alidationQuery妫�娴嬭繛鎺ユ槸鍚︽湁鏁堬紝鍋氫簡杩欎釜閰嶇疆浼氶檷浣庢�ц兘銆�
-	@Value("${base.datasource.druid.testOnReturn}")
-	private boolean testOnBorrow;
+		// 申请连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能。
+		@Value("${base.datasource.druid.testOnReturn}")
+		private boolean testOnBorrow;
 
-	// 褰掕繕杩炴帴鏃舵墽琛寁alidationQuery妫�娴嬭繛鎺ユ槸鍚︽湁鏁堬紝鍋氫簡杩欎釜閰嶇疆浼氶檷浣庢�ц兘
-	@Value("${base.datasource.druid.testOnReturn}")
-	private boolean testOnReturn;
+		// 归还连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能
+		@Value("${base.datasource.druid.testOnReturn}")
+		private boolean testOnReturn;
 
-	// 鏄惁缂撳瓨preparedStatement锛屼篃灏辨槸PSCache銆� PSCache瀵规敮鎸佹父鏍囩殑鏁版嵁搴撴�ц兘鎻愬崌宸ㄥぇ锛屾瘮濡傝oracle銆�
-	// 鍦╩ysql5.5浠ヤ笅鐨勭増鏈腑娌℃湁PSCache鍔熻兘锛屽缓璁叧闂帀銆備綔鑰呭湪5.5鐗堟湰涓娇鐢≒SCache锛岄�氳繃鐩戞帶鐣岄潰鍙戠幇PSCache鏈夌紦瀛樺懡涓巼璁板綍锛岃搴旇鏄敮鎸丳SCache銆�
-	@Value("${base.datasource.druid.poolPreparedStatements}")
-	private boolean poolPreparedStatements;
+		// 是否缓存preparedStatement，也就是PSCache。 PSCache对支持游标的数据库性能提升巨大，比如说oracle。 在mysql5.5以下的版本中没有PSCache功能，建议关闭掉。作者在5.5版本中使用PSCache，通过监控界面发现PSCache有缓存命中率记录，该应该是支持PSCache。
+		@Value("${base.datasource.druid.poolPreparedStatements}")
+		private boolean poolPreparedStatements;
 
-	// 鎸囧畾姣忎釜杩炴帴涓妏reparedStatement鐨勫ぇ灏�
-	@Value("${base.datasource.druid.maxPoolPreparedStatementPerConnectionSize}")
-	private int maxPoolPreparedStatementPerConnectionSize;
+		// 指定每个连接上preparedStatement的大小
+		@Value("${base.datasource.druid.maxPoolPreparedStatementPerConnectionSize}")
+		private int maxPoolPreparedStatementPerConnectionSize;
 
 	@Bean(name = "masterDataSource")
 	@Primary
@@ -140,42 +136,12 @@ public class BaseDataSource {
 		}
 		return null;
 	}
-	
-   /* @Bean
-    public GlobalConfiguration globalConfig(){
-        GlobalConfiguration globalConfiguration=new GlobalConfiguration();
-//          <!-- 涓婚敭绛栫暐閰嶇疆 -->
-//        鍙�夊弬鏁�
-//        AUTO->`0`("鏁版嵁搴揑D鑷")
-//        INPUT->`1`(鐢ㄦ埛杈撳叆ID")
-//        ID_WORKER->`2`("鍏ㄥ眬鍞竴ID")
-//        UUID->`3`("鍏ㄥ眬鍞竴ID")
 
-        globalConfiguration.setIdType(0);
 
-//    <!-- 鏁版嵁搴撶被鍨嬮厤缃� -->
-//    <!-- 鍙�夊弬鏁帮紙榛樿mysql锛�
-//        MYSQL->`mysql`
-//        ORACLE->`oracle`
-//        DB2->`db2`
-//        H2->`h2`
-//        HSQL->`hsql`
-//        SQLITE->`sqlite`
-//        POSTGRE->`postgresql`
-//        SQLSERVER2005->`sqlserver2005`
-//        SQLSERVER->`sqlserver`
-//        -->
-//    <property name="dbType" value="oracle"/>
-        //璋冭瘯浣跨敤
-        globalConfiguration.setRefresh(true);
-
-        return globalConfiguration;
-    }*/
-    
-    /**
-
-	 *	 mybatis-plus分页插件
-
+	/**
+	 * 
+	 * mybatis-plus分页
+	 * 
 	 */
 	@Bean
 	public PaginationInterceptor paginationInterceptor() {
@@ -194,69 +160,16 @@ public class BaseDataSource {
 				new PathMatchingResourcePatternResolver().getResources(BaseDataSource.MAPPER_LOCATION));
 		sessionFactory.setVfs(SpringBootVFS.class);
 
-		// MP 全局配置，更多内容进入类看注释
 		GlobalConfiguration globalConfig = new GlobalConfiguration();
-		//配置公共字段自动填写
-		//globalConfig.setMetaObjectHandler(myMetaObjectHandler);
 		globalConfig.setDbType(DBType.MYSQL.name());
-		// ID 策略 AUTO->`0`("数据库ID自增") INPUT->`1`(用户输入ID") ID_WORKER->`2`("全局唯一ID") UUID->`3`("全局唯一ID")
 		globalConfig.setIdType(2);
 		sessionFactory.setGlobalConfig(globalConfig);
-		 SqlExplainInterceptor sqlExplainInterceptor=new SqlExplainInterceptor();
-	        sqlExplainInterceptor.setStopProceed(true);
-		//分页
-		sessionFactory.setPlugins(new Interceptor[]{paginationInterceptor(),sqlExplainInterceptor});
+		SqlExplainInterceptor sqlExplainInterceptor = new SqlExplainInterceptor();
+		sqlExplainInterceptor.setStopProceed(true);
+		sessionFactory.setPlugins(new Interceptor[] { paginationInterceptor(), sqlExplainInterceptor });
 		MybatisConfiguration mc = new MybatisConfiguration();
 		mc.setDefaultScriptingLanguage(MybatisXMLLanguageDriver.class);
 		sessionFactory.setConfiguration(mc);
-		
-		/*Properties p = new Properties();
-		p.setProperty("cacheEnabled", "true");
-		// <!-- 鏌ヨ鏃讹紝鍏抽棴鍏宠仈瀵硅薄鍗虫椂鍔犺浇浠ユ彁楂樻�ц兘 -->
-		p.setProperty("lazyLoadingEnabled", "false");
-		// <!-- 璁剧疆鍏宠仈瀵硅薄鍔犺浇鐨勫舰鎬侊紝姝ゅ涓烘寜闇�鍔犺浇瀛楁(鍔犺浇瀛楁鐢盨QL鎸囧畾)锛屼笉浼氬姞杞藉叧鑱旇〃鐨勬墍鏈夊瓧娈碉紝浠ユ彁楂樻�ц兘 -->
-		p.setProperty("aggressiveLazyLoading", "true");
-		// <!-- 瀵逛簬鏈煡鐨凷QL鏌ヨ锛屽厑璁歌繑鍥炰笉鍚岀殑缁撴灉闆嗕互杈惧埌閫氱敤鐨勬晥鏋� -->
-		p.setProperty("multipleResultSetsEnabled", "true");
-		// <!-- 鍏佽浣跨敤鍒楁爣绛句唬鏇垮垪鍚� -->
-		p.setProperty("useColumnLabel", "true");
-		// <!-- 鍏佽浣跨敤鑷畾涔夌殑涓婚敭鍊�(姣斿鐢辩▼搴忕敓鎴愮殑UUID 32浣嶇紪鐮佷綔涓洪敭鍊�)锛屾暟鎹〃鐨凱K鐢熸垚绛栫暐灏嗚瑕嗙洊 -->
-		p.setProperty("useGeneratedKeys", "true");
-		// <!-- 缁欎簣琚祵濂楃殑resultMap浠ュ瓧娈�-灞炴�х殑鏄犲皠鏀寔 -->
-		p.setProperty("autoMappingBehavior", "FULL");
-		// <!-- 瀵逛簬鎵归噺鏇存柊鎿嶄綔缂撳瓨SQL浠ユ彁楂樻�ц兘 -->
-		p.setProperty("defaultExecutorType", "BATCH");
-		// <!-- 鏁版嵁搴撹秴杩�25000绉掍粛鏈搷搴斿垯瓒呮椂 -->
-		p.setProperty("defaultStatementTimeout", "25000");
-		p.setProperty("logImpl", "STDOUT_LOGGING");
-		sessionFactory.setConfigurationProperties(p);
-		//閰嶇疆鐨勫垎椤�
-		PaginationInterceptor paginationInterceptor=new PaginationInterceptor();
-		paginationInterceptor.setDialectType(DbType.MYSQL.getValue());
-	        Interceptor[] interceptors=new Interceptor[3];
-	        Interceptor interceptor=new com.baomidou.mybatisplus.plugins.PaginationInterceptor();
-	        interceptor.plugin(paginationInterceptor);
-	        interceptors[0]=interceptor;
-	        // <!-- SQL 鎵ц鍒嗘瀽鎷︽埅鍣� stopProceed 鍙戠幇鍏ㄨ〃鎵ц delete update 鏄惁鍋滄杩愯 -->
-	        SqlExplainInterceptor sqlExplainInterceptor=new SqlExplainInterceptor();
-	        sqlExplainInterceptor.setStopProceed(true);
-	        Interceptor interceptor1=new com.baomidou.mybatisplus.plugins.PaginationInterceptor();
-	        interceptor1.plugin(sqlExplainInterceptor);
-	        interceptors[1]=interceptor1;
-	        
-	     // <!-- SQL 鎵ц鎬ц兘鍒嗘瀽锛屽紑鍙戠幆澧冧娇鐢紝绾夸笂涓嶆帹鑽愩�� maxTime 鎸囩殑鏄� sql 鏈�澶ф墽琛屾椂闀� -->
-	        PerformanceInterceptor performanceInterceptor=new PerformanceInterceptor();
-	        //鎵ц鏈�澶ф椂闀匡紝瓒呰繃鑷姩鍋滄杩愯锛屾湁鍔╀簬鍙戠幇闂銆�
-	        performanceInterceptor.setMaxTime(100);
-	        //SQL鏄惁鏍煎紡鍖� 榛樿false
-	        performanceInterceptor.setFormat(true);
-	        Interceptor interceptor2=new com.baomidou.mybatisplus.plugins.PaginationInterceptor();
-	        interceptor2.plugin(performanceInterceptor);
-	        interceptors[2]=interceptor2;
-	        
-	        sessionFactory.setPlugins(interceptors);
-	        sessionFactory.setGlobalConfig(globalConfig());
-		*/
 		return sessionFactory.getObject();
 	}
 
