@@ -1,4 +1,4 @@
-package org.flchy.blog.utils;
+package org.flchy.blog.utils.mybatisplus;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,7 +53,7 @@ public class MybatisPlusUtils {
 	        gc.setMapperName("%sMapper");
 	        gc.setXmlName("%sMapper");
 	        gc.setServiceName("I%sService");
-	        gc.setServiceImplName("I%sServiceImpl");
+	        gc.setServiceImplName("%sServiceImpl");
 	        gc.setControllerName("%sController");
 	        mpg.setGlobalConfig(gc);
 
@@ -71,7 +71,7 @@ public class MybatisPlusUtils {
 	        });
 	        dsc.setDriverName("com.mysql.jdbc.Driver");
 	        dsc.setUsername("root");
-	        dsc.setPassword("root");
+	        dsc.setPassword("root123ROOT!");
 	        dsc.setUrl("jdbc:mysql://localhost:3306/db_flchy?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC&useSSL=true");
 	        mpg.setDataSource(dsc);
 
@@ -80,7 +80,7 @@ public class MybatisPlusUtils {
 	        // strategy.setCapitalMode(true);// 全局大写命名 ORACLE 注意
 	       // strategy.setTablePrefix(new String[] { "tlog_", "tsys_" });// 此处可以修改为您的表前缀
 	        strategy.setNaming(NamingStrategy.underline_to_camel);// 表名生成策略
-	        strategy.setInclude(new String[] { "info_user" }); // 需要生成的表
+	        strategy.setInclude(new String[] { "article","article_type","link"}); // 需要生成的表
 	        // strategy.setExclude(new String[]{"test"}); // 排除生成的表
 	        // 自定义实体父类
 	        //strategy.setSuperEntityClass("com.spf.model.Entity");
@@ -107,9 +107,9 @@ public class MybatisPlusUtils {
 	        pc.setParent("com.flchy.blog");
 	        pc.setController("controller");
 	        pc.setEntity("entity");
-	        pc.setMapper("conf.mapper");
+	        pc.setMapper("dao");
 	        pc.setService("service");
-	        pc.setServiceImpl("impl");
+	        pc.setServiceImpl("service.impl");
 	        //pc.setModuleName("test");
 	        mpg.setPackageInfo(pc);
 
