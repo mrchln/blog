@@ -64,7 +64,17 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
-			<version>1.5.4.RELEASE</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.flchy.blog</groupId>
+			<artifactId>flchy-blog-common</artifactId>
+			<version>${flchy-blog-common.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.flchy.blog</groupId>
+			<artifactId>flchy-blog-utils</artifactId>
+			<version>${flchy-blog-utils.version}</version>
 		</dependency>
 	</dependencies>
 	<build>
