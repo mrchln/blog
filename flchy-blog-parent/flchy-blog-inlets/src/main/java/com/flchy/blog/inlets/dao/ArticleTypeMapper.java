@@ -1,7 +1,7 @@
-package com.flchy.blog.dao;
+package com.flchy.blog.inlets.dao;
 
 import com.flchy.blog.base.datasource.annotation.BaseRepository;
-import com.flchy.blog.entity.ArticleType;
+import com.flchy.blog.inlets.entity.ArticleType;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 
 /**

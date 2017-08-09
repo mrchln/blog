@@ -1,7 +1,7 @@
-package com.flchy.blog.service;
+package com.flchy.blog.inlets.service;
 
-import com.flchy.blog.entity.Link;
 import com.baomidou.mybatisplus.service.IService;
+import com.flchy.blog.inlets.entity.Link;
 
 /**
  * <p>
@@ -12,5 +12,7 @@ import com.baomidou.mybatisplus.service.IService;
  * @since 2017-08-08
  */
 public interface ILinkService extends IService<Link> {
+
 	
+
 }

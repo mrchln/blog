@@ -1,4 +1,4 @@
-package com.flchy.blog.entity;
+package com.flchy.blog.inlets.entity;
 
 import com.baomidou.mybatisplus.enums.IdType;
 import java.util.Date;
@@ -50,7 +50,7 @@ public class Article extends Model<Article> {
      */
 	private Integer see;
     /**
-     * 1：正常，-1：删除
+     * 1：正常，-1：删除2,草稿
      */
 	private Integer status;
     /**

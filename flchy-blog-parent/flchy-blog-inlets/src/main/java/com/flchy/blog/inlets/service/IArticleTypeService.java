@@ -1,7 +1,7 @@
-package com.flchy.blog.service;
+package com.flchy.blog.inlets.service;
 
-import com.flchy.blog.entity.ArticleType;
 import com.baomidou.mybatisplus.service.IService;
+import com.flchy.blog.inlets.entity.ArticleType;
 
 /**
  * <p>

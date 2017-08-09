@@ -13,4 +13,6 @@ import com.flchy.blog.privilege.config.entity.InfoUser;
  */
 public interface IInfoUserService extends IService<InfoUser> {
 	
+	
+	
 }

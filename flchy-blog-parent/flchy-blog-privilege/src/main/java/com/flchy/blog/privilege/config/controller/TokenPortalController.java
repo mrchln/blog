@@ -1,5 +1,6 @@
 package com.flchy.blog.privilege.config.controller;
 
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -21,8 +22,8 @@ public class TokenPortalController {
 
 	@POST
 	@Path("login")
-	public Object login(String loginName, 
-            String loginPass ) {
+	public Object login(@NotNull String loginName, 
+          @NotNull  String loginPass ) {
 //		iInfoUserService
 		
 		return null;

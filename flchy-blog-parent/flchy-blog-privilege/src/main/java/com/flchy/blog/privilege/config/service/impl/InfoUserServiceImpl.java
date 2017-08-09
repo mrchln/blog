@@ -18,4 +18,5 @@ import com.flchy.blog.privilege.config.service.IInfoUserService;
 @Service
 public class InfoUserServiceImpl extends ServiceImpl<InfoUserMapper, InfoUser> implements IInfoUserService {
 	
+	
 }
