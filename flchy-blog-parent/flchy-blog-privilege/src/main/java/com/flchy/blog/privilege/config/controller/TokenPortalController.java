@@ -9,8 +9,6 @@ import javax.ws.rs.core.MediaType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
-import com.baomidou.mybatisplus.mapper.Wrapper;
-import com.flchy.blog.privilege.config.entity.InfoUser;
 import com.flchy.blog.privilege.config.service.IInfoUserService;
 
 @Path("/")
@@ -25,7 +23,7 @@ public class TokenPortalController {
 	public Object login(@NotNull String loginName, 
           @NotNull  String loginPass ) {
 //		iInfoUserService
-		
+		System.out.println(loginName);
 		return null;
 	}
 
