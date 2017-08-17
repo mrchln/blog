@@ -5,19 +5,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
-
 import com.alibaba.fastjson.JSONArray;
 
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
+//@RunWith(SpringRunner.class)
+//@SpringBootTest
 public class DemoSpringbootFastdfsApplicationTests {
 
-	@Test
+//	@Test
 	public void contextLoads() {
 		try {
 			FileInputStream fis = new FileInputStream(new File("G://upload_source15_qy.jpg"));
