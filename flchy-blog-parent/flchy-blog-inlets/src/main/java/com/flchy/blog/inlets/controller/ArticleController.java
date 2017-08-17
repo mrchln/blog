@@ -1,5 +1,9 @@
 package com.flchy.blog.inlets.controller;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Date;
 import java.util.Map;
 
@@ -112,6 +116,7 @@ public class ArticleController {
 	}
 
 	@GET
+	@Path("fff")
 	public Object selectArticleKey(@NotNull @QueryParam("id") Integer id) {
 
 		Article article = iArticleService.selectById(id);
@@ -121,5 +126,7 @@ public class ArticleController {
 		}
 		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, article);
 	}
+
+
 
 }

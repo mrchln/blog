@@ -66,6 +66,28 @@
 			<version>${flchy-blog-utils.version}</version>
 		</dependency>
 
+		<dependency>
+			<groupId>com.flchy.blog</groupId>
+			<artifactId>flchy-blog-privilege</artifactId>
+			<version>${flchy-blog-privilege.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.csource</groupId>
+			<artifactId>fastdfs-client-java</artifactId>
+			<version>1.27-SNAPSHOT</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/resources/conf/lib/fastdfs-client-java-1.27-SNAPSHOT.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.media</groupId>
+			<artifactId>jersey-media-multipart</artifactId>
+			<version>2.25.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.media</groupId>
+			<artifactId>jersey-media-moxy</artifactId>
+			<version>2.25.1</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>

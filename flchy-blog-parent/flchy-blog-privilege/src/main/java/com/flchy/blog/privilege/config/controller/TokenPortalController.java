@@ -1,9 +1,13 @@
 package com.flchy.blog.privilege.config.controller;
 
+import java.util.Map;
+
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +24,10 @@ public class TokenPortalController {
 
 	@POST
 	@Path("login")
-	public Object login(@NotNull String loginName, 
-          @NotNull  String loginPass ) {
+	public Object login(Map<String, Object> map) {
 //		iInfoUserService
-		System.out.println(loginName);
-		return null;
+		System.out.println(map);
+		return true;
 	}
 
 }
