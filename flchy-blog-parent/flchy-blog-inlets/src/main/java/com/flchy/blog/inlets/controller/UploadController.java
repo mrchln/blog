@@ -1,5 +1,6 @@
 package com.flchy.blog.inlets.controller;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,11 +15,17 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.io.FileUtils;
+import org.csource.common.MyException;
+import org.flchy.blog.common.response.ResponseCommand;
 import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataMultiPart;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.springframework.stereotype.Controller;
+
+import com.alibaba.fastjson.JSONArray;
+import com.zuobiao.analysis.common.fastdfs.FastDFSClient;
+import com.zuobiao.analysis.common.fastdfs.FastDSFile;
 
 @Path("file")
 @Consumes(MediaType.MULTIPART_FORM_DATA)
@@ -28,20 +35,35 @@ public class UploadController {
     /** 
      * Constants operating with images 
      */  
-    private static final String ARTICLE_IMAGES_PATH = "c:/Newsportal/article_images/";  
+    private static final String ARTICLE_IMAGES_PATH = "D:/Newsportal/article_images/";  
     private static final String JPG_CONTENT_TYPE = "image/jpeg";  
     private static final String PNG_CONTENT_TYPE = "image/png"; 
 	@POST
 	@Path("upload")
 	public Object insertssss(@FormDataParam(value = "file") InputStream file,
-			@FormDataParam(value = "file") FormDataContentDisposition fileDisposition) {
+			@FormDataParam(value = "file") FormDataContentDisposition fileDisposition) throws IOException, MyException {
+		FastDSFile fastDSFile = new FastDSFile();
+		fastDSFile.setContent(input2byte(file));
 		final String fileName = fileDisposition.getFileName();
-		String type = fileDisposition.getType();
-		System.out.println(fileName);
-		System.out.println(type);
-		return null;
+		
+		fastDSFile.setExt(fileName.substring(fileName.lastIndexOf(".")+1));
+		JSONArray rs = FastDFSClient.upload(fastDSFile);
+		String url=rs.get(0)+"/"+rs.get(1);
+		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, url);
 	}
 
+    public static final byte[] input2byte(InputStream inStream)  
+            throws IOException {  
+        ByteArrayOutputStream swapStream = new ByteArrayOutputStream();  
+        byte[] buff = new byte[100];  
+        int rc = 0;  
+        while ((rc = inStream.read(buff, 0, 100)) > 0) {  
+            swapStream.write(buff, 0, rc);  
+        }  
+        byte[] in2b = swapStream.toByteArray();  
+        return in2b;  
+    } 
+	
 	/**
 	 * * 第二种方式上传 使用FormDataMultiPart 获取表单数据
 	 * 
