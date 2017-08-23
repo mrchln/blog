@@ -7,6 +7,15 @@
         <dependent-module archiveName="flchy-blog-base-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/flchy-blog-base/flchy-blog-base">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="flchy-blog-common-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/flchy-blog-common/flchy-blog-common">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="flchy-blog-utils-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/flchy-blog-utils/flchy-blog-utils">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="flchy-blog-privilege-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/flchy-blog-privilege/flchy-blog-privilege">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <property name="context-root" value="flchy-blog-inlets"/>
         <property name="java-output-path" value="/flchy-blog-inlets/target/classes"/>
     </wb-module>
