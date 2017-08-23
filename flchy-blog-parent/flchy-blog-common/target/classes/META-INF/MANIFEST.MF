@@ -1,8 +1,0 @@
-Manifest-Version: 1.0
-Implementation-Title: flchy-blog-common
-Implementation-Version: 0.0.1-SNAPSHOT
-Built-By: 24845
-Implementation-Vendor-Id: com.flchy.blog
-Build-Jdk: 1.8.0_131
-Created-By: Maven Integration for Eclipse
-

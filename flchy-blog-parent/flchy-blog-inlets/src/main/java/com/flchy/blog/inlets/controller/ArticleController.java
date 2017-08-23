@@ -42,10 +42,8 @@ import com.flchy.blog.inlets.service.IArticleService;
 @Controller
 @Produces(MediaType.APPLICATION_JSON)
 public class ArticleController {
-	
 	@Autowired
 	private IArticleService iArticleService;
-
 	/**
 	 * 添加
 	 * 
