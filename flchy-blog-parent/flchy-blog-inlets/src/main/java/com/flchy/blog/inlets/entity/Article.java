@@ -1,7 +1,12 @@
 package com.flchy.blog.inlets.entity;
 
 import com.baomidou.mybatisplus.enums.IdType;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
+
+import javax.xml.bind.annotation.XmlRootElement;
+
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.activerecord.Model;
@@ -15,6 +20,7 @@ import java.io.Serializable;
  * @author nieqs
  * @since 2017-08-08
  */
+@XmlRootElement
 public class Article extends Model<Article> {
 
     private static final long serialVersionUID = 1L;
@@ -61,6 +67,7 @@ public class Article extends Model<Article> {
     /**
      * 创建时间
      */
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss")
 	@TableField("create_time")
 	private Date createTime;
     /**
@@ -71,6 +78,7 @@ public class Article extends Model<Article> {
     /**
      * 修改时间
      */
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss")
 	@TableField("update_time")
 	private Date updateTime;
 

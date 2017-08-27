@@ -22,15 +22,18 @@ import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataMultiPart;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONArray;
 import com.zuobiao.analysis.common.fastdfs.FastDFSClient;
 import com.zuobiao.analysis.common.fastdfs.FastDSFile;
 
-@Path("file")
-@Consumes(MediaType.MULTIPART_FORM_DATA)
-@Produces(MediaType.APPLICATION_JSON)
-@Controller
+//@Path("file")
+//@Consumes(MediaType.MULTIPART_FORM_DATA)
+//@Produces(MediaType.APPLICATION_JSON)
+//@Controller
+@RestController(value="/file")
 public class UploadController {
     /** 
      * Constants operating with images 
@@ -38,8 +41,9 @@ public class UploadController {
     private static final String ARTICLE_IMAGES_PATH = "D:/Newsportal/article_images/";  
     private static final String JPG_CONTENT_TYPE = "image/jpeg";  
     private static final String PNG_CONTENT_TYPE = "image/png"; 
-	@POST
-	@Path("upload")
+//	@POST
+//	@Path("upload")
+    @PostMapping(value="/upload")
 	public Object insertssss(@FormDataParam(value = "file") InputStream file,
 			@FormDataParam(value = "file") FormDataContentDisposition fileDisposition) throws IOException, MyException {
 		FastDSFile fastDSFile = new FastDSFile();
@@ -74,7 +78,7 @@ public class UploadController {
 	 */
 	@POST
 	@Path("uploadimage2")
-
+	@PostMapping(value="/uploadimage2")
 	public String uploadimage2(FormDataMultiPart form, @Context HttpServletResponse response)
 			throws UnsupportedEncodingException {
 		// 获取文件流

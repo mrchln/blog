@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 /**
  * @author XuCong
+ * @param <V>
  *
  */
 public class ResponseCommand implements Serializable {

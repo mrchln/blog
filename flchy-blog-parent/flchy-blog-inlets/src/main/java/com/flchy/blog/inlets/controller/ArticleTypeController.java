@@ -16,6 +16,11 @@ import org.flchy.blog.common.response.VisitsResult;
 import org.flchy.blog.utils.NewMapUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.flchy.blog.inlets.entity.ArticleType;
@@ -29,14 +34,15 @@ import com.flchy.blog.inlets.service.IArticleTypeService;
  * @author nieqs
  * @since 2017-08-08
  */
-@Path("articleType")
-@Controller
-@Produces(MediaType.APPLICATION_JSON) 
+//@Path("articleType")
+//@Controller
+//@Produces(MediaType.APPLICATION_JSON) 
+@RestController(value="/articleType")
 public class ArticleTypeController {
 	@Autowired
 	private IArticleTypeService iArticleTypeService;
 	
-	@POST
+	@PostMapping
 	public Object add(ArticleType entity){
 		boolean isok=iArticleTypeService.insert(entity);
 		if (!isok) {
@@ -46,7 +52,7 @@ public class ArticleTypeController {
 		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, entity);
 	}
 	
-	@PUT
+	@PutMapping
 	public Object update(ArticleType entity){
 		if(entity.getId()==null){
 			return new ResponseCommand(ResponseCommand.STATUS_ERROR,
@@ -60,7 +66,7 @@ public class ArticleTypeController {
 		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, entity);
 	}
 	
-	@DELETE
+	@DeleteMapping
 	public Object delete(ArticleType entity){
 		boolean isok = iArticleTypeService.delete(new EntityWrapper<ArticleType>(entity));
 		if (!isok) {
@@ -70,7 +76,7 @@ public class ArticleTypeController {
 		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, entity);
 	}
 		
-	@GET
+	@GetMapping
 	public Object selectKey(@QueryParam("id")Integer id) {
 		if(id!=null){
 			return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, iArticleTypeService.selectById(id));

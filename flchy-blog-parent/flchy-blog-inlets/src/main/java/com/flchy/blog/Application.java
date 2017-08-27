@@ -16,12 +16,12 @@ public class Application {
 		// org.springframework.boot.autoconfigure
 	}
 
-	@Bean
-	public ServletRegistrationBean jersetServlet() {
-		ServletRegistrationBean registration = new ServletRegistrationBean(new ServletContainer(), "/*");
-		// our rest resources will be available in the path /jersey/*
-		registration.addInitParameter(ServletProperties.JAXRS_APPLICATION_CLASS, JerseyConfig.class.getName());
-		return registration;
-	}
+//	@Bean
+//	public ServletRegistrationBean jersetServlet() {
+//		ServletRegistrationBean registration = new ServletRegistrationBean(new ServletContainer(), "/*");
+//		// our rest resources will be available in the path /jersey/*
+//		registration.addInitParameter(ServletProperties.JAXRS_APPLICATION_CLASS, JerseyConfig.class.getName());
+//		return registration;
+//	}
 
 }

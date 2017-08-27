@@ -17,6 +17,11 @@ import org.flchy.blog.common.response.VisitsResult;
 import org.flchy.blog.utils.NewMapUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.flchy.blog.inlets.entity.Link;
@@ -30,15 +35,16 @@ import com.flchy.blog.inlets.service.ILinkService;
  * @author nieqs
  * @since 2017-08-08
  */
-@Path("link")
-@Controller
-@Produces(MediaType.APPLICATION_JSON)
+//@Path("link")
+//@Controller
+//@Produces(MediaType.APPLICATION_JSON)
+@RestController(value="/link")
 public class LinkController {
 
 	@Autowired
 	private ILinkService iLinkService;
 
-	@POST
+	@PostMapping
 	public Object insert(Link entity) {
 		entity.setCreateTime(new Date());
 		boolean isok = iLinkService.insert(entity);
@@ -49,7 +55,7 @@ public class LinkController {
 		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, entity);
 	}
 
-	@PUT
+	@PutMapping
 	public Object update(Link entity) {
 		if (entity.getId() == null) {
 			return new ResponseCommand(ResponseCommand.STATUS_ERROR,
@@ -64,7 +70,7 @@ public class LinkController {
 		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, entity);
 	}
 
-	@DELETE
+	@DeleteMapping
 	public Object delete(Link entity) {
 		boolean isok = iLinkService.delete(new EntityWrapper<Link>(entity));
 		if (!isok) {
@@ -74,7 +80,7 @@ public class LinkController {
 		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, entity);
 	}
 
-	@GET
+	@GetMapping
 	public Object selectKey(@QueryParam("id") Integer id) {
 		if (id != null) {
 			return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, iLinkService.selectById(id));
