@@ -1,41 +1,27 @@
 package com.flchy.blog.inlets.controller;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.Date;
 import java.util.Map;
 
 import javax.validation.constraints.NotNull;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
 
-import org.flchy.blog.common.response.ResponseCommand;
-import org.flchy.blog.common.response.VisitsResult;
-import org.flchy.blog.utils.NewMapUtil;
-import org.flchy.blog.utils.convert.MapConvertUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
+import com.flchy.blog.common.response.ResponseCommand;
+import com.flchy.blog.common.response.VisitsResult;
 import com.flchy.blog.inlets.entity.Article;
 import com.flchy.blog.inlets.response.ResultPage;
 import com.flchy.blog.inlets.service.IArticleService;
+import com.flchy.blog.utils.NewMapUtil;
+import com.flchy.blog.utils.convert.MapConvertUtil;
 
 /**
  * <p>
@@ -48,7 +34,8 @@ import com.flchy.blog.inlets.service.IArticleService;
 //@Path("article")
 //@Controller
 //@Produces(MediaType.APPLICATION_JSON)
-@RestController(value="/article")
+@RestController
+@RequestMapping("article")
 public class ArticleController {
 	@Autowired
 	private IArticleService iArticleService;

@@ -16,24 +16,26 @@ import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.io.FileUtils;
 import org.csource.common.MyException;
-import org.flchy.blog.common.response.ResponseCommand;
 import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataMultiPart;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONArray;
-import com.zuobiao.analysis.common.fastdfs.FastDFSClient;
-import com.zuobiao.analysis.common.fastdfs.FastDSFile;
+import com.flchy.blog.common.fastdfs.FastDFSClient;
+import com.flchy.blog.common.fastdfs.FastDSFile;
+import com.flchy.blog.common.response.ResponseCommand;
 
 //@Path("file")
 //@Consumes(MediaType.MULTIPART_FORM_DATA)
 //@Produces(MediaType.APPLICATION_JSON)
 //@Controller
-@RestController(value="/file")
+@RestController
+@RequestMapping("file")
 public class UploadController {
     /** 
      * Constants operating with images 
