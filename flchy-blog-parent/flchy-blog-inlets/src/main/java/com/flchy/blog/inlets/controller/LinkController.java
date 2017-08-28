@@ -3,17 +3,9 @@ package com.flchy.blog.inlets.controller;
 import java.util.Date;
 import java.util.List;
 
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.MediaType;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,10 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.flchy.blog.common.response.ResponseCommand;
-import com.flchy.blog.common.response.VisitsResult;
 import com.flchy.blog.inlets.entity.Link;
+import com.flchy.blog.inlets.exception.BusinessException;
 import com.flchy.blog.inlets.service.ILinkService;
-import com.flchy.blog.utils.NewMapUtil;
 
 /**
  * <p>
@@ -36,9 +27,6 @@ import com.flchy.blog.utils.NewMapUtil;
  * @author nieqs
  * @since 2017-08-08
  */
-//@Path("link")
-//@Controller
-//@Produces(MediaType.APPLICATION_JSON)
 @RestController
 @RequestMapping("link")
 public class LinkController {
@@ -51,8 +39,7 @@ public class LinkController {
 		entity.setCreateTime(new Date());
 		boolean isok = iLinkService.insert(entity);
 		if (!isok) {
-			return new ResponseCommand(ResponseCommand.STATUS_ERROR,
-					new VisitsResult(new NewMapUtil("message", "Add failed").get()));
+			throw new BusinessException("Add failed");
 		}
 		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, entity);
 	}
@@ -60,14 +47,12 @@ public class LinkController {
 	@PutMapping
 	public Object update(Link entity) {
 		if (entity.getId() == null) {
-			return new ResponseCommand(ResponseCommand.STATUS_ERROR,
-					new VisitsResult(new NewMapUtil("message", "ID must preach").get()));
+			throw new BusinessException("ID must preach");
 		}
 		entity.setUpdateTime(new Date());
 		boolean isok = iLinkService.update(entity, new EntityWrapper<Link>().where("id={0}", entity.getId()));
 		if (!isok) {
-			return new ResponseCommand(ResponseCommand.STATUS_ERROR,
-					new VisitsResult(new NewMapUtil("message", "Update failed").get()));
+			throw new BusinessException("Update failed");
 		}
 		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, entity);
 	}
@@ -76,8 +61,7 @@ public class LinkController {
 	public Object delete(Link entity) {
 		boolean isok = iLinkService.delete(new EntityWrapper<Link>(entity));
 		if (!isok) {
-			return new ResponseCommand(ResponseCommand.STATUS_ERROR,
-					new VisitsResult(new NewMapUtil("message", "Delete failed").get()));
+			throw new BusinessException("Delete failed");
 		}
 		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, entity);
 	}

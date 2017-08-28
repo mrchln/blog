@@ -9,6 +9,7 @@ import javax.ws.rs.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,11 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.flchy.blog.common.response.ResponseCommand;
-import com.flchy.blog.common.response.VisitsResult;
 import com.flchy.blog.inlets.entity.Article;
+import com.flchy.blog.inlets.exception.BusinessException;
 import com.flchy.blog.inlets.response.ResultPage;
 import com.flchy.blog.inlets.service.IArticleService;
-import com.flchy.blog.utils.NewMapUtil;
 import com.flchy.blog.utils.convert.MapConvertUtil;
 
 /**
@@ -31,9 +31,6 @@ import com.flchy.blog.utils.convert.MapConvertUtil;
  * @author nieqs
  * @since 2017-08-08
  */
-//@Path("article")
-//@Controller
-//@Produces(MediaType.APPLICATION_JSON)
 @RestController
 @RequestMapping("article")
 public class ArticleController {
@@ -46,16 +43,18 @@ public class ArticleController {
 	 * @param article
 	 * @return
 	 */
-//	@Consumes(MediaType.APPLICATION_JSON)
-//	@Produces(MediaType.APPLICATION_JSON)
-//	@POST
 	@PostMapping
-	public Object insert(Article article) {
+	public Object insert(@ModelAttribute Article article) {
+//		if (article == null) {
+//			throw new BusinessException("添加为空！");
+//		}
+//		if (article.getTitle() == null) {
+//			throw new BusinessException("标题不能为空！");
+//		}
 		article.setCreateTime(new Date());
 		boolean isok = iArticleService.insert(article);
 		if (!isok) {
-			return new ResponseCommand(ResponseCommand.STATUS_ERROR,
-					new VisitsResult(new NewMapUtil("message", "Add failed").get()));
+			throw new BusinessException("Add failed");
 		}
 		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, article);
 	}
@@ -66,48 +65,38 @@ public class ArticleController {
 	 * @param article
 	 * @return
 	 */
-//	@PUT
-	@PostMapping(value="/")
+	@PostMapping(value = "/")
 	public Object update(@NotNull Article article) {
 		if (article.getId() == null) {
-			return new ResponseCommand(ResponseCommand.STATUS_ERROR,
-					new VisitsResult(new NewMapUtil("message", "ID must preach").get()));
+			throw new BusinessException("ID must preach");
 		}
 		boolean isok = iArticleService.update(article, new EntityWrapper<Article>().where("id={0}", article.getId()));
 		if (!isok) {
-			return new ResponseCommand(ResponseCommand.STATUS_ERROR,
-					new VisitsResult(new NewMapUtil("message", "Update failed").get()));
+			throw new BusinessException("Update failed");
 		}
 		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, article);
 	}
 
-//	@DELETE
 	@DeleteMapping
 	public Object delete(Article article) {
 		Article ar = new Article();
 		ar.setStatus(-1);
 		boolean isok = iArticleService.update(ar, new EntityWrapper<Article>().where("id={0}", article.getId()));
 		if (!isok) {
-			return new ResponseCommand(ResponseCommand.STATUS_ERROR,
-					new VisitsResult(new NewMapUtil("message", "Delete failed").get()));
+			throw new BusinessException("Delete failed");
 		}
 		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, article);
 	}
 
-//	@POST
-//	@Path("page")
-	// @Consumes(MediaType.APPLICATION_JSON)
-	@PostMapping(value="/page")
+	@PostMapping(value = "/page")
 	public Object selectArticlePage(Map<String, Object> map) {
 		System.out.println(map.containsKey("current"));
 		System.out.println(map.get("current"));
 		if (!map.containsKey("current") || map.get("current").toString().isEmpty()) {
-			return new ResponseCommand(ResponseCommand.STATUS_ERROR,
-					new VisitsResult(new NewMapUtil("message", "current must preach").get()));
+			throw new BusinessException("current must preach");
 		}
 		if (!map.containsKey("size") || map.get("size").toString().isEmpty()) {
-			return new ResponseCommand(ResponseCommand.STATUS_ERROR,
-					new VisitsResult(new NewMapUtil("message", "size must preach").get()));
+			throw new BusinessException("size must preach");
 		}
 		Article article = MapConvertUtil.toBean(Article.class, map);
 		Page<Article> page = new Page<>(Integer.valueOf(map.get("current").toString()),
@@ -116,15 +105,12 @@ public class ArticleController {
 		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, new ResultPage(page));
 	}
 
-//	@GET
-//	@Path("fff")
 	@GetMapping()
 	public Object selectArticleKey(@PathParam("id") Integer id) {
 
 		Article article = iArticleService.selectById(id);
 		if (article == null) {
-			return new ResponseCommand(ResponseCommand.STATUS_ERROR,
-					new VisitsResult(new NewMapUtil("message", "isNull").get()));
+			throw new BusinessException("isNull");
 		}
 		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, article);
 	}

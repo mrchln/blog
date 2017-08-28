@@ -2,17 +2,9 @@ package com.flchy.blog.inlets.controller;
 
 import java.util.List;
 
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.MediaType;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,10 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.flchy.blog.common.response.ResponseCommand;
-import com.flchy.blog.common.response.VisitsResult;
 import com.flchy.blog.inlets.entity.ArticleType;
+import com.flchy.blog.inlets.exception.BusinessException;
 import com.flchy.blog.inlets.service.IArticleTypeService;
-import com.flchy.blog.utils.NewMapUtil;
 
 /**
  * <p>
@@ -35,9 +26,6 @@ import com.flchy.blog.utils.NewMapUtil;
  * @author nieqs
  * @since 2017-08-08
  */
-//@Path("articleType")
-//@Controller
-//@Produces(MediaType.APPLICATION_JSON) 
 @RestController
 @RequestMapping("articleType")
 public class ArticleTypeController {
@@ -48,8 +36,7 @@ public class ArticleTypeController {
 	public Object add(ArticleType entity){
 		boolean isok=iArticleTypeService.insert(entity);
 		if (!isok) {
-			return new ResponseCommand(ResponseCommand.STATUS_ERROR,
-					new VisitsResult(new NewMapUtil("message", "Add failed").get()));
+			throw new BusinessException("Add failed");
 		}
 		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, entity);
 	}
@@ -57,13 +44,11 @@ public class ArticleTypeController {
 	@PutMapping
 	public Object update(ArticleType entity){
 		if(entity.getId()==null){
-			return new ResponseCommand(ResponseCommand.STATUS_ERROR,
-					new VisitsResult(new NewMapUtil("message", "ID must preach").get()));
+			throw new BusinessException("ID must preach");
 		}
 		boolean isok = iArticleTypeService.update(entity, new EntityWrapper<ArticleType>().where("id={0}", entity.getId()));
 		if (!isok) {
-			return new ResponseCommand(ResponseCommand.STATUS_ERROR,
-					new VisitsResult(new NewMapUtil("message", "Update failed").get()));
+			throw new BusinessException("Update failed");
 		}
 		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, entity);
 	}
@@ -72,8 +57,7 @@ public class ArticleTypeController {
 	public Object delete(ArticleType entity){
 		boolean isok = iArticleTypeService.delete(new EntityWrapper<ArticleType>(entity));
 		if (!isok) {
-			return new ResponseCommand(ResponseCommand.STATUS_ERROR,
-					new VisitsResult(new NewMapUtil("message", "Delete failed").get()));
+			throw new BusinessException("Delete failed");
 		}
 		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, entity);
 	}
