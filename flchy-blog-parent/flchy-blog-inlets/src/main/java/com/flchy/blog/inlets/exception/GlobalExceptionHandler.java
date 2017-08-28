@@ -26,7 +26,7 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(BusinessException.class)
 	@ResponseBody
 	public Object handle(BusinessException e) {
-		logger.warn("全局处理异常: " +e.getErrMsg()+"\nmessage:"+ e.getMessage());
+		logger.warn("全局处理异常: " +e.getErrMsg());
 		// 业务失败返回
 		return new ResponseCommand(e.getErrCode(),new NewMapUtil("message", e.getErrMsg()).get());
 	}
