@@ -17,9 +17,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-//@Path("solr")
-//@Controller
-//@Produces(MediaType.APPLICATION_JSON)
 @RestController
 @RequestMapping("solr")
 public class SolrTest {
