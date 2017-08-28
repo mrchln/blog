@@ -45,12 +45,12 @@ public class ArticleController {
 	 */
 	@PostMapping
 	public Object insert(@ModelAttribute Article article) {
-//		if (article == null) {
-//			throw new BusinessException("添加为空！");
-//		}
-//		if (article.getTitle() == null) {
-//			throw new BusinessException("标题不能为空！");
-//		}
+		if (article == null) {
+			throw new BusinessException("添加为空！");
+		}
+		if (article.getTitle() == null) {
+			throw new BusinessException("标题不能为空！");
+		}
 		article.setCreateTime(new Date());
 		boolean isok = iArticleService.insert(article);
 		if (!isok) {
