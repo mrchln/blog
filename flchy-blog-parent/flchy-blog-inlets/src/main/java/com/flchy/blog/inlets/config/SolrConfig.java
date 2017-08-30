@@ -23,7 +23,7 @@ public class SolrConfig {
 	@Bean
 	public SolrTemplate solrTemplate() throws Exception {
 		SolrTemplate solrTemplate = new SolrTemplate(solrClient());
-		System.out.println("1111111111");
+//		System.out.println("1111111111");
 		// solrTemplate.setSolrConverter(solrConverter);
 		return solrTemplate;
 	}

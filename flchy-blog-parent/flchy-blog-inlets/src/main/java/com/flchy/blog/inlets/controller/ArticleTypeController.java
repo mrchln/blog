@@ -16,6 +16,7 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.flchy.blog.common.response.ResponseCommand;
 import com.flchy.blog.inlets.entity.ArticleType;
 import com.flchy.blog.inlets.exception.BusinessException;
+import com.flchy.blog.inlets.holder.ArticleTypeHolder;
 import com.flchy.blog.inlets.service.IArticleTypeService;
 
 /**
@@ -63,11 +64,11 @@ public class ArticleTypeController {
 	}
 		
 	@GetMapping
-	public Object selectKey(@QueryParam("id")Integer id) {
+	public Object selectKey(@QueryParam("id") Integer id) {
 		if(id!=null){
 			return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, iArticleTypeService.selectById(id));
 		}
-		List<ArticleType> response= iArticleTypeService.selectList(new EntityWrapper<ArticleType>());
+		List<ArticleType> response= ArticleTypeHolder.getArticleType(id);
 		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS,response);
 	}
 

@@ -28,6 +28,10 @@ public class ArticleType extends Model<ArticleType> {
      * 文章类型名称
      */
 	private String name;
+	
+	private Integer type;
+	private String url;
+	private Integer order;
 
 
 	public Integer getId() {
@@ -45,10 +49,37 @@ public class ArticleType extends Model<ArticleType> {
 	public void setName(String name) {
 		this.name = name;
 	}
+	
+	public Integer getType() {
+		return type;
+	}
+
+	public void setType(Integer type) {
+		this.type = type;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public Integer getOrder() {
+		return order;
+	}
+
+	public void setOrder(Integer order) {
+		this.order = order;
+	}
 
 	@Override
 	protected Serializable pkVal() {
 		return this.id;
 	}
+	
+	
+	
 
 }
