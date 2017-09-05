@@ -19,14 +19,7 @@ public class SckeduledTasks {
 	 */
 	@Scheduled(fixedRate = 1000000)
 	public void loadProperties() throws InterruptedException {
-//		try {
-//			PropertiesHolder.loadProperties();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-		System.out.println("ssssssssssssssssssssssss" +new DateTime().toString("yyyy-MM-dd hh:mm:ss"));
-		
-		
+
 	}
 
 	/**
