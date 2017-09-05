@@ -39,6 +39,7 @@ public class ArticleTypeController {
 		if (!isok) {
 			throw new BusinessException("Add failed");
 		}
+		ArticleTypeHolder.refreshCache();
 		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, entity);
 	}
 	
@@ -51,6 +52,7 @@ public class ArticleTypeController {
 		if (!isok) {
 			throw new BusinessException("Update failed");
 		}
+		ArticleTypeHolder.refreshCache();
 		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, entity);
 	}
 	
@@ -60,6 +62,7 @@ public class ArticleTypeController {
 		if (!isok) {
 			throw new BusinessException("Delete failed");
 		}
+		ArticleTypeHolder.refreshCache();
 		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, entity);
 	}
 		
