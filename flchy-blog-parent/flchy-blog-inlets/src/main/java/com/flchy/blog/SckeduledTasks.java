@@ -2,7 +2,6 @@ package com.flchy.blog;
 
 import java.util.Collection;
 
-import org.joda.time.DateTime;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
