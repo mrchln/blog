@@ -6,6 +6,7 @@ import org.joda.time.DateTime;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import com.flchy.blog.base.holder.PropertiesHolder;
 import com.flchy.blog.base.holder.SpringContextHolder;
 import com.flchy.blog.common.service.ScheduledService;
 
@@ -20,6 +21,13 @@ public class SckeduledTasks {
 	@Scheduled(fixedRate = 1000000)
 	public void loadProperties() throws InterruptedException {
 
+		try {
+			PropertiesHolder.loadProperties();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
 	}
 
 	/**

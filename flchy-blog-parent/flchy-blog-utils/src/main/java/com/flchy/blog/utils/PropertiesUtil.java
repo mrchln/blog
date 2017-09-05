@@ -2,6 +2,7 @@ package com.flchy.blog.utils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.PrintWriter;
@@ -332,6 +333,10 @@ public class PropertiesUtil {
     }
 
     public void load(InputStream inStream) throws IOException {
+        p.load(inStream);
+    }
+    
+    public void load(InputStreamReader inStream) throws IOException {
         p.load(inStream);
     }
 

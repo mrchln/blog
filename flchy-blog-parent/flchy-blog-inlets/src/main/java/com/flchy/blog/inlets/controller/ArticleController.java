@@ -1,7 +1,9 @@
 package com.flchy.blog.inlets.controller;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.PathParam;
@@ -12,12 +14,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.flchy.blog.common.response.ResponseCommand;
 import com.flchy.blog.inlets.entity.Article;
+import com.flchy.blog.inlets.enums.StatusEnum;
 import com.flchy.blog.inlets.exception.BusinessException;
 import com.flchy.blog.inlets.response.ResultPage;
 import com.flchy.blog.inlets.service.IArticleService;
@@ -66,7 +70,7 @@ public class ArticleController {
 	 * @return
 	 */
 	@PostMapping(value = "/")
-	public Object update(@NotNull Article article) {
+	public Object update(Article article) {
 		if (article.getId() == null) {
 			throw new BusinessException("ID must preach");
 		}
@@ -80,7 +84,7 @@ public class ArticleController {
 	@DeleteMapping
 	public Object delete(Article article) {
 		Article ar = new Article();
-		ar.setStatus(-1);
+		ar.setStatus(StatusEnum.DELETE.getCode());
 		boolean isok = iArticleService.update(ar, new EntityWrapper<Article>().where("id={0}", article.getId()));
 		if (!isok) {
 			throw new BusinessException("Delete failed");
@@ -89,26 +93,34 @@ public class ArticleController {
 	}
 
 	@PostMapping(value = "/page")
-	public Object selectArticlePage(Map<String, Object> map) {
-		System.out.println(map.containsKey("current"));
-		System.out.println(map.get("current"));
-		if (!map.containsKey("current") || map.get("current").toString().isEmpty()) {
-			throw new BusinessException("current must preach");
-		}
-		if (!map.containsKey("size") || map.get("size").toString().isEmpty()) {
-			throw new BusinessException("size must preach");
-		}
-		Article article = MapConvertUtil.toBean(Article.class, map);
-		Page<Article> page = new Page<>(Integer.valueOf(map.get("current").toString()),
-				Integer.valueOf(map.get("size").toString()));
-		iArticleService.selectPage(page, new EntityWrapper<Article>(article));
+	public Object selectArticlePage(@RequestParam(value = "current", required = true) Integer current,
+			@RequestParam(value = "size", required = true) Integer size, Article article) {
+		Page<Article> page = new Page<>(Integer.valueOf(current), Integer.valueOf(size));
+		iArticleService.selectPage(page, new EntityWrapper<Article>(article).where("status!={0}", StatusEnum.DELETE.getCode()));
 		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, new ResultPage(page));
 	}
 
-	@GetMapping()
-	public Object selectArticleKey(@PathParam("id") Integer id) {
+	@GetMapping("/")
+	public Object selectArticleKey(@RequestParam Integer id) {
 
 		Article article = iArticleService.selectById(id);
+		if (article == null) {
+			throw new BusinessException("isNull");
+		}
+		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, article);
+	}
+
+	/**
+	 * 已删除数据
+	 * 
+	 * @param id
+	 * @return
+	 */
+	@GetMapping("deleted")
+	public Object selectArticleDeleted() {
+
+		List<Article> article = iArticleService
+				.selectList(new EntityWrapper<Article>().where("status={0}", StatusEnum.DELETE.getCode()));
 		if (article == null) {
 			throw new BusinessException("isNull");
 		}

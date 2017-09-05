@@ -12,6 +12,8 @@
 		<module>flchy-blog-inlets</module>
 		<module>flchy-blog-privilege</module>
 		<module>flchy-blog-common</module>
+		<module>kafka-plugins</module>
+		<module>flchy-blog-wxchat</module>
 	</modules>
 	<properties>
 		<!-- :::::::::::::::: 子模块version :::::::::::::::: -->
@@ -20,6 +22,8 @@
 		<flchy-blog-privilege.version>0.0.1-SNAPSHOT</flchy-blog-privilege.version>
 		<flchy-blog-base.version>0.0.1-SNAPSHOT</flchy-blog-base.version>
 		<flchy-blog-common.version>0.0.1-SNAPSHOT</flchy-blog-common.version>
+		<kafka-plugins.version>0.0.1-SNAPSHOT</kafka-plugins.version>
+		<flchy-blog-wxchat.version>0.0.1-SNAPSHOT</flchy-blog-wxchat.version>
 
 		<!-- :::::::::::::::: 核心框架version :::::::::::::::: -->
 		<!-- 基础框架 -->
