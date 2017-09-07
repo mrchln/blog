@@ -48,7 +48,9 @@ public class ArticleTypeHolder {
 		if (element != null && !element.isExpired()) {
 			@SuppressWarnings("unchecked")
 			List<ArticleType> list= (List<ArticleType>) element.getObjectValue();
-			list=list.stream().filter(l->l.getId()==id).collect(Collectors.toList());
+			if(id!=null){
+				list=list.stream().filter(l->l.getId()==id).collect(Collectors.toList());
+			}
 			return list;
 		}
 		logger.info("未查询到缓存,查询数据库！！");

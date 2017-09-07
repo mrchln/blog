@@ -68,9 +68,9 @@ public class ArticleTypeController {
 		
 	@GetMapping
 	public Object selectKey(@QueryParam("id") Integer id) {
-		if(id!=null){
-			return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, iArticleTypeService.selectById(id));
-		}
+//		if(id!=null){
+//			return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, iArticleTypeService.selectById(id));
+//		}
 		List<ArticleType> response= ArticleTypeHolder.getArticleType(id);
 		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS,response);
 	}
