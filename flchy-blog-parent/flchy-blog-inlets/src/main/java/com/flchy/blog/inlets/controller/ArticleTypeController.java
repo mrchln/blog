@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.flchy.blog.common.response.ResponseCommand;
-import com.flchy.blog.inlets.entity.ArticleType;
 import com.flchy.blog.inlets.exception.BusinessException;
 import com.flchy.blog.inlets.holder.ArticleTypeHolder;
 import com.flchy.blog.inlets.service.IArticleTypeService;
+import com.flchy.blog.pojo.ArticleType;
 
 /**
  * <p>

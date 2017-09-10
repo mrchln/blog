@@ -1,8 +1,8 @@
 package com.flchy.blog.inlets.service.impl;
 
-import com.flchy.blog.inlets.dao.LinkMapper;
-import com.flchy.blog.inlets.entity.Link;
+import com.flchy.blog.inlets.mapper.LinkMapper;
 import com.flchy.blog.inlets.service.ILinkService;
+import com.flchy.blog.pojo.Link;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 

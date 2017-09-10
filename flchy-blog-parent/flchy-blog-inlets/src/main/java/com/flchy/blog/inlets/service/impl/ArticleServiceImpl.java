@@ -1,8 +1,8 @@
 package com.flchy.blog.inlets.service.impl;
 
-import com.flchy.blog.inlets.dao.ArticleMapper;
-import com.flchy.blog.inlets.entity.Article;
+import com.flchy.blog.inlets.mapper.ArticleMapper;
 import com.flchy.blog.inlets.service.IArticleService;
+import com.flchy.blog.pojo.Article;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +16,6 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> implements IArticleService {
-	
-		
 	
 	
 }

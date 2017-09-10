@@ -1,7 +1,7 @@
 package com.flchy.blog.inlets.service;
 
-import com.flchy.blog.inlets.entity.ErrorLog;
 import com.baomidou.mybatisplus.service.IService;
+import com.flchy.blog.pojo.ErrorLog;
 
 /**
  * <p>

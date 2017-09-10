@@ -11,8 +11,8 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.flchy.blog.base.holder.SpringContextHolder;
 import com.flchy.blog.common.service.ScheduledService;
 import com.flchy.blog.inlets.cache.ArticleTypeCache;
-import com.flchy.blog.inlets.entity.ArticleType;
 import com.flchy.blog.inlets.service.IArticleTypeService;
+import com.flchy.blog.pojo.ArticleType;
 
 import net.sf.ehcache.Element;
 /**

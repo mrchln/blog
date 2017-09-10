@@ -1,8 +1,8 @@
 package com.flchy.blog.inlets.service.impl;
 
-import com.flchy.blog.inlets.dao.ArticleTypeMapper;
-import com.flchy.blog.inlets.entity.ArticleType;
+import com.flchy.blog.inlets.mapper.ArticleTypeMapper;
 import com.flchy.blog.inlets.service.IArticleTypeService;
+import com.flchy.blog.pojo.ArticleType;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 

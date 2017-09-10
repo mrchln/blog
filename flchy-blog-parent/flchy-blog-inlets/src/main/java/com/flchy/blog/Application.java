@@ -1,15 +1,15 @@
 package com.flchy.blog;
 
-import org.glassfish.jersey.servlet.ServletContainer;
-import org.glassfish.jersey.servlet.ServletProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.web.servlet.ServletRegistrationBean;
-import org.springframework.context.annotation.Bean;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
+//@ComponentScan(basePackages = {"com.flchy.blog.base"})
 @EnableScheduling
+@EnableEurekaClient
 public class Application {
 	public static void main(String[] args) {
 		SpringApplication springApplication = new SpringApplication(Application.class);

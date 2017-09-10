@@ -14,6 +14,8 @@
 		<module>flchy-blog-common</module>
 		<module>kafka-plugins</module>
 		<module>flchy-blog-wxchat</module>
+		<module>flchy-blog-pojo</module>
+		<module>flchy-blog-mapper</module>
 	</modules>
 	<properties>
 		<!-- :::::::::::::::: 子模块version :::::::::::::::: -->
@@ -24,10 +26,13 @@
 		<flchy-blog-common.version>0.0.1-SNAPSHOT</flchy-blog-common.version>
 		<kafka-plugins.version>0.0.1-SNAPSHOT</kafka-plugins.version>
 		<flchy-blog-wxchat.version>0.0.1-SNAPSHOT</flchy-blog-wxchat.version>
+		<flchy-blog-pojo.version>0.0.1-SNAPSHOT</flchy-blog-pojo.version>
+		<flchy-blog-mapper.version>0.0.1-SNAPSHOT</flchy-blog-mapper.version>
 
 		<!-- :::::::::::::::: 核心框架version :::::::::::::::: -->
 		<!-- 基础框架 -->
-		<spring-boot.version>1.5.4.RELEASE</spring-boot.version>
+		<spring-boot.version>1.5.6.RELEASE</spring-boot.version>
+		<spring-cloud.version>Dalston.SR3</spring-cloud.version>
 		<ehcache.version>2.6.6</ehcache.version>
 		<guava.version>22.0</guava.version>
 
@@ -50,7 +55,7 @@
 		<!-- javabean映射工具 -->
 		<dozer.version>5.4.0</dozer.version>
 
-		<jackson.version>2.6.2</jackson.version>
+		<jackson.version>2.9.0</jackson.version>
 		<javax.servlet.jsp-api.version>2.3.1</javax.servlet.jsp-api.version>
 		<jstl.version>1.2</jstl.version>
 		<javax.servlet-api.version>3.1.0</javax.servlet-api.version>
@@ -386,7 +391,6 @@
 				<artifactId>mybatisplus-spring-boot-starter</artifactId>
 				<version>${mybatisplus-spring-boot-starter}</version>
 			</dependency>
-
 		</dependencies>
 	</dependencyManagement>
 

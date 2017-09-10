@@ -1,8 +1,8 @@
 package com.flchy.blog.inlets.service.impl;
 
-import com.flchy.blog.inlets.entity.ErrorLog;
-import com.flchy.blog.inlets.dao.ErrorLogMapper;
+import com.flchy.blog.inlets.mapper.ErrorLogMapper;
 import com.flchy.blog.inlets.service.IErrorLogService;
+import com.flchy.blog.pojo.ErrorLog;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 
 import java.util.Date;

@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.flchy.blog.base.holder.AbstractCacheHolder;
 import com.flchy.blog.base.holder.SpringContextHolder;
-import com.flchy.blog.inlets.entity.ArticleType;
 import com.flchy.blog.inlets.service.IArticleTypeService;
+import com.flchy.blog.pojo.ArticleType;
 
 @Component
 public class ArticleTypeCache extends AbstractCacheHolder {

@@ -35,7 +35,7 @@ import com.flchy.blog.base.datasource.annotation.BaseRepository;
 //扫描 Mapper 接口并容器管理
 @MapperScan(basePackages = BaseDataSource.PACKAGE, sqlSessionFactoryRef = "masterSqlSessionFactory", annotationClass = BaseRepository.class)
 public class BaseDataSource {
-	static final String PACKAGE = "com.flchy.**.dao";
+	static final String PACKAGE = "com.flchy.blog.**.mapper";
 	static final String MAPPER_LOCATION = "classpath*:conf/mapper/**/*.xml";
 	// 连接Url路径
 		@Value("${base.datasource.url}")

@@ -19,8 +19,8 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.flchy.blog</groupId>
-			<artifactId>flchy-blog-base</artifactId>
-			<version>${flchy-blog-base.version}</version>
+			<artifactId>flchy-blog-mapper</artifactId>
+			<version>${flchy-blog-mapper.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.guava</groupId>

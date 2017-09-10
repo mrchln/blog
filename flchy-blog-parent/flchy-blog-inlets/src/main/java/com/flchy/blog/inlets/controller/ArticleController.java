@@ -2,29 +2,24 @@ package com.flchy.blog.inlets.controller;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
-import javax.validation.constraints.NotNull;
-import javax.ws.rs.PathParam;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.flchy.blog.common.response.ResponseCommand;
-import com.flchy.blog.inlets.entity.Article;
 import com.flchy.blog.inlets.enums.StatusEnum;
 import com.flchy.blog.inlets.exception.BusinessException;
 import com.flchy.blog.inlets.response.ResultPage;
 import com.flchy.blog.inlets.service.IArticleService;
+import com.flchy.blog.pojo.Article;
 import com.flchy.blog.utils.convert.MapConvertUtil;
 
 /**
@@ -100,7 +95,7 @@ public class ArticleController {
 		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, new ResultPage(page));
 	}
 
-	@GetMapping("/")
+	@GetMapping
 	public Object selectArticleKey(@RequestParam Integer id) {
 
 		Article article = iArticleService.selectById(id);
@@ -116,7 +111,7 @@ public class ArticleController {
 	 * @param id
 	 * @return
 	 */
-	@GetMapping("deleted")
+	@RequestMapping(value="deleted",method=RequestMethod.GET)
 	public Object selectArticleDeleted() {
 
 		List<Article> article = iArticleService
