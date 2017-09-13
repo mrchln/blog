@@ -19,6 +19,11 @@
 		<module>flchy-blog-eureka-server</module>
 		<module>flchy-blog-inlets-feign</module>
 		<module>flchy-blog-inlets-ribbon</module>
+		<module>flchy-blog-zuul</module>
+		<module>flchy-blog-config-server</module>
+		<module>flchy-blog-inlets-feign-api</module>
+		<module>flchy-blog-inlets-feign-client</module>
+		<module>flchy-blog-inlets-feign-consumer</module>
 	</modules>
 	<properties>
 		<!-- :::::::::::::::: 子模块version :::::::::::::::: -->
@@ -34,6 +39,11 @@
 		<flchy-blog-eureka-server.version>0.0.1-SNAPSHOT</flchy-blog-eureka-server.version>
 		<flchy-blog-inlets-feign.version>0.0.1-SNAPSHOT</flchy-blog-inlets-feign.version>
 		<flchy-blog-inlets-ribbon.version>0.0.1-SNAPSHOT</flchy-blog-inlets-ribbon.version>
+		<flchy-blog-zuul.version>0.0.1-SNAPSHOT</flchy-blog-zuul.version>
+		<flchy-blog-config-server.version>0.0.1-SNAPSHOT</flchy-blog-config-server.version>
+		<flchy-blog-inlets-feign-api.version>0.0.1-SNAPSHOT</flchy-blog-inlets-feign-api.version>
+		<flchy-blog-inlets-feign-client.version>0.0.1-SNAPSHOT</flchy-blog-inlets-feign-client.version>
+		<flchy-blog-inlets-feign-consumer.version>0.0.1-SNAPSHOT</flchy-blog-inlets-feign-consumer.version>
 
 		<!-- :::::::::::::::: 核心框架version :::::::::::::::: -->
 		<!-- 基础框架 -->

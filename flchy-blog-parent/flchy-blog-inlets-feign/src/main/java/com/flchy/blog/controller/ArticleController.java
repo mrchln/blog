@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.flchy.blog.service.ArticleService;
 
 @RestController
-@RequestMapping("article")
+@RequestMapping
 public class ArticleController {
 	@Autowired
 	private ArticleService articleService;
@@ -30,8 +30,8 @@ public class ArticleController {
 //		return articleService.insert(article);
 //	}
 
-	@GetMapping
-	public Object selectArticleKey(@RequestParam Integer id) {
+	@GetMapping("/article")
+	public Object selectArticleKey(Integer id) {
 		return articleService.selectArticleKey(id);
 	}
 }

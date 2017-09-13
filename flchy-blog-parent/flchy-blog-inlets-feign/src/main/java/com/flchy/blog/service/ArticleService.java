@@ -4,6 +4,7 @@ import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.flchy.blog.hystric.ArticleServiceHystric;
@@ -20,6 +21,6 @@ public interface ArticleService {
 	 * @PostMapping public Object insert(Article article);
 	 */
 
-	@GetMapping
-	public Object selectArticleKey(@RequestParam Integer id);
+	@RequestMapping(value="/article",method=RequestMethod.GET)
+	public Object selectArticleKey(Integer id);
 }
