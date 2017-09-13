@@ -16,6 +16,9 @@
 		<module>flchy-blog-wxchat</module>
 		<module>flchy-blog-pojo</module>
 		<module>flchy-blog-mapper</module>
+		<module>flchy-blog-eureka-server</module>
+		<module>flchy-blog-inlets-feign</module>
+		<module>flchy-blog-inlets-ribbon</module>
 	</modules>
 	<properties>
 		<!-- :::::::::::::::: 子模块version :::::::::::::::: -->
@@ -28,6 +31,9 @@
 		<flchy-blog-wxchat.version>0.0.1-SNAPSHOT</flchy-blog-wxchat.version>
 		<flchy-blog-pojo.version>0.0.1-SNAPSHOT</flchy-blog-pojo.version>
 		<flchy-blog-mapper.version>0.0.1-SNAPSHOT</flchy-blog-mapper.version>
+		<flchy-blog-eureka-server.version>0.0.1-SNAPSHOT</flchy-blog-eureka-server.version>
+		<flchy-blog-inlets-feign.version>0.0.1-SNAPSHOT</flchy-blog-inlets-feign.version>
+		<flchy-blog-inlets-ribbon.version>0.0.1-SNAPSHOT</flchy-blog-inlets-ribbon.version>
 
 		<!-- :::::::::::::::: 核心框架version :::::::::::::::: -->
 		<!-- 基础框架 -->
