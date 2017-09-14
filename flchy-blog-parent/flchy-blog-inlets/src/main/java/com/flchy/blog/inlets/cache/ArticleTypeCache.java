@@ -35,7 +35,6 @@ public class ArticleTypeCache extends AbstractCacheHolder {
 	public void initialize() {
 		// 加载枚举字典表信息到缓存中
 		this.saveOrUpdateCacheValue(CACHEKEY_FIELDNAME, this.queryAllList());
-
 	}
 
 	/**
