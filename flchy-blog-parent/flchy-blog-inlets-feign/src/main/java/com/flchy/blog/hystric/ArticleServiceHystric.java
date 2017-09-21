@@ -20,10 +20,11 @@ public class ArticleServiceHystric implements ArticleService {
 		return "查询错误";
 	}
 
-//	@Override
-//	public Object selectArticleDeleted() {
-//		return "errr:selectArticleDeleted";
-//	}
+
+	@Override
+	public Object selectArticleDeleted() {
+		return "errr:selectArticleDeleted";
+	}
 
 
 //	@Override

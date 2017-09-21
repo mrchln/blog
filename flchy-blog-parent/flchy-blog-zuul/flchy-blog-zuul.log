@@ -4013,3 +4013,87 @@ Caused by: com.netflix.client.ClientException: Load balancer does not have avail
 2017-09-14 16:30:01.869  INFO [flchy-blog-zuul,,,] 24236 --- [main] c.flchy.blog.FlchatBlogZuulApplication   : Started FlchatBlogZuulApplication in 12.609 seconds (JVM running for 13.177)
 2017-09-14 16:35:01.357  INFO [flchy-blog-zuul,,,] 24236 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
 2017-09-14 16:40:01.357  INFO [flchy-blog-zuul,,,] 24236 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2017-09-14 16:45:01.358  INFO [flchy-blog-zuul,,,] 24236 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2017-09-14 16:50:01.359  INFO [flchy-blog-zuul,,,] 24236 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2017-09-14 16:55:01.360  INFO [flchy-blog-zuul,,,] 24236 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2017-09-14 17:00:01.362  INFO [flchy-blog-zuul,,,] 24236 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2017-09-14 17:05:01.363  INFO [flchy-blog-zuul,,,] 24236 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2017-09-14 17:10:01.363  INFO [flchy-blog-zuul,,,] 24236 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2017-09-14 17:15:01.372  INFO [flchy-blog-zuul,,,] 24236 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2017-09-14 17:20:01.374  INFO [flchy-blog-zuul,,,] 24236 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2017-09-14 17:25:01.385  INFO [flchy-blog-zuul,,,] 24236 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2017-09-14 17:30:01.386  INFO [flchy-blog-zuul,,,] 24236 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2017-09-14 17:35:01.387  INFO [flchy-blog-zuul,,,] 24236 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2017-09-14 17:40:01.403  INFO [flchy-blog-zuul,,,] 24236 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2017-09-14 17:45:01.404  INFO [flchy-blog-zuul,,,] 24236 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2017-09-14 17:50:01.405  INFO [flchy-blog-zuul,,,] 24236 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2017-09-14 17:55:01.407  INFO [flchy-blog-zuul,,,] 24236 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2017-09-14 18:00:01.408  INFO [flchy-blog-zuul,,,] 24236 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2017-09-14 18:05:01.410  INFO [flchy-blog-zuul,,,] 24236 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2017-09-14 18:10:01.411  INFO [flchy-blog-zuul,,,] 24236 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2017-09-14 18:15:01.413  INFO [flchy-blog-zuul,,,] 24236 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2017-09-14 18:20:01.414  INFO [flchy-blog-zuul,,,] 24236 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2017-09-14 18:25:01.416  INFO [flchy-blog-zuul,,,] 24236 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2017-09-14 18:30:01.463  INFO [flchy-blog-zuul,,,] 24236 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2017-09-14 18:35:01.490  INFO [flchy-blog-zuul,,,] 24236 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2017-09-14 18:40:01.520  INFO [flchy-blog-zuul,,,] 24236 --- [AsyncResolver-bootstrap-executor-0] c.n.d.s.r.aws.ConfigClusterResolver      : Resolving eureka endpoints via configuration
+2017-09-14 18:42:14.394  INFO [flchy-blog-zuul,,,] 24236 --- [RMI TCP Connection(22)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2017-09-14 18:42:14.394  INFO [flchy-blog-zuul,,,] 24236 --- [RMI TCP Connection(20)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2017-09-14 18:42:14.394  INFO [flchy-blog-zuul,,,] 24236 --- [RMI TCP Connection(24)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2017-09-14 18:42:14.395  INFO [flchy-blog-zuul,,,] 24236 --- [RMI TCP Connection(14)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2017-09-14 18:42:14.395  INFO [flchy-blog-zuul,,,] 24236 --- [RMI TCP Connection(30)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2017-09-14 18:42:14.395  INFO [flchy-blog-zuul,,,] 24236 --- [RMI TCP Connection(33)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2017-09-14 18:42:14.395  INFO [flchy-blog-zuul,,,] 24236 --- [RMI TCP Connection(32)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2017-09-14 18:42:14.395  INFO [flchy-blog-zuul,,,] 24236 --- [RMI TCP Connection(23)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2017-09-14 18:42:14.395  INFO [flchy-blog-zuul,,,] 24236 --- [RMI TCP Connection(18)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2017-09-14 18:42:14.395  INFO [flchy-blog-zuul,,,] 24236 --- [RMI TCP Connection(28)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2017-09-14 18:42:14.395  INFO [flchy-blog-zuul,,,] 24236 --- [RMI TCP Connection(34)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2017-09-14 18:42:14.395  INFO [flchy-blog-zuul,,,] 24236 --- [RMI TCP Connection(25)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2017-09-14 18:42:14.395  INFO [flchy-blog-zuul,,,] 24236 --- [RMI TCP Connection(16)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2017-09-14 18:42:14.395  INFO [flchy-blog-zuul,,,] 24236 --- [RMI TCP Connection(19)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2017-09-14 18:42:14.395  INFO [flchy-blog-zuul,,,] 24236 --- [RMI TCP Connection(17)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2017-09-14 18:42:14.395  INFO [flchy-blog-zuul,,,] 24236 --- [RMI TCP Connection(21)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2017-09-14 18:42:14.395  INFO [flchy-blog-zuul,,,] 24236 --- [RMI TCP Connection(26)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2017-09-14 18:42:14.395  INFO [flchy-blog-zuul,,,] 24236 --- [RMI TCP Connection(29)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2017-09-14 18:42:14.395  INFO [flchy-blog-zuul,,,] 24236 --- [RMI TCP Connection(31)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2017-09-14 18:42:14.395  INFO [flchy-blog-zuul,,,] 24236 --- [RMI TCP Connection(15)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2017-09-14 18:42:14.395  INFO [flchy-blog-zuul,,,] 24236 --- [RMI TCP Connection(13)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2017-09-14 18:42:14.447  INFO [flchy-blog-zuul,,,] 24236 --- [RMI TCP Connection(27)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2017-09-14 18:42:14.472  INFO [flchy-blog-zuul,,,] 24236 --- [RMI TCP Connection(24)-127.0.0.1] ationConfigEmbeddedWebApplicationContext : Closing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@604c5de8: startup date [Thu Sep 14 16:29:50 CST 2017]; parent: org.springframework.context.annotation.AnnotationConfigApplicationContext@4802796d
+2017-09-14 18:42:15.543  INFO [flchy-blog-zuul,,,] 24236 --- [RMI TCP Connection(35)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2017-09-14 18:42:15.634  INFO [flchy-blog-zuul,,,] 24236 --- [RMI TCP Connection(36)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2017-09-14 18:42:15.824  INFO [flchy-blog-zuul,,,] 24236 --- [RMI TCP Connection(24)-127.0.0.1] o.s.c.n.e.s.EurekaServiceRegistry        : Unregistering application flchy-blog-zuul with eureka with status DOWN
+2017-09-14 18:42:15.825  WARN [flchy-blog-zuul,,,] 24236 --- [RMI TCP Connection(24)-127.0.0.1] com.netflix.discovery.DiscoveryClient    : Saw local status change event StatusChangeEvent [timestamp=1505385735825, current=DOWN, previous=UP]
+2017-09-14 18:42:15.839  INFO [flchy-blog-zuul,,,] 24236 --- [DiscoveryClient-InstanceInfoReplicator-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_FLCHY-BLOG-ZUUL/user:flchy-blog-zuul:8769: registering service...
+2017-09-14 18:42:16.061  INFO [flchy-blog-zuul,,,] 24236 --- [RMI TCP Connection(37)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2017-09-14 18:42:16.217  INFO [flchy-blog-zuul,,,] 24236 --- [RMI TCP Connection(24)-127.0.0.1] com.netflix.discovery.DiscoveryClient    : Shutting down DiscoveryClient ...
+2017-09-14 18:42:16.230  INFO [flchy-blog-zuul,,,] 24236 --- [RMI TCP Connection(38)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2017-09-14 18:42:16.246  INFO [flchy-blog-zuul,,,] 24236 --- [RMI TCP Connection(24)-127.0.0.1] com.netflix.discovery.DiscoveryClient    : Unregistering ...
+2017-09-14 18:42:16.395  INFO [flchy-blog-zuul,,,] 24236 --- [DiscoveryClient-InstanceInfoReplicator-0] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_FLCHY-BLOG-ZUUL/user:flchy-blog-zuul:8769 - registration status: 204
+2017-09-14 18:42:16.547  INFO [flchy-blog-zuul,,,] 24236 --- [RMI TCP Connection(39)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2017-09-14 18:42:16.625  INFO [flchy-blog-zuul,,,] 24236 --- [RMI TCP Connection(24)-127.0.0.1] com.netflix.discovery.DiscoveryClient    : DiscoveryClient_FLCHY-BLOG-ZUUL/user:flchy-blog-zuul:8769 - deregister  status: 200
+2017-09-14 18:42:16.647  INFO [flchy-blog-zuul,,,] 24236 --- [RMI TCP Connection(40)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2017-09-14 18:42:16.831  INFO [flchy-blog-zuul,,,] 24236 --- [RMI TCP Connection(41)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2017-09-14 18:42:16.857  INFO [flchy-blog-zuul,,,] 24236 --- [RMI TCP Connection(24)-127.0.0.1] com.netflix.discovery.DiscoveryClient    : Completed shut down of DiscoveryClient
+2017-09-14 18:42:16.953  INFO [flchy-blog-zuul,,,] 24236 --- [RMI TCP Connection(42)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2017-09-14 18:42:17.345  INFO [flchy-blog-zuul,,,] 24236 --- [RMI TCP Connection(43)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2017-09-14 18:42:17.365  INFO [flchy-blog-zuul,,,] 24236 --- [RMI TCP Connection(44)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2017-09-14 18:42:17.537  INFO [flchy-blog-zuul,,,] 24236 --- [RMI TCP Connection(45)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2017-09-14 18:42:17.760  INFO [flchy-blog-zuul,,,] 24236 --- [RMI TCP Connection(46)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2017-09-14 18:42:17.959  INFO [flchy-blog-zuul,,,] 24236 --- [RMI TCP Connection(47)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2017-09-14 18:42:18.121  INFO [flchy-blog-zuul,,,] 24236 --- [RMI TCP Connection(48)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2017-09-14 18:42:18.272  INFO [flchy-blog-zuul,,,] 24236 --- [RMI TCP Connection(49)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2017-09-14 18:42:18.476  INFO [flchy-blog-zuul,,,] 24236 --- [RMI TCP Connection(50)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2017-09-14 18:42:18.667  INFO [flchy-blog-zuul,,,] 24236 --- [RMI TCP Connection(51)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2017-09-14 18:42:18.908  INFO [flchy-blog-zuul,,,] 24236 --- [RMI TCP Connection(52)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2017-09-14 18:42:19.064  INFO [flchy-blog-zuul,,,] 24236 --- [RMI TCP Connection(53)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2017-09-14 18:42:19.236  INFO [flchy-blog-zuul,,,] 24236 --- [RMI TCP Connection(54)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2017-09-14 18:42:19.461  INFO [flchy-blog-zuul,,,] 24236 --- [RMI TCP Connection(55)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2017-09-14 18:42:19.658  INFO [flchy-blog-zuul,,,] 24236 --- [RMI TCP Connection(56)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2017-09-14 18:42:19.690  INFO [flchy-blog-zuul,,,] 24236 --- [RMI TCP Connection(24)-127.0.0.1] o.s.c.support.DefaultLifecycleProcessor  : Stopping beans in phase 2147483647
+2017-09-14 18:42:19.811  INFO [flchy-blog-zuul,,,] 24236 --- [RMI TCP Connection(24)-127.0.0.1] o.s.c.support.DefaultLifecycleProcessor  : Stopping beans in phase 0
+2017-09-14 18:42:19.828  INFO [flchy-blog-zuul,,,] 24236 --- [RMI TCP Connection(57)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2017-09-14 18:42:19.859  INFO [flchy-blog-zuul,,,] 24236 --- [RMI TCP Connection(24)-127.0.0.1] o.s.c.n.zuul.ZuulFilterInitializer       : Stopping filter initializer
+2017-09-14 18:42:20.101  INFO [flchy-blog-zuul,,,] 24236 --- [RMI TCP Connection(58)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+2017-09-14 18:42:20.255  INFO [flchy-blog-zuul,,,] 24236 --- [RMI TCP Connection(24)-127.0.0.1] o.s.j.e.a.AnnotationMBeanExporter        : Unregistering JMX-exposed beans on shutdown
+2017-09-14 18:42:20.255  INFO [flchy-blog-zuul,,,] 24236 --- [RMI TCP Connection(24)-127.0.0.1] o.s.j.e.a.AnnotationMBeanExporter        : Unregistering JMX-exposed beans

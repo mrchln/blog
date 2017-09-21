@@ -9,16 +9,16 @@ import org.springframework.web.bind.annotation.RestController;
 import com.flchy.blog.service.ArticleService;
 
 @RestController
-@RequestMapping
+@RequestMapping("/article")
 public class ArticleController {
 	@Autowired
 	private ArticleService articleService;
 
 
-//	@GetMapping("deleted")
-//	public Object selectArticleDeleted() {
-//		return articleService.selectArticleDeleted();
-//	}
+	@GetMapping("/deleted")
+	public Object selectArticleDeleted() {
+		return articleService.selectArticleDeleted();
+	}
 
 	/**
 	 * 添加
@@ -31,7 +31,7 @@ public class ArticleController {
 //		return articleService.insert(article);
 //	}
 
-	@GetMapping("/article/{id}")
+	@GetMapping("/{id}")
 	public Object selectArticleKey(@PathVariable Integer id) {
 		return articleService.selectArticleKey(id);
 	}
