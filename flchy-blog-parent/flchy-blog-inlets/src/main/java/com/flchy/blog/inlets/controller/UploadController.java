@@ -11,20 +11,14 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.io.FileUtils;
-import org.csource.common.MyException;
 import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataMultiPart;
-import org.glassfish.jersey.media.multipart.FormDataParam;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,12 +30,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.flchy.blog.common.fastdfs.FastDFSClient;
 import com.flchy.blog.common.fastdfs.FastDSFile;
 import com.flchy.blog.common.response.ResponseCommand;
-import com.flchy.blog.inlets.exception.BusinessException;
 
-//@Path("file")
-//@Consumes(MediaType.MULTIPART_FORM_DATA)
-//@Produces(MediaType.APPLICATION_JSON)
-//@Controller
 @RestController
 @RequestMapping("file")
 public class UploadController {
@@ -56,7 +45,7 @@ public class UploadController {
 	 * 采用spring提供的上传文件的方法
 	 */
 	@RequestMapping("upload")
-	public Object springUpload(HttpServletRequest request) throws IllegalStateException, IOException, MyException {
+	public Object springUpload(HttpServletRequest request) throws Exception {
 		List<String> urlList = new ArrayList<>();
 		// 将当前上下文初始化给 CommonsMutipartResolver （多部分解析器）
 		CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(
@@ -86,27 +75,11 @@ public class UploadController {
 			}
 
 		} else {
-			throw new BusinessException("未找到文件");
+			throw new Exception("未找到文件");
 		}
 		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, urlList);
 	}
 
-	// @POST
-	// @Path("upload")
-	// @PostMapping(value="/upload")
-	// public Object insertssss(@FormDataParam(value = "file") InputStream file,
-	// @FormDataParam(value = "file") FormDataContentDisposition
-	// fileDisposition) throws IOException, MyException {
-	// FastDSFile fastDSFile = new FastDSFile();
-	// fastDSFile.setContent(input2byte(file));
-	// final String fileName = fileDisposition.getFileName();
-	//
-	// fastDSFile.setExt(fileName.substring(fileName.lastIndexOf(".")+1));
-	// JSONArray rs = FastDFSClient.upload(fastDSFile);
-	// String url=rs.get(0)+"/"+rs.get(1);
-	// return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, url);
-	// }
-	//
 	public static final byte[] input2byte(InputStream inStream) throws IOException {
 		ByteArrayOutputStream swapStream = new ByteArrayOutputStream();
 		byte[] buff = new byte[100];
