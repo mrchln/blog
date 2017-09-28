@@ -1,15 +1,15 @@
-package com.flchy.blog.inlets.exception;
+package com.flchy.blog.base.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import com.flchy.blog.common.response.ResponseCommand;
+import com.flchy.blog.base.response.ResponseCommand;
 
 /**
  * 业务异常
  */
 @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "业务异常，伪装为错误请求")
-public class BusinessException extends RuntimeException {
+public class BusinessException extends BaseRuntimeException {
 
 	/**
 	 * 

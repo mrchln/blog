@@ -13,6 +13,7 @@
 		<module>flchy-blog-privilege</module>
 		<module>flchy-blog-common</module>
 		<module>kafka-plugins</module>
+		<module>redis-plugins</module>
 		<module>flchy-blog-wxchat</module>
 		<module>flchy-blog-pojo</module>
 		<module>flchy-blog-mapper</module>
@@ -34,6 +35,7 @@
 		<flchy-blog-base.version>0.0.1-SNAPSHOT</flchy-blog-base.version>
 		<flchy-blog-common.version>0.0.1-SNAPSHOT</flchy-blog-common.version>
 		<kafka-plugins.version>0.0.1-SNAPSHOT</kafka-plugins.version>
+		<redis-plugins.version>0.0.1-SNAPSHOT</redis-plugins.version>
 		<flchy-blog-wxchat.version>0.0.1-SNAPSHOT</flchy-blog-wxchat.version>
 		<flchy-blog-pojo.version>0.0.1-SNAPSHOT</flchy-blog-pojo.version>
 		<flchy-blog-mapper.version>0.0.1-SNAPSHOT</flchy-blog-mapper.version>

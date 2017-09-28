@@ -7,7 +7,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.flchy.blog.common.response.ResponseCommand;
+import com.flchy.blog.base.exception.BusinessException;
+import com.flchy.blog.base.response.ResponseCommand;
 import com.flchy.blog.inlets.service.IErrorLogService;
 import com.flchy.blog.utils.NewMapUtil;
 

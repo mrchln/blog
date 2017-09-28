@@ -1,4 +1,4 @@
-package com.flchy.blog.common.response;
+package com.flchy.blog.base.response;
 
 import java.io.Serializable;
 

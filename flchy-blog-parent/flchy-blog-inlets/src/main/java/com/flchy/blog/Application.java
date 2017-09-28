@@ -4,6 +4,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
+import com.flchy.blog.privilege.extend.listener.ApplicationStartupListener;
+
 @SpringBootApplication
 //@ComponentScan(basePackages = {"com.flchy.blog.base"})
 @EnableScheduling
@@ -11,7 +13,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 public class Application {
 	public static void main(String[] args) {
 		SpringApplication springApplication = new SpringApplication(Application.class);
-		// springApplication.addListeners(new ApplicationStartupListener());
+		 springApplication.addListeners(new ApplicationStartupListener());
 		springApplication.run(args);
 		// org.springframework.boot.autoconfigure
 	}
@@ -24,4 +26,19 @@ public class Application {
 //		return registration;
 //	}
 
+	
+	/**
+	 * 访问请求权限过滤
+	 * @return
+	 */
+/*	@Bean
+	public FilterRegistrationBean filterRegistrationBean() {
+		FilterRegistrationBean registrationBean = new FilterRegistrationBean();
+		PermissionsAuthFilter httpBasicFilter = new PermissionsAuthFilter();
+		registrationBean.setFilter(httpBasicFilter);
+		List<String> urlPatterns = new ArrayList<String>();
+		urlPatterns.add("/*");
+		registrationBean.setUrlPatterns(urlPatterns);
+		return registrationBean;
+	}*/
 }

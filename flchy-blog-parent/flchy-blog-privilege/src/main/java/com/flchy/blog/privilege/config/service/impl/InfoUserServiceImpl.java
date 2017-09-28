@@ -17,6 +17,7 @@ import com.flchy.blog.privilege.mapper.InfoUserMapper;
  */
 @Service
 public class InfoUserServiceImpl extends ServiceImpl<InfoUserMapper, InfoUser> implements IInfoUserService {
+		
 	
 	
 }

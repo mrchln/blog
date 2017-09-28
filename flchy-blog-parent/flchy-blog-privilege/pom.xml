@@ -23,6 +23,11 @@
 			<version>${flchy-blog-mapper.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>com.tools.plugin.redis</groupId>
+			<artifactId>redis-plugins</artifactId>
+			<version>${redis-plugins.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
 		</dependency>

@@ -1,9 +1,13 @@
 package com.flchy.blog.utils.convert;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.dozer.DozerBeanMapper;
+
+import com.alibaba.fastjson.JSONObject;
 /**
  * 简单封装Dozer, 实现深度转换Bean<->Bean的Mapper.实现: 1. 持有Mapper的单例. 2. 返回值类型转换. 3. 批量转换Collection中的所有对象. 4.
  * 区分创建新的B对象与将对象A值复制到已存在的B对象两种函数.

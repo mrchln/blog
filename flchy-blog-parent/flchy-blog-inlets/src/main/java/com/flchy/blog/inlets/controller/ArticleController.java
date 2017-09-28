@@ -2,6 +2,7 @@ package com.flchy.blog.inlets.controller;
 
 import java.util.Date;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,13 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
-import com.flchy.blog.common.response.ResponseCommand;
+import com.flchy.blog.base.exception.BusinessException;
+import com.flchy.blog.base.response.ResponseCommand;
 import com.flchy.blog.inlets.enums.StatusEnum;
-import com.flchy.blog.inlets.exception.BusinessException;
 import com.flchy.blog.inlets.response.ResultPage;
 import com.flchy.blog.inlets.service.IArticleService;
 import com.flchy.blog.pojo.Article;
-import com.flchy.blog.utils.convert.MapConvertUtil;
 
 /**
  * <p>
@@ -97,8 +97,8 @@ public class ArticleController {
 	}
 
 	@GetMapping(value="/{id}")
-	public Object selectArticleKey(@PathVariable Integer id) {
-
+	public Object selectArticleKey(@PathVariable Integer id,@RequestParam(value = "token", required = false) String token) {
+		System.out.println(token);
 		Article article = iArticleService.selectById(id);
 		if (article == null) {
 			throw new BusinessException("isNull");

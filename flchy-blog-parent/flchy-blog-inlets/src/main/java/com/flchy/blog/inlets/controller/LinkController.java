@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.flchy.blog.common.response.ResponseCommand;
-import com.flchy.blog.inlets.exception.BusinessException;
+import com.flchy.blog.base.exception.BusinessException;
+import com.flchy.blog.base.response.ResponseCommand;
 import com.flchy.blog.inlets.service.ILinkService;
 import com.flchy.blog.pojo.Link;
 
