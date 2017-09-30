@@ -1,4 +1,4 @@
-package com.flchy.blog.inlets.response;
+package com.flchy.blog.base.response;
 
 import java.io.Serializable;
 import java.util.List;

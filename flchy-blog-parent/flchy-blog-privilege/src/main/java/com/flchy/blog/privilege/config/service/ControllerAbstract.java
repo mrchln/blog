@@ -18,7 +18,7 @@ public abstract class ControllerAbstract {
 	private static final Logger logger = LoggerFactory.getLogger(ControllerAbstract.class);
 
 	public InfoUser getUser(String token, HttpServletRequest request) {
-		InfoUser user=null;
+		InfoUser user = null;
 		String tk = "";
 		if (token == null || token.isEmpty() || token.equals("")) {
 			HttpSession session = request.getSession();
@@ -32,14 +32,16 @@ public abstract class ControllerAbstract {
 			tk = token;
 		}
 		try {
-		String userString=	redisBusines.get(token);
-		user=JSON.parseObject(userString, InfoUser.class);
+			String userString = redisBusines.get(tk);
+			user = JSON.parseObject(userString, InfoUser.class);
+			if (user == null) {
+				throw new BusinessException("清先登录！");
+			}
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			e.printStackTrace();
 		}
 		return user;
-
 	}
 
 }

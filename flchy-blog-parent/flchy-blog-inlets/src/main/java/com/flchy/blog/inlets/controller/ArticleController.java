@@ -18,8 +18,8 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.flchy.blog.base.exception.BusinessException;
 import com.flchy.blog.base.response.ResponseCommand;
+import com.flchy.blog.base.response.ResultPage;
 import com.flchy.blog.inlets.enums.StatusEnum;
-import com.flchy.blog.inlets.response.ResultPage;
 import com.flchy.blog.inlets.service.IArticleService;
 import com.flchy.blog.pojo.Article;
 
