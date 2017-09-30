@@ -22,10 +22,14 @@
 		<module>flchy-blog-inlets-ribbon</module>
 		<module>flchy-blog-zuul</module>
 		<module>flchy-blog-config-server</module>
+		<module>flchy-blog-config-client</module>
 		<module>flchy-blog-inlets-feign</module>
 		<module>flchy-blog-inlets-feign-api</module>
 		<module>flchy-blog-inlets-feign-client</module>
 		<module>flchy-blog-inlets-feign-consumer</module>
+		<module>flchy-blog-eureka-admin</module>
+		<module>flchy-blog-server-zipkin</module>
+		
 	</modules>
 	<properties>
 		<!-- :::::::::::::::: 子模块version :::::::::::::::: -->
