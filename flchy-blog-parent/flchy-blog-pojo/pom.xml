@@ -8,9 +8,7 @@
 		<artifactId>flchy-blog-parent</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<groupId>com.flchy.blog</groupId>
 	<artifactId>flchy-blog-pojo</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
 	<name>flchy-blog-pojo</name>
 	<url>http://maven.apache.org</url>
 	<properties>

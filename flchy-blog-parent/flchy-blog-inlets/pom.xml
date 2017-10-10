@@ -19,15 +19,18 @@
 	<!-- <parent> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-parent</artifactId> 
 		<version>1.5.4.RELEASE</version> <relativePath /> lookup parent from repository 
 		</parent> -->
-	<groupId>com.flchy.blog</groupId>
 	<artifactId>flchy-blog-inlets</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<dependencies>
 		<dependency>
 			<groupId>com.flchy.blog</groupId>
 			<artifactId>flchy-blog-mapper</artifactId>
 			<version>${flchy-blog-mapper.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.flchy.blog</groupId>
+			<artifactId>flchy-blog-pojo</artifactId>
+			<version>${flchy-blog-pojo.version}</version>
 		</dependency>
 		<!-- <dependency> <groupId>org.springframework</groupId> <artifactId>spring-boot-starter-parent</artifactId> 
 			</dependency> -->
