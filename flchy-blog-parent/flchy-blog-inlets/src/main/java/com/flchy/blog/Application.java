@@ -6,8 +6,9 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 import com.flchy.blog.privilege.extend.listener.ApplicationStartupListener;
 
+
 @SpringBootApplication
-//@ComponentScan(basePackages = {"com.flchy.blog.base"})
+//@ComponentScan(basePackages = {"com.flchy.blog.privilege"})
 @EnableScheduling
 //@EnableEurekaClient
 public class Application {

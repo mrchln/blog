@@ -23,7 +23,7 @@
 			<version>${flchy-blog-mapper.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.tools.plugin.redis</groupId>
+			<groupId>com.flchy.blog</groupId>
 			<artifactId>redis-plugins</artifactId>
 			<version>${redis-plugins.version}</version>
 		</dependency>
@@ -36,18 +36,39 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-jersey</artifactId>
 		</dependency>
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.glassfish.jersey.media</groupId>
 			<artifactId>jersey-media-json-jackson</artifactId>
 			<version>2.25.1</version>
-		</dependency>
+		</dependency> -->
 
 
-		<dependency>
+	<!-- 	<dependency>
 			<groupId>org.glassfish.jersey.containers</groupId>
 			<artifactId>jersey-container-jdk-http</artifactId>
 			<version>2.26-b08</version>
-		</dependency>
+		</dependency> -->
 
 	</dependencies>
+	
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-enforcer-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
 </project>
