@@ -98,7 +98,7 @@ public class ArticleController {
 
 	@GetMapping(value="/{id}")
 	public Object selectArticleKey(@PathVariable Integer id,@RequestParam(value = "token", required = false) String token) {
-		System.out.println(token);
+		System.out.println(100/0);
 		Article article = iArticleService.selectById(id);
 		if (article == null) {
 			throw new BusinessException("isNull");

@@ -1,7 +1,10 @@
 package com.flchy.blog.privilege.extend.filter;
 
 import java.io.IOException;
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.servlet.Filter;
@@ -27,6 +30,7 @@ import com.flchy.blog.privilege.config.controller.TokenPortalController;
 import com.flchy.blog.privilege.config.emun.UrlPathType;
 import com.flchy.blog.privilege.config.service.IConfUrlService;
 import com.flchy.blog.utils.NewMapUtil;
+
 @Component
 public class AuthFilter implements Filter {
 	private static final Logger logger = LoggerFactory.getLogger(TokenPortalController.class);
@@ -49,13 +53,13 @@ public class AuthFilter implements Filter {
 			chain.doFilter(request, response);
 			return;
 		}
-		String requestPath=request.getRequestURI();
+		String requestPath = request.getRequestURI();
 		List<ConfUrl> typeConfUrl = iConfUrlService.getTypeConfUrl(UrlPathType.ALL.getCode());
-		List<String> arrayUrl= typeConfUrl.stream().map(u->u.getUrlPath()).collect(Collectors.toList());
-		//判断是登录接口
-		if(arrayUrl.contains(requestPath)){
+		List<String> arrayUrl = typeConfUrl.stream().map(u -> u.getUrlPath()).collect(Collectors.toList());
+		// 判断是登录接口
+		if (arrayUrl.contains(requestPath)) {
 			chain.doFilter(request, response);
-			return ;
+			return;
 		}
 		String token = "";
 		Object requesttoken = request.getParameter("token");
@@ -63,15 +67,21 @@ public class AuthFilter implements Filter {
 			HttpSession session = request.getSession();
 			Object sessionToken = session.getAttribute("token");
 			if (sessionToken == null || sessionToken.equals("")) {
-				httpResponse.setContentType("json/html; charset=utf-8");
-				String curOrigin = request.getHeader("Origin");
-				response.setHeader("Access-Control-Allow-Origin", curOrigin);
-				response.setHeader("Access-Control-Allow-Headers", "*");
-				response.setHeader("Access-Control-Allow-Methods", "*");
-				response.setHeader("Access-Control-Allow-Credentials", "true");
-				httpResponse.getWriter().write(JSON.toJSONString(new ResponseCommand(ResponseCommand.STATUS_LOGIN_ERROR,
-						new NewMapUtil("message", "请传入令牌！").get())));
-				return;
+				Map<String, String> headers = getHeadersInfo(request);
+				if (headers.containsKey("token")) {
+					token = headers.get("token");
+				} else {
+					httpResponse.setContentType("json/html; charset=utf-8");
+					String curOrigin = request.getHeader("Origin");
+					response.setHeader("Access-Control-Allow-Origin", curOrigin);
+					response.setHeader("Access-Control-Allow-Headers", "*");
+					response.setHeader("Access-Control-Allow-Methods", "*");
+					response.setHeader("Access-Control-Allow-Credentials", "true");
+					httpResponse.getWriter()
+							.write(JSON.toJSONString(new ResponseCommand(ResponseCommand.STATUS_LOGIN_ERROR,
+									new NewMapUtil("message", "请传入令牌！").get())));
+					return;
+				}
 			} else {
 				token = sessionToken.toString();
 			}
@@ -91,7 +101,7 @@ public class AuthFilter implements Filter {
 						new NewMapUtil("message", "登录失效,请重新登录！").get())));
 				return;
 			}
-			//权限    待添加
+			// 权限 待添加
 
 		} catch (Exception e) {
 			logger.error(e.getMessage());
@@ -100,12 +110,26 @@ public class AuthFilter implements Filter {
 		chain.doFilter(request, response);
 	}
 
+	/**
+	 * 获取headers
+	 * 
+	 * @param request
+	 * @return
+	 */
+	private Map<String, String> getHeadersInfo(HttpServletRequest request) {
+		Map<String, String> map = new HashMap<String, String>();
+		Enumeration<?> headerNames = request.getHeaderNames();
+		while (headerNames.hasMoreElements()) {
+			String key = (String) headerNames.nextElement();
+			String value = request.getHeader(key);
+			map.put(key, value);
+		}
+		return map;
+	}
+
 	@Override
 	public void init(FilterConfig arg0) throws ServletException {
 		System.out.println("请求访问权限过滤器初始化");
 	}
-	
-	
-	
 
 }

@@ -21,7 +21,11 @@ import com.flchy.blog.inlets.service.ILinkService;
 import com.flchy.blog.pojo.Article;
 import com.flchy.blog.pojo.ArticleType;
 import com.flchy.blog.pojo.Link;
-
+/**
+ * 
+ * @author 1st
+ *
+ */
 @RestController
 @RequestMapping("flchy")
 public class BlogController {

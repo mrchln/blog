@@ -54,7 +54,7 @@
 
 		<!-- :::::::::::::::: 核心框架version :::::::::::::::: -->
 		<!-- 基础框架 -->
-		<spring-boot.version>1.5.7.RELEASE</spring-boot.version>
+		<spring-boot.version>1.5.8.RELEASE</spring-boot.version>
 		<spring-cloud.version>Dalston.SR3</spring-cloud.version>
 		<ehcache.version>2.6.6</ehcache.version>
 		<guava.version>22.0</guava.version>

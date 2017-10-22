@@ -7,7 +7,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.solr.core.SolrTemplate;
 import org.springframework.data.solr.repository.config.EnableSolrRepositories;
-
+/**
+ * 
+ * @author flchy
+ *
+ */
 @Configuration
 @EnableSolrRepositories(basePackages = { "com.solr" }, multicoreSupport = true)
 public class SolrConfig {
@@ -27,5 +31,4 @@ public class SolrConfig {
 		// solrTemplate.setSolrConverter(solrConverter);
 		return solrTemplate;
 	}
-
 }

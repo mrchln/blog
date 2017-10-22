@@ -6,12 +6,17 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 import com.flchy.blog.privilege.extend.listener.ApplicationStartupListener;
 
-
+/**
+ * sdfadf
+ * @author sdlakjf
+ *
+ */
 @SpringBootApplication
 //@ComponentScan(basePackages = {"com.flchy.blog.privilege"})
 @EnableScheduling
-//@EnableEurekaClient
+//@EnableEurekaClient	
 public class Application {
+	
 	public static void main(String[] args) {
 		SpringApplication springApplication = new SpringApplication(Application.class);
 		 springApplication.addListeners(new ApplicationStartupListener());
@@ -22,7 +27,7 @@ public class Application {
 //	@Bean
 //	public ServletRegistrationBean jersetServlet() {
 //		ServletRegistrationBean registration = new ServletRegistrationBean(new ServletContainer(), "/*");
-//		// our rest resources will be available in the path /jersey/*
+//		// our rest resources will be 	available in the path /jersey/*
 //		registration.addInitParameter(ServletProperties.JAXRS_APPLICATION_CLASS, JerseyConfig.class.getName());
 //		return registration;
 //	}

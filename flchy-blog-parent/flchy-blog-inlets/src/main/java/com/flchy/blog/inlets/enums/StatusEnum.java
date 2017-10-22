@@ -7,6 +7,9 @@ package com.flchy.blog.inlets.enums;
  *
  */
 public enum StatusEnum {
+	/**
+	 * 枚举
+	 */
 	NORMAL(1, "正常"), DELETE(-1, "已删除"), DRAFT(2, "草稿");
 
 	private int code;

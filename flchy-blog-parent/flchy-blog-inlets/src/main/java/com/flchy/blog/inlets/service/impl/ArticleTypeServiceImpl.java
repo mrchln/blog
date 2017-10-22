@@ -16,5 +16,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ArticleTypeServiceImpl extends ServiceImpl<ArticleTypeMapper, ArticleType> implements IArticleTypeService {
-	
+	public static void main(String[] args) {
+		
+	}
 }

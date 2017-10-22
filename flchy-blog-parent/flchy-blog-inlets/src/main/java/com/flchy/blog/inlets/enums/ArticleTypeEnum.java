@@ -1,7 +1,15 @@
 package com.flchy.blog.inlets.enums;
-
+/**
+ * 
+ * @author flchy
+ *
+ */
 public enum ArticleTypeEnum {
-	ARTICLE(1, "文章类型"), URL(2, "地址");
+	/**
+	 * 文章类型
+	 */
+	ARTICLE(1, "文章类型"), 
+	URL(2, "地址");
 	private int code;
 	private String value;
 

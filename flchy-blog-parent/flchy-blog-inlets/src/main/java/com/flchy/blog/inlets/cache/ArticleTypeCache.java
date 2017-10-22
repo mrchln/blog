@@ -11,11 +11,15 @@ import com.flchy.blog.base.holder.AbstractCacheHolder;
 import com.flchy.blog.base.holder.SpringContextHolder;
 import com.flchy.blog.inlets.service.IArticleTypeService;
 import com.flchy.blog.pojo.ArticleType;
-
+/**
+ * 
+ * @author 测试
+ *
+ */
 @Component
 public class ArticleTypeCache extends AbstractCacheHolder {
-	private static final Logger logger = LoggerFactory.getLogger(ArticleTypeCache.class);
-	private static final String cacheKey = "com.flchy.blog.inlets.articletype";
+	private static final Logger LOGGER = LoggerFactory.getLogger(ArticleTypeCache.class);
+	private static final String CACHEKEY = "com.flchy.blog.inlets.articletype";
 	private static ArticleTypeCache articleTypeCache = new ArticleTypeCache();
 	private static final String CACHEKEY_FIELDNAME = "articleType";
 
@@ -62,7 +66,7 @@ public class ArticleTypeCache extends AbstractCacheHolder {
 	@Override
 	protected String setCacheKey() {
 		// TODO Auto-generated method stub
-		return cacheKey;
+		return CACHEKEY;
 	}
 
 	/**

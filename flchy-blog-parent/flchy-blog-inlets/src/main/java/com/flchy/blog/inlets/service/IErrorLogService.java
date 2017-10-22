@@ -13,6 +13,10 @@ import com.flchy.blog.pojo.ErrorLog;
  */
 public interface IErrorLogService extends IService<ErrorLog> {
 
+	/**
+	 * 登录验证
+	 * @param exception 异常信息
+	 */
 	void insertException(Exception exception);
 	
 }

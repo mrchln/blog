@@ -30,7 +30,11 @@ import com.alibaba.fastjson.JSONArray;
 import com.flchy.blog.base.response.ResponseCommand;
 import com.flchy.blog.common.fastdfs.FastDFSClient;
 import com.flchy.blog.common.fastdfs.FastDSFile;
-
+/**
+ * 
+ * @author 1st
+ *
+ */
 @RestController
 @RequestMapping("file")
 public class UploadController {

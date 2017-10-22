@@ -9,7 +9,11 @@ import com.flchy.blog.base.holder.PropertiesHolder;
 import com.flchy.blog.base.holder.SpringContextHolder;
 import com.flchy.blog.common.service.ScheduledService;
 
-
+/**
+ * 定时任务
+ * @author flchy
+ *
+ */
 @Component
 public class SckeduledTasks {
 	private Collection<ScheduledService> scheduledServices;
@@ -28,7 +32,7 @@ public class SckeduledTasks {
 
 	/**
 	 * 表示当方法执行完毕10分钟后，Spring scheduling会再次调用该方法
-	 * @throws InterruptedException
+	 * @throws InterruptedException 异常
 	 */
 	@Scheduled(fixedDelay = 60*1000*10)//60*1000*10
 	public void reportCurrentTimeAfterSleep() throws InterruptedException {
