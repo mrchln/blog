@@ -2,6 +2,8 @@ package com.flchy.blog.inlets.web.controller;
 
 import java.util.List;
 
+import javax.ws.rs.QueryParam;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -59,14 +61,14 @@ public class BlogController {
 		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, article);
 	}
 
-	@GetMapping("/articleType/{id}")
-	public Object selectarticleType(@PathVariable Integer id) {
+	@GetMapping("/articleType")
+	public Object selectarticleType(@QueryParam("id")  Integer id) {
 		List<ArticleType> response = ArticleTypeHolder.getArticleType(id);
 		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, response);
 	}
 
-	@GetMapping("/link/{id}")
-	public Object selectLink(@PathVariable Integer id) {
+	@GetMapping(value="/link")
+	public Object selectLink(@QueryParam("id")  Integer id) {
 		if (id != null) {
 			return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, iLinkService.selectById(id));
 		}

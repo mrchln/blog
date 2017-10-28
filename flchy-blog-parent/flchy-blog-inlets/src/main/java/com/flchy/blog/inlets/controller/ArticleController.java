@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -65,7 +66,7 @@ public class ArticleController {
 	 * @param article
 	 * @return
 	 */
-	@PostMapping(value = "/")
+	@PutMapping
 	public Object update(Article article) {
 		if (article.getId() == null) {
 			throw new BusinessException("ID must preach");
@@ -79,6 +80,10 @@ public class ArticleController {
 
 	@DeleteMapping
 	public Object delete(Article article) {
+		Article selectById = article.selectById();
+		if(selectById.getStatus()==StatusEnum.DELETE.getCode()){
+			return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, selectById.deleteById());
+		}
 		Article ar = new Article();
 		ar.setStatus(StatusEnum.DELETE.getCode());
 		boolean isok = iArticleService.update(ar, new EntityWrapper<Article>().where("id={0}", article.getId()));
@@ -98,7 +103,6 @@ public class ArticleController {
 
 	@GetMapping(value="/{id}")
 	public Object selectArticleKey(@PathVariable Integer id,@RequestParam(value = "token", required = false) String token) {
-		System.out.println(100/0);
 		Article article = iArticleService.selectById(id);
 		if (article == null) {
 			throw new BusinessException("isNull");
@@ -112,15 +116,18 @@ public class ArticleController {
 	 * @param id
 	 * @return
 	 */
-	@RequestMapping(value="deleted",method=RequestMethod.GET)
-	public Object selectArticleDeleted() {
-
-		List<Article> article = iArticleService
-				.selectList(new EntityWrapper<Article>().where("status={0}", StatusEnum.DELETE.getCode()));
-		if (article == null) {
-			throw new BusinessException("isNull");
-		}
-		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, article);
+	@RequestMapping(value="deleted",method=RequestMethod.POST)
+	public Object selectArticleDeleted(@RequestParam(value = "current", required = true) Integer current,
+			@RequestParam(value = "size", required = true) Integer size) {
+		Page<Article> page = new Page<>(Integer.valueOf(current), Integer.valueOf(size));
+		iArticleService.selectPage(page, new EntityWrapper<Article>().where("status={0}", StatusEnum.DELETE.getCode()));
+		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, new ResultPage(page));
+//		List<Article> article = iArticleService
+//				.selectList(new EntityWrapper<Article>().where("status={0}", StatusEnum.DELETE.getCode()));
+//		if (article == null) {
+//			throw new BusinessException("isNull");
+//		}
+//		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, article);
 	}
 
 }

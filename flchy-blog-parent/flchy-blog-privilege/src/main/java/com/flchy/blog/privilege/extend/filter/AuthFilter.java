@@ -5,6 +5,8 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import javax.servlet.Filter;
@@ -56,8 +58,14 @@ public class AuthFilter implements Filter {
 		String requestPath = request.getRequestURI();
 		List<ConfUrl> typeConfUrl = iConfUrlService.getTypeConfUrl(UrlPathType.ALL.getCode());
 		List<String> arrayUrl = typeConfUrl.stream().map(u -> u.getUrlPath()).collect(Collectors.toList());
+		String path=requestPath;
+		String rightIndex=requestPath.substring(requestPath.lastIndexOf("/")+1,requestPath.length());
+		if(isNumeric(rightIndex)){
+			path=requestPath.substring(0,requestPath.lastIndexOf("/")+1)+"{id}";
+		}
+		
 		// 判断是登录接口
-		if (arrayUrl.contains(requestPath)) {
+		if (arrayUrl.contains(path)) {
 			chain.doFilter(request, response);
 			return;
 		}
@@ -109,6 +117,15 @@ public class AuthFilter implements Filter {
 		}
 		chain.doFilter(request, response);
 	}
+	
+	public boolean isNumeric(String str){ 
+		   Pattern pattern = Pattern.compile("[0-9]*"); 
+		   Matcher isNum = pattern.matcher(str);
+		   if( !isNum.matches() ){
+		       return false; 
+		   } 
+		   return true; 
+		}
 
 	/**
 	 * 获取headers
