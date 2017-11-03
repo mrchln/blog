@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flchy.blog.inlets.mapper.CommentMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.flchy.blog.pojo.Comment">
+		<id column="id" property="id" />
+		<result column="upperId" property="upperId" />
+		<result column="articleId" property="articleId" />
+		<result column="nickname" property="nickname" />
+		<result column="mail" property="mail" />
+		<result column="url" property="url" />
+		<result column="comment" property="comment" />
+		<result column="status" property="status" />
+		<result column="create_time" property="createTime" />
+		<result column="send" property="send" />
+		<result column="notice" property="notice" />
+	</resultMap>
+	
+	<select id="selectWebComment"  parameterType="java.util.Map" resultType="com.flchy.blog.pojo.Comment">
+	<foreach collection="list" item="item" separator=" UNION ALL ">
+		select id,upperId,articleId,nickname,url,`comment`,`status`,create_time 'createTime',send,notice from  `comment`  where  FIND_IN_SET(id, getChildLst(#{item.id},#{item.articleId},#{item.status}))
+		</foreach>
+	</select>
+
+
+<!-- 
+存储过程等
+CREATE FUNCTION `getChildLst`(rootId INT,article Int,statuss Int) 
+RETURNS varchar(1000) 
+ BEGIN 
+ DECLARE sTemp VARCHAR(1000); 
+DECLARE sTempChd VARCHAR(1000); 
+ SET sTemp = '$'; 
+ SET sTempChd =cast(rootId as CHAR); 
+ WHILE sTempChd is not null DO 
+ SET sTemp = concat(sTemp,',',sTempChd); 
+ SELECT group_concat(id) INTO sTempChd FROM `comment` where articleId=article and `STATUS`= statuss and  FIND_IN_SET(upperId,sTempChd)>0; 
+ END WHILE; 
+ RETURN sTemp; 
+ END 
+ 
+select getChildLst(-1); 
+
+select * from  `comment`  where FIND_IN_SET(upperId, getChildLst(-1)); 
+
+select * from  `comment`  where  `status`=1 and  id in( 
+     select id from  `comment` where FIND_IN_SET(upperId, getChildLst(-1)) 
+); 
+ -->
+</mapper>
