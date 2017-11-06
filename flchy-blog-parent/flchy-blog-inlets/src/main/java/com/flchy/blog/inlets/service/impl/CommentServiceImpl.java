@@ -1,6 +1,10 @@
 package com.flchy.blog.inlets.service.impl;
 
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;import java.util.function.Function;
@@ -36,6 +40,8 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
 
 	@Override
 	public Comment saveComment(Comment comment) {
+		comment.setStatus(1);
+		comment.setCreateTime(new Date());
 		comment.insert();
 		return comment;
 	}
@@ -44,7 +50,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
 		if (articleId == null)
 			throw new BusinessException("文章ID不能为空");
 		Page<Comment> page = new Page<>(Integer.valueOf(current), Integer.valueOf(size));
-		this.selectPage(page, new EntityWrapper<Comment>().where("articleId={0} and upperId=-1 ", articleId));
+		this.selectPage(page, new EntityWrapper<Comment>().where("articleId={0}", articleId).and(" upperId={0} ", -1).and(" `status`={0} ", 1));
 		List<Comment> records = page.getRecords();
 		ArrayList<Map<String, Object>> collect = records.stream().collect(() -> new ArrayList<Map<String, Object>>(),
 				(ls, item) -> ls.add(
@@ -75,6 +81,34 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
 			}
 		}
 		return childComment;
+	}
+	
+	
+	
+	
+	 public static String hex(byte[] array) {
+	      StringBuffer sb = new StringBuffer();
+	      for (int i = 0; i < array.length; ++i) {
+	      sb.append(Integer.toHexString((array[i]
+	          & 0xFF) | 0x100).substring(1,3));        
+	      }
+	      return sb.toString();
+	  }
+	  public static String md5Hex (String message) {
+	      try {
+	      MessageDigest md = 
+	          MessageDigest.getInstance("MD5");
+	      return hex (md.digest(message.getBytes("CP1252")));
+	      } catch (NoSuchAlgorithmException e) {
+	      } catch (UnsupportedEncodingException e) {
+	      }
+	      return null;
+	  }
+	  
+	  public static void main(String[] args) {
+		  String email = "flchy.cn";
+		  String hash = CommentServiceImpl.md5Hex(email);
+		  System.out.println(hash);
 	}
 
 }

@@ -19,7 +19,11 @@
 	
 	<select id="selectWebComment"  parameterType="java.util.Map" resultType="com.flchy.blog.pojo.Comment">
 	<foreach collection="list" item="item" separator=" UNION ALL ">
-		select id,upperId,articleId,nickname,url,`comment`,`status`,create_time 'createTime',send,notice from  `comment`  where  FIND_IN_SET(id, getChildLst(#{item.id},#{item.articleId},#{item.status}))
+		select id,upperId,articleId,nickname,url,`comment`,`status`,create_time 'createTime',send,notice from  `comment`  
+		where  
+		 status=#{item.status}
+		 AND
+		FIND_IN_SET(id, getChildLst(#{item.id},#{item.articleId},#{item.status}))
 		</foreach>
 	</select>
 
