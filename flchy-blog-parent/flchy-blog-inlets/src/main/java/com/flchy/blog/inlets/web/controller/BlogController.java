@@ -2,6 +2,7 @@ package com.flchy.blog.inlets.web.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.QueryParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,10 @@ import com.flchy.blog.pojo.Article;
 import com.flchy.blog.pojo.ArticleType;
 import com.flchy.blog.pojo.Comment;
 import com.flchy.blog.pojo.Link;
+
+import eu.bitwalker.useragentutils.Browser;
+import eu.bitwalker.useragentutils.OperatingSystem;
+import eu.bitwalker.useragentutils.UserAgent;
 
 /**
  * 
@@ -65,6 +70,13 @@ public class BlogController {
 		if (article.getStatus() != StatusEnum.NORMAL.getCode()) {
 			throw new BusinessException("未找到文章！");
 		}
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				article.setSee(article.getSee()+1);
+				article.updateById();				
+			}
+		}).start();
 		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, article);
 	}
 
@@ -92,9 +104,23 @@ public class BlogController {
 	}
 
 	@PostMapping(value = "/comment")
-	public Object insertComment(@ModelAttribute Comment comment) {
+	public Object insertComment(@ModelAttribute Comment comment, HttpServletRequest request) {
+		String ua = request.getHeader("User-Agent");
+		//转成UserAgent对象
+		UserAgent userAgent = UserAgent.parseUserAgentString(ua); 
+		//获取浏览器信息
+		Browser browser = userAgent.getBrowser();  
+		//获取系统信息
+		OperatingSystem os = userAgent.getOperatingSystem();
+		//系统名称
+		String system = os.getName();
+		//浏览器名称
+		String browserName = browser.getName();
+		System.out.println(system);
+		System.out.println(browserName);
 		Comment saveComment = iCommentService.saveComment(comment);
 		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, saveComment);
 	}
+	
 
 }

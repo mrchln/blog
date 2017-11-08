@@ -40,6 +40,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
 
 	@Override
 	public Comment saveComment(Comment comment) {
+		
 		comment.setStatus(1);
 		comment.setCreateTime(new Date());
 		comment.insert();
@@ -56,7 +57,6 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
 				(ls, item) -> ls.add(
 						new NewMapUtil().set("id", item.getId()).set("articleId", articleId).set("status", 1).get()),
 				(one, two) -> one.addAll(two));
-		
 		if(records.size()>0){
 			List<Comment> selectWebComment = commentMapper.selectWebComment(collect);
 			Map<Integer, List<Comment>> collect2 = selectWebComment.stream().collect(Collectors.groupingBy(Comment::getUpperId));

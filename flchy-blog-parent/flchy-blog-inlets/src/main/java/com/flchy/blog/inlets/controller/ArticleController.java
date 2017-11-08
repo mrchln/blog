@@ -122,12 +122,6 @@ public class ArticleController {
 		Page<Article> page = new Page<>(Integer.valueOf(current), Integer.valueOf(size));
 		iArticleService.selectPage(page, new EntityWrapper<Article>().where("status={0}", StatusEnum.DELETE.getCode()));
 		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, new ResultPage(page));
-//		List<Article> article = iArticleService
-//				.selectList(new EntityWrapper<Article>().where("status={0}", StatusEnum.DELETE.getCode()));
-//		if (article == null) {
-//			throw new BusinessException("isNull");
-//		}
-//		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, article);
 	}
 
 }
