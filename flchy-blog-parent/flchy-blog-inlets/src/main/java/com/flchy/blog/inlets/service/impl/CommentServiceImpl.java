@@ -50,7 +50,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
 		if (articleId == null)
 			throw new BusinessException("文章ID不能为空");
 		Page<Comment> page = new Page<>(Integer.valueOf(current), Integer.valueOf(size));
-		this.selectPage(page, new EntityWrapper<Comment>().where("articleId={0}", articleId).and(" upperId={0} ", -1).and(" `status`={0} ", 1));
+		this.selectPage(page, new EntityWrapper<Comment>().where("articleId={0}", articleId).and(" upperId={0} ", -1).and(" `status`={0} ", 1).orderBy("create_time", false));
 		List<Comment> records = page.getRecords();
 		ArrayList<Map<String, Object>> collect = records.stream().collect(() -> new ArrayList<Map<String, Object>>(),
 				(ls, item) -> ls.add(
