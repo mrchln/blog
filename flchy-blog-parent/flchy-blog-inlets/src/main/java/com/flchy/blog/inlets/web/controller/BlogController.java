@@ -19,6 +19,7 @@ import com.baomidou.mybatisplus.plugins.Page;
 import com.flchy.blog.base.exception.BusinessException;
 import com.flchy.blog.base.response.ResponseCommand;
 import com.flchy.blog.base.response.ResultPage;
+import com.flchy.blog.inlets.config.Sample;
 import com.flchy.blog.inlets.enums.StatusEnum;
 import com.flchy.blog.inlets.holder.ArticleTypeHolder;
 import com.flchy.blog.inlets.service.IArticleService;
@@ -48,6 +49,8 @@ public class BlogController {
 	private ILinkService iLinkService;
 	@Autowired
 	private ICommentService iCommentService;
+	@Autowired
+	private Sample sample;
 
 	@PostMapping(value = "/article/page")
 	public Object selectArticlePage(@RequestParam(value = "current", required = true) Integer current,
@@ -59,7 +62,7 @@ public class BlogController {
 		iArticleService.selectPage(page,
 				new EntityWrapper<Article>(article).where("status={0}", StatusEnum.NORMAL.getCode()));
 		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, new ResultPage(page));
-	} 
+	}
 
 	@GetMapping(value = "/article/{id}")
 	public Object selectArticleKey(@PathVariable Integer id) {
@@ -73,8 +76,8 @@ public class BlogController {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				article.setSee(article.getSee()+1);
-				article.updateById();				
+				article.setSee(article.getSee() + 1);
+				article.updateById();
 			}
 		}).start();
 		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, article);
@@ -106,21 +109,25 @@ public class BlogController {
 	@PostMapping(value = "/comment")
 	public Object insertComment(@ModelAttribute Comment comment, HttpServletRequest request) {
 		String ua = request.getHeader("User-Agent");
-		//转成UserAgent对象
-		UserAgent userAgent = UserAgent.parseUserAgentString(ua); 
-		//获取浏览器信息
-		Browser browser = userAgent.getBrowser();  
-		//获取系统信息
+		// 转成UserAgent对象
+		UserAgent userAgent = UserAgent.parseUserAgentString(ua);
+		// 获取浏览器信息
+		Browser browser = userAgent.getBrowser();
+		// 获取系统信息
 		OperatingSystem os = userAgent.getOperatingSystem();
-		//系统名称
+		// 系统名称
 		String system = os.getName();
-		//浏览器名称
+		// 浏览器名称
 		String browserName = browser.getName();
 		System.out.println(system);
 		System.out.println(browserName);
 		Comment saveComment = iCommentService.saveComment(comment);
 		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, saveComment);
 	}
-	
+
+	@GetMapping(value = "/verific")
+	public Object verific(HttpServletRequest request) {
+		return sample.getVerific().getData();
+	}
 
 }

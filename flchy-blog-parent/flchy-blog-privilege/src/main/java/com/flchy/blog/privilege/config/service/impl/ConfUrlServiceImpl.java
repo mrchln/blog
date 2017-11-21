@@ -79,6 +79,7 @@ public class ConfUrlServiceImpl extends ServiceImpl<ConfUrlMapper, ConfUrl> impl
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			e.printStackTrace();
+			confUrls = super.selectList(new EntityWrapper<>());
 		}
 		return confUrls;
 	}
