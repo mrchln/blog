@@ -51,6 +51,26 @@ public class Comment extends Model<Comment> {
      * 评论
      */
 	private String comment;
+	/**
+	 * 是否管理员
+	 */
+	@TableField("is_admin")
+	private Boolean isAdmin;
+	/**
+	 * 浏览器名称
+	 */
+	@TableField("browser_name")
+	private String browserName;
+	/**
+	 * 系统名称
+	 */
+	@TableField("os_name")
+	private String osName;
+	/**
+	 * 用户us
+	 */
+	private String ua;
+	
     /**
      * 1：正常，-1：删除,2,待审核
      */
@@ -176,4 +196,37 @@ public class Comment extends Model<Comment> {
 		return this.id;
 	}
 
+	public Boolean getIsAdmin() {
+		return isAdmin;
+	}
+
+	public void setIsAdmin(Boolean isAdmin) {
+		this.isAdmin = isAdmin;
+	}
+
+	public String getBrowserName() {
+		return browserName;
+	}
+
+	public void setBrowserName(String browserName) {
+		this.browserName = browserName;
+	}
+
+	public String getOsName() {
+		return osName;
+	}
+
+	public void setOsName(String osName) {
+		this.osName = osName;
+	}
+
+	public String getUa() {
+		return ua;
+	}
+
+	public void setUa(String ua) {
+		this.ua = ua;
+	}
+
+	
 }

@@ -15,6 +15,10 @@
 		<result column="create_time" property="createTime" />
 		<result column="send" property="send" />
 		<result column="notice" property="notice" />
+		<result column="is_admin" property="isAdmin" />
+		<result column="browser_name" property="browserName" />
+		<result column="os_name" property="osName" />
+		<result column="ua" property="ua" />
 	</resultMap>
 	
 	<select id="selectWebComment"  parameterType="java.util.Map" resultType="com.flchy.blog.pojo.Comment">

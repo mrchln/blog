@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.QueryParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,6 +30,9 @@ import com.flchy.blog.pojo.Article;
 import com.flchy.blog.pojo.ArticleType;
 import com.flchy.blog.pojo.Comment;
 import com.flchy.blog.pojo.Link;
+import com.flchy.blog.utils.HttpRequestor;
+import com.flchy.blog.utils.NewMapUtil;
+import com.flchy.blog.utils.ValidUtils;
 
 import eu.bitwalker.useragentutils.Browser;
 import eu.bitwalker.useragentutils.OperatingSystem;
@@ -42,6 +46,8 @@ import eu.bitwalker.useragentutils.UserAgent;
 @RestController
 @RequestMapping("flchy")
 public class BlogController {
+	
+	+cause+" <br>错误详情:"+exception.getMessage()
 	@Autowired
 	private IArticleService iArticleService;
 
@@ -51,6 +57,9 @@ public class BlogController {
 	private ICommentService iCommentService;
 	@Autowired
 	private Sample sample;
+	
+	@Value("${mail.http.address}")
+	private String mailAddress;
 
 	@PostMapping(value = "/article/page")
 	public Object selectArticlePage(@RequestParam(value = "current", required = true) Integer current,
@@ -73,6 +82,19 @@ public class BlogController {
 		if (article.getStatus() != StatusEnum.NORMAL.getCode()) {
 			throw new BusinessException("未找到文章！");
 		}
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				article.setSee(article.getSee() + 1);
+				article.updateById();
+			}
+		}).start();
+		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, article);
+	}
+	
+	@GetMapping(value = "/about")
+	public Object selectAbout() {
+		Article article = iArticleService.selectById(-1);
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -119,9 +141,34 @@ public class BlogController {
 		String system = os.getName();
 		// 浏览器名称
 		String browserName = browser.getName();
-		System.out.println(system);
-		System.out.println(browserName);
+		comment.setIsAdmin(false);
+		comment.setUa(ua);
+		comment.setBrowserName(browserName);
+		comment.setOsName(system);
 		Comment saveComment = iCommentService.saveComment(comment);
+		if(comment.getUpperId()!=-1){
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					Comment selectById = iCommentService.selectById(comment.getUpperId());
+					if(selectById!=null){
+						if(selectById.getNotice() && ValidUtils.isEmail(selectById.getMail())){
+							String content="错误原因:";
+							try {
+								new HttpRequestor().doPost(mailAddress+"/send", new NewMapUtil()
+										.set("to", selectById.getMail())
+										.set("title", "收到来自"+comment.getNickname())
+										.set("content",content )
+										.get(), null);
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+						}
+					}
+					
+				}
+			}).start();;
+		}
 		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, saveComment);
 	}
 
