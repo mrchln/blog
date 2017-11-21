@@ -14,7 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.flchy.blog.base.exception.BusinessException;
@@ -46,6 +47,7 @@ import eu.bitwalker.useragentutils.UserAgent;
 @RestController
 @RequestMapping("flchy")
 public class BlogController {
+	private static Logger logger = LoggerFactory.getLogger(BlogController.class);
 	
 	@Autowired
 	private IArticleService iArticleService;
@@ -145,6 +147,14 @@ public class BlogController {
 		comment.setBrowserName(browserName);
 		comment.setOsName(system);
 		Comment saveComment = iCommentService.saveComment(comment);
+		isSendMail(comment);
+		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, saveComment);
+	}
+	/**
+	 * 发送邮件
+	 * @param comment
+	 */
+	private void isSendMail(Comment comment) {
 		if(comment.getUpperId()!=-1){
 			new Thread(new Runnable() {
 				@Override
@@ -152,15 +162,17 @@ public class BlogController {
 					Comment selectById = iCommentService.selectById(comment.getUpperId());
 					if(selectById!=null){
 						if(selectById.getNotice() && ValidUtils.isEmail(selectById.getMail())){
-							String content="错误原因:";
+							String urlPath=comment.getArticleId()==-1?"about":"detail/"+comment.getArticleId();
+							String content= comment.getComment()+"<br /> 地址:<a href='https://flchy.cn/"+urlPath+"'>https://flchy.cn/"+urlPath+"</a> <br/><br/><br/><a href='https://flchy.cn'>. Blog</a>";
 							try {
 								new HttpRequestor().doPost(mailAddress+"/send", new NewMapUtil()
 										.set("to", selectById.getMail())
-										.set("title", "收到来自"+comment.getNickname())
+										.set("title",selectById.getNickname()+" 你好,收到来自【"+comment.getNickname()+"】的回复")
 										.set("content",content )
 										.get(), null);
 							} catch (Exception e) {
 								e.printStackTrace();
+								logger.error("发送邮件失败:"+e.getMessage());
 							}
 						}
 					}
@@ -168,7 +180,6 @@ public class BlogController {
 				}
 			}).start();;
 		}
-		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, saveComment);
 	}
 
 	@GetMapping(value = "/verific")
