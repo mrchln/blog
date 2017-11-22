@@ -5,6 +5,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.QueryParam;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,16 +16,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.flchy.blog.base.exception.BusinessException;
 import com.flchy.blog.base.response.ResponseCommand;
 import com.flchy.blog.base.response.ResultPage;
 import com.flchy.blog.inlets.config.Sample;
+import com.flchy.blog.inlets.enums.Keys;
 import com.flchy.blog.inlets.enums.StatusEnum;
 import com.flchy.blog.inlets.holder.ArticleTypeHolder;
+import com.flchy.blog.inlets.holder.ConfigHolder;
 import com.flchy.blog.inlets.service.IArticleService;
 import com.flchy.blog.inlets.service.ICommentService;
 import com.flchy.blog.inlets.service.ILinkService;
@@ -70,7 +73,7 @@ public class BlogController {
 		article.setTypeId(typeId);
 		Page<Article> page = new Page<>(Integer.valueOf(current), Integer.valueOf(size));
 		iArticleService.selectPage(page,
-				new EntityWrapper<Article>(article).where("status={0}", StatusEnum.NORMAL.getCode()));
+				new EntityWrapper<Article>(article).where(" status={0} ", StatusEnum.NORMAL.getCode()));
 		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, new ResultPage(page));
 	}
 
@@ -131,6 +134,15 @@ public class BlogController {
 
 	@PostMapping(value = "/comment")
 	public Object insertComment(@ModelAttribute Comment comment, HttpServletRequest request) {
+		try {
+			if(Boolean.valueOf(ConfigHolder.getConfig(Keys.IS_COMMENT_VERIFY.getKey()))){
+				comment.setStatus(StatusEnum.DRAFT.getCode());
+			}else{
+				comment.setStatus(StatusEnum.NORMAL.getCode());
+			}
+		} catch (Exception e) {
+			logger.error("判断是否需要审核异常  || 不影响运行:"+e.getMessage());
+		}
 		String ua = request.getHeader("User-Agent");
 		// 转成UserAgent对象
 		UserAgent userAgent = UserAgent.parseUserAgentString(ua);
@@ -162,12 +174,15 @@ public class BlogController {
 					Comment selectById = iCommentService.selectById(comment.getUpperId());
 					if(selectById!=null){
 						if(selectById.getNotice() && ValidUtils.isEmail(selectById.getMail())){
-							String urlPath=comment.getArticleId()==-1?"about":"detail/"+comment.getArticleId();
-							String content= comment.getComment()+"<br /> 地址:<a href='https://flchy.cn/"+urlPath+"'>https://flchy.cn/"+urlPath+"</a> <br/><br/><br/><a href='https://flchy.cn'>. Blog</a>";
+							String urlPath=comment.getArticleId()==-1?"/about":"/detail/"+comment.getArticleId();
+							urlPath=ConfigHolder.getConfig(Keys.WEBSITE_URL.getKey())+urlPath;
+							String content=ConfigHolder.getConfig(Keys.COMMENT_MAIL_NOTIFICATION_CONTENT.getKey()).replace("{content}", comment.getComment()).replace("{urlPath}", urlPath).replace("{website}", ConfigHolder.getConfig(Keys.WEBSITE_URL.getKey())).replace("{webName}", ConfigHolder.getConfig(Keys.WEBSITE_NAME.getKey()));
+							// comment.getComment()+"<br /> 地址:<a href='https://flchy.cn/"+urlPath+"'>https://flchy.cn/"+urlPath+"</a> <br/><br/><br/><a href='https://flchy.cn'>. Blog</a>";
 							try {
+//								+selectById.getNickname()+" 你好,收到来自【"+comment.getNickname()+"】的回复"
 								new HttpRequestor().doPost(mailAddress+"/send", new NewMapUtil()
 										.set("to", selectById.getMail())
-										.set("title",selectById.getNickname()+" 你好,收到来自【"+comment.getNickname()+"】的回复")
+										.set("title",ConfigHolder.getConfig(Keys.COMMENT_MAIL_NOTIFICATION_TITLE.getKey()).replace("{receiveName}", selectById.getNickname()).replace("{sendName}", comment.getNickname()))
 										.set("content",content )
 										.get(), null);
 							} catch (Exception e) {
@@ -175,6 +190,28 @@ public class BlogController {
 								logger.error("发送邮件失败:"+e.getMessage());
 							}
 						}
+					}
+				}
+			}).start();;
+		}
+		
+		if(Boolean.valueOf(ConfigHolder.getConfig(Keys.IS_SEND_MAIL_ADMIN.getKey()))){
+			//给管理员发送邮件
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					String urlPath=comment.getArticleId()==-1?"/about":"/detail/"+comment.getArticleId();
+					urlPath=ConfigHolder.getConfig(Keys.WEBSITE_URL.getKey())+urlPath;
+					String content=ConfigHolder.getConfig(Keys.COMMENT_MAIL_NOTIFICATION_ADMIN_CONTENT.getKey()).replace("{content}", comment.getComment()).replace("{urlPath}", urlPath).replace("{website}", ConfigHolder.getConfig(Keys.WEBSITE_URL.getKey())).replace("{webName}", ConfigHolder.getConfig(Keys.WEBSITE_NAME.getKey()));
+					try {
+						new HttpRequestor().doPost(mailAddress+"/send", new NewMapUtil()
+								.set("to", ConfigHolder.getConfig(Keys.ADMIN_MAIL.getKey()))
+								.set("title",ConfigHolder.getConfig(Keys.COMMENT_MAIL_NOTIFICATION_ADMIN_TITLE.getKey()).replace("{sendName}", comment.getNickname()))
+								.set("content",content )
+								.get(), null);
+					} catch (Exception e) {
+						e.printStackTrace();
+						logger.error("发送邮件失败:"+e.getMessage());
 					}
 				}
 			}).start();;

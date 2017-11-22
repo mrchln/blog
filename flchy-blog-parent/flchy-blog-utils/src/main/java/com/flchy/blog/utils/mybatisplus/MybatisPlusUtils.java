@@ -72,7 +72,7 @@ public class MybatisPlusUtils {
 	        dsc.setDriverName("com.mysql.jdbc.Driver");
 	        dsc.setUsername("root");
 	        dsc.setPassword("root");
-	        dsc.setUrl("jdbc:mysql://localhost:3306/db_flchy?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC&useSSL=false");
+	        dsc.setUrl("jdbc:mysql://localhost:3307/db_flchy?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC&useSSL=false");
 	        mpg.setDataSource(dsc);
 
 	        // 策略配置
@@ -80,7 +80,7 @@ public class MybatisPlusUtils {
 	        // strategy.setCapitalMode(true);// 全局大写命名 ORACLE 注意
 	       // strategy.setTablePrefix(new String[] { "tlog_", "tsys_" });// 此处可以修改为您的表前缀
 	        strategy.setNaming(NamingStrategy.underline_to_camel);// 表名生成策略
-	        strategy.setInclude(new String[] { "comment"}); // 需要生成的表
+	        strategy.setInclude(new String[] { "config"}); // 需要生成的表
 	        // strategy.setExclude(new String[]{"test"}); // 排除生成的表
 	        // 自定义实体父类
 	        //strategy.setSuperEntityClass("com.spf.model.Entity");

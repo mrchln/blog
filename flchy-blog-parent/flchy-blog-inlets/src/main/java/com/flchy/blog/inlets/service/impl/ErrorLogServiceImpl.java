@@ -1,5 +1,7 @@
 package com.flchy.blog.inlets.service.impl;
 
+import com.flchy.blog.inlets.enums.Keys;
+import com.flchy.blog.inlets.holder.ConfigHolder;
 import com.flchy.blog.inlets.mapper.ErrorLogMapper;
 import com.flchy.blog.inlets.service.IErrorLogService;
 import com.flchy.blog.pojo.ErrorLog;
@@ -46,7 +48,7 @@ public class ErrorLogServiceImpl extends ServiceImpl<ErrorLogMapper, ErrorLog> i
 		try {
 			String content="错误原因:"+cause+" <br>错误详情:"+exception.getMessage();
 			new HttpRequestor().doPost(mailAddress+"/send", new NewMapUtil()
-					.set("to", developer)
+					.set("to", ConfigHolder.getConfig(Keys.ADMIN_MAIL.getKey()))
 					.set("title", "接口错误:"+clazz)
 					.set("content",content )
 					.get(), null);
