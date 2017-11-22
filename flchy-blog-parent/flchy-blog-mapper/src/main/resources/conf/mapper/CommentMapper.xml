@@ -22,12 +22,22 @@
 	</resultMap>
 	
 	<select id="selectWebComment"  parameterType="java.util.Map" resultType="com.flchy.blog.pojo.Comment">
-	<foreach collection="list" item="item" separator=" UNION ALL ">
-		select id,upperId,articleId,nickname,url,`comment`,`status`,create_time 'createTime',send,notice from  `comment`  
-		where  
-		 status=#{item.status}
-		 AND
-		FIND_IN_SET(id, getChildLst(#{item.id},#{item.articleId},#{item.status}))
+		<foreach collection="list" item="item" separator=" UNION ALL ">
+			select id,upperId,articleId,nickname,url,`comment`,`status`,create_time 'createTime',send,notice from  `comment`  
+			<where>
+			<choose>
+			<when test="item.nickName != null and item.nickName !=''">
+		    ( `status` =#{item.status} or (`status`=2 or nickname=#{item.nickName}))
+			 AND
+			FIND_IN_SET(id, getChildLstName(#{item.id},#{item.articleId},#{item.status},#{item.nickName}))
+		    </when>
+		    <otherwise>
+		     status=#{item.status}
+			 AND
+			FIND_IN_SET(id, getChildLst(#{item.id},#{item.articleId},#{item.status}))
+		    </otherwise>
+		    </choose>
+		    </where>
 		</foreach>
 	</select>
 
@@ -44,6 +54,21 @@ DECLARE sTempChd VARCHAR(1000);
  WHILE sTempChd is not null DO 
  SET sTemp = concat(sTemp,',',sTempChd); 
  SELECT group_concat(id) INTO sTempChd FROM `comment` where articleId=article and `STATUS`= statuss and  FIND_IN_SET(upperId,sTempChd)>0; 
+ END WHILE; 
+ RETURN sTemp; 
+ END 
+ 
+ 
+ CREATE FUNCTION `getChildLstName`(rootId INT,article Int,statuss Int,nname  varchar(50) ) 
+RETURNS varchar(1000) 
+ BEGIN 
+ DECLARE sTemp VARCHAR(1000); 
+DECLARE sTempChd VARCHAR(1000); 
+ SET sTemp = '$'; 
+ SET sTempChd =cast(rootId as CHAR); 
+ WHILE sTempChd is not null DO 
+ SET sTemp = concat(sTemp,',',sTempChd); 
+ SELECT group_concat(id) INTO sTempChd FROM `comment` where articleId=article and (`STATUS`= statuss or (`status`=2 and nickname=nname)) and  FIND_IN_SET(upperId,sTempChd)>0; 
  END WHILE; 
  RETURN sTemp; 
  END 

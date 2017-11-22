@@ -16,6 +16,7 @@ public interface ICommentService extends IService<Comment> {
 
 	Comment saveComment(Comment comment);
 
-	ResultPage selectWebComment(Integer articleId, Integer current, Integer size);
+
+	ResultPage selectWebComment(Integer articleId, Integer current, Integer size, String nickName);
 	
 }

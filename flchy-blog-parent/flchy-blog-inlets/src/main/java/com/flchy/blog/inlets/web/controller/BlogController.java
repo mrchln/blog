@@ -61,9 +61,6 @@ public class BlogController {
 	private ICommentService iCommentService;
 	@Autowired
 	private Sample sample;
-	
-	@Value("${mail.http.address}")
-	private String mailAddress;
 
 	@PostMapping(value = "/article/page")
 	public Object selectArticlePage(@RequestParam(value = "current", required = true) Integer current,
@@ -127,22 +124,14 @@ public class BlogController {
 
 	@PostMapping(value = "/comment/page")
 	public Object selectWebCommentPage(@RequestParam(value = "current", required = true) Integer current,
-			@RequestParam(value = "size", required = true) Integer size, Integer articleId) {
-		ResultPage selectWebComment = iCommentService.selectWebComment(articleId, current, size);
+			@RequestParam(value = "size", required = true) Integer size, Integer articleId,@RequestParam(value = "nickName", required = false) String nickName) {
+		ResultPage selectWebComment = iCommentService.selectWebComment(articleId, current, size,nickName);
 		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, selectWebComment);
 	}
 
 	@PostMapping(value = "/comment")
 	public Object insertComment(@ModelAttribute Comment comment, HttpServletRequest request) {
-		try {
-			if(Boolean.valueOf(ConfigHolder.getConfig(Keys.IS_COMMENT_VERIFY.getKey()))){
-				comment.setStatus(StatusEnum.DRAFT.getCode());
-			}else{
-				comment.setStatus(StatusEnum.NORMAL.getCode());
-			}
-		} catch (Exception e) {
-			logger.error("判断是否需要审核异常  || 不影响运行:"+e.getMessage());
-		}
+		
 		String ua = request.getHeader("User-Agent");
 		// 转成UserAgent对象
 		UserAgent userAgent = UserAgent.parseUserAgentString(ua);
@@ -159,64 +148,9 @@ public class BlogController {
 		comment.setBrowserName(browserName);
 		comment.setOsName(system);
 		Comment saveComment = iCommentService.saveComment(comment);
-		isSendMail(comment);
 		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, saveComment);
 	}
-	/**
-	 * 发送邮件
-	 * @param comment
-	 */
-	private void isSendMail(Comment comment) {
-		if(comment.getUpperId()!=-1){
-			new Thread(new Runnable() {
-				@Override
-				public void run() {
-					Comment selectById = iCommentService.selectById(comment.getUpperId());
-					if(selectById!=null){
-						if(selectById.getNotice() && ValidUtils.isEmail(selectById.getMail())){
-							String urlPath=comment.getArticleId()==-1?"/about":"/detail/"+comment.getArticleId();
-							urlPath=ConfigHolder.getConfig(Keys.WEBSITE_URL.getKey())+urlPath;
-							String content=ConfigHolder.getConfig(Keys.COMMENT_MAIL_NOTIFICATION_CONTENT.getKey()).replace("{content}", comment.getComment()).replace("{urlPath}", urlPath).replace("{website}", ConfigHolder.getConfig(Keys.WEBSITE_URL.getKey())).replace("{webName}", ConfigHolder.getConfig(Keys.WEBSITE_NAME.getKey()));
-							// comment.getComment()+"<br /> 地址:<a href='https://flchy.cn/"+urlPath+"'>https://flchy.cn/"+urlPath+"</a> <br/><br/><br/><a href='https://flchy.cn'>. Blog</a>";
-							try {
-//								+selectById.getNickname()+" 你好,收到来自【"+comment.getNickname()+"】的回复"
-								new HttpRequestor().doPost(mailAddress+"/send", new NewMapUtil()
-										.set("to", selectById.getMail())
-										.set("title",ConfigHolder.getConfig(Keys.COMMENT_MAIL_NOTIFICATION_TITLE.getKey()).replace("{receiveName}", selectById.getNickname()).replace("{sendName}", comment.getNickname()))
-										.set("content",content )
-										.get(), null);
-							} catch (Exception e) {
-								e.printStackTrace();
-								logger.error("发送邮件失败:"+e.getMessage());
-							}
-						}
-					}
-				}
-			}).start();;
-		}
-		
-		if(Boolean.valueOf(ConfigHolder.getConfig(Keys.IS_SEND_MAIL_ADMIN.getKey()))){
-			//给管理员发送邮件
-			new Thread(new Runnable() {
-				@Override
-				public void run() {
-					String urlPath=comment.getArticleId()==-1?"/about":"/detail/"+comment.getArticleId();
-					urlPath=ConfigHolder.getConfig(Keys.WEBSITE_URL.getKey())+urlPath;
-					String content=ConfigHolder.getConfig(Keys.COMMENT_MAIL_NOTIFICATION_ADMIN_CONTENT.getKey()).replace("{content}", comment.getComment()).replace("{urlPath}", urlPath).replace("{website}", ConfigHolder.getConfig(Keys.WEBSITE_URL.getKey())).replace("{webName}", ConfigHolder.getConfig(Keys.WEBSITE_NAME.getKey()));
-					try {
-						new HttpRequestor().doPost(mailAddress+"/send", new NewMapUtil()
-								.set("to", ConfigHolder.getConfig(Keys.ADMIN_MAIL.getKey()))
-								.set("title",ConfigHolder.getConfig(Keys.COMMENT_MAIL_NOTIFICATION_ADMIN_TITLE.getKey()).replace("{sendName}", comment.getNickname()))
-								.set("content",content )
-								.get(), null);
-					} catch (Exception e) {
-						e.printStackTrace();
-						logger.error("发送邮件失败:"+e.getMessage());
-					}
-				}
-			}).start();;
-		}
-	}
+	
 
 	@GetMapping(value = "/verific")
 	public Object verific(HttpServletRequest request) {
