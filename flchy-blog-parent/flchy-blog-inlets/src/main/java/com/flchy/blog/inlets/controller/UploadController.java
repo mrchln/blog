@@ -19,6 +19,7 @@ import org.apache.commons.io.FileUtils;
 import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataMultiPart;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -44,7 +45,8 @@ public class UploadController {
 	private static final String ARTICLE_IMAGES_PATH = "D:/Newsportal/article_images/";
 	private static final String JPG_CONTENT_TYPE = "image/jpeg";
 	private static final String PNG_CONTENT_TYPE = "image/png";
-
+	@Autowired
+	private FastDFSClient fastDFSClient;
 	/*
 	 * 采用spring提供的上传文件的方法
 	 */
@@ -71,7 +73,7 @@ public class UploadController {
 					// fastDSFile.setContent(input2byte(file.getInputStream()));
 					fastDSFile.setContent(file.getBytes());
 					fastDSFile.setExt(fileName.substring(fileName.lastIndexOf(".")+1));
-					JSONArray rs = FastDFSClient.upload(fastDSFile);
+					JSONArray rs = fastDFSClient.upload(fastDSFile);
 					String url = rs.get(0) + "/" + rs.get(1);
 					urlList.add(url);
 				}

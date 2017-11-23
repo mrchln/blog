@@ -9,8 +9,9 @@ import org.csource.fastdfs.StorageClient1;
 import org.csource.fastdfs.StorageServer;
 import org.csource.fastdfs.TrackerClient;
 import org.csource.fastdfs.TrackerServer;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSONArray;
 
@@ -20,6 +21,8 @@ import com.alibaba.fastjson.JSONArray;
  * @author xq
  *
  */
+@Configuration
+@Component("fastDFSClient")
 public class FastDFSClient {
 
 	/**
@@ -27,30 +30,52 @@ public class FastDFSClient {
 	 */
 	private static StorageClient1 storageClient1 = null;
 
+	@Value("${fastdfs.tracker_servers}")
+	private String trackerServers;
 	// 初始化客户端,加载类时候执行片段
 	static {
-		try {
+//		try {
 //			Resource resource = new ClassPathResource("conf/resource/client.conf");
 //			File file = resource.getFile();
 //			String configFile = file.getAbsolutePath();
 
 //			ClientGlobal.init(configFile);
-//			ClientGlobal.initByTrackers("localhost:22122");
-			ClientGlobal.initByProperties("/conf/resource/fastdfs-client.properties");
-			//
-			TrackerClient trackerClient = new TrackerClient(ClientGlobal.g_tracker_group);
-			//
-			TrackerServer trackerServer = trackerClient.getConnection();
-			//
-			StorageServer storageServer = trackerClient.getStoreStorage(trackerServer);
-			//
-			storageClient1 = new StorageClient1(trackerServer, storageServer);
-			System.out.println(storageClient1.toString());
-			System.out.println("FastDFS Client Init Success!");
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.println("FastDFS Client Init Fail!");
-		}
+//			ClientGlobal.initByTrackers(trackerServers);
+//			ClientGlobal.initByProperties("/conf/resource/fastdfs-client.properties");
+//			//
+//			TrackerClient trackerClient = new TrackerClient(ClientGlobal.g_tracker_group);
+//			//
+//			TrackerServer trackerServer = trackerClient.getConnection();
+//			//
+//			StorageServer storageServer = trackerClient.getStoreStorage(trackerServer);
+//			//
+//			storageClient1 = new StorageClient1(trackerServer, storageServer);
+//			System.out.println(storageClient1.toString());
+//			System.out.println("FastDFS Client Init Success!");
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			System.out.println("FastDFS Client Init Fail!");
+//		}
+	}
+	private StorageClient1 getStorageClient1(){
+		try {
+		ClientGlobal.initByTrackers(trackerServers);
+//		ClientGlobal.initByProperties("/conf/resource/fastdfs-client.properties");
+		//
+		TrackerClient trackerClient = new TrackerClient(ClientGlobal.g_tracker_group);
+		//
+		TrackerServer trackerServer = trackerClient.getConnection();
+		//
+		StorageServer storageServer = trackerClient.getStoreStorage(trackerServer);
+		//
+		storageClient1 = new StorageClient1(trackerServer, storageServer);
+		System.out.println(storageClient1.toString());
+		System.out.println("FastDFS Client Init Success!");
+	} catch (Exception e) {
+		e.printStackTrace();
+		System.out.println("FastDFS Client Init Fail!");
+	}
+		return storageClient1;
 	}
 
 	/***
@@ -61,8 +86,8 @@ public class FastDFSClient {
 	 * @throws IOException
 	 * @throws MyException
 	 */
-	public static JSONArray upload(FastDSFile fastDSFile) throws IOException, MyException {
-		String[] uploadResult = storageClient1.upload_file(fastDSFile.getContent(), fastDSFile.getExt(), null);
+	public  JSONArray upload(FastDSFile fastDSFile) throws IOException, MyException {
+		String[] uploadResult = getStorageClient1().upload_file(fastDSFile.getContent(), fastDSFile.getExt(), null);
 		// String arr = JSONArray.toJSONString(uploadResult);
 		JSONArray arr = (JSONArray) JSONArray.toJSON(uploadResult);
 		return arr;
@@ -77,8 +102,8 @@ public class FastDFSClient {
 	 * @throws IOException
 	 * @throws MyException
 	 */
-	public static byte[] download(String groupName, String remoteFileName) throws IOException, MyException {
-		return storageClient1.download_file(groupName, remoteFileName);
+	public  byte[] download(String groupName, String remoteFileName) throws IOException, MyException {
+		return getStorageClient1().download_file(groupName, remoteFileName);
 	}
 
 	/**
@@ -89,7 +114,7 @@ public class FastDFSClient {
 	 * @throws Exception
 	 * @return 返回0成功;非0失败.
 	 */
-	public static int delete(String groupName, String remoteFileName) throws Exception {
-		return storageClient1.delete_file(groupName, remoteFileName);
+	public  int delete(String groupName, String remoteFileName) throws Exception {
+		return getStorageClient1().delete_file(groupName, remoteFileName);
 	}
 }
