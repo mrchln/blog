@@ -30,11 +30,13 @@ public class FastDFSClient {
 	// 初始化客户端,加载类时候执行片段
 	static {
 		try {
-			Resource resource = new ClassPathResource("conf/resource/client.conf");
-			File file = resource.getFile();
-			String configFile = file.getAbsolutePath();
+//			Resource resource = new ClassPathResource("conf/resource/client.conf");
+//			File file = resource.getFile();
+//			String configFile = file.getAbsolutePath();
 
-			ClientGlobal.init(configFile);
+//			ClientGlobal.init(configFile);
+//			ClientGlobal.initByTrackers("localhost:22122");
+			ClientGlobal.initByProperties("/conf/resource/fastdfs-client.properties");
 			//
 			TrackerClient trackerClient = new TrackerClient(ClientGlobal.g_tracker_group);
 			//
