@@ -1,14 +1,13 @@
 package com.flchy.blog.pojo;
 
-import com.baomidou.mybatisplus.enums.FieldStrategy;
-import com.baomidou.mybatisplus.enums.IdType;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.activerecord.Model;
-import java.io.Serializable;
+import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.enums.IdType;
 
 /**
  * <p>
@@ -88,6 +87,23 @@ public class Comment extends Model<Comment> {
      * 是否接受通知
      */
 	private boolean notice;
+	/**
+	 * 头像图片地址
+	 */
+	@TableField("image_path")
+	private String imagePath;
+	/**
+	 * 客户端ip
+	 */
+	@TableField("client_ip")
+	private String clientIp;
+	/**
+	 * 客户端ip
+	 */
+	@TableField("server_ip")
+	private String serverIp;
+	
+	
 	
 	
 	@TableField(exist = false)
@@ -226,6 +242,30 @@ public class Comment extends Model<Comment> {
 
 	public void setUa(String ua) {
 		this.ua = ua;
+	}
+
+	public String getImagePath() {
+		return imagePath;
+	}
+
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
+	}
+
+	public String getClientIp() {
+		return clientIp;
+	}
+
+	public void setClientIp(String clientIp) {
+		this.clientIp = clientIp;
+	}
+
+	public String getServerIp() {
+		return serverIp;
+	}
+
+	public void setServerIp(String serverIp) {
+		this.serverIp = serverIp;
 	}
 
 	

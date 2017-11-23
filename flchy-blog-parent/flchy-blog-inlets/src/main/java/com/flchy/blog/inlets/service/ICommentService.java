@@ -2,6 +2,10 @@ package com.flchy.blog.inlets.service;
 
 import com.flchy.blog.base.response.ResultPage;
 import com.flchy.blog.pojo.Comment;
+
+import java.util.Map;
+
+import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.IService;
 
 /**
@@ -18,5 +22,8 @@ public interface ICommentService extends IService<Comment> {
 
 
 	ResultPage selectWebComment(Integer articleId, Integer current, Integer size, String nickName);
+
+
+	Page<Map<String, Object>> selectCommentPage(Page<Map<String, Object>> page, Comment comment);
 	
 }

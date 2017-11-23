@@ -8,7 +8,6 @@ import javax.ws.rs.QueryParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,10 +22,8 @@ import com.flchy.blog.base.exception.BusinessException;
 import com.flchy.blog.base.response.ResponseCommand;
 import com.flchy.blog.base.response.ResultPage;
 import com.flchy.blog.inlets.config.Sample;
-import com.flchy.blog.inlets.enums.Keys;
 import com.flchy.blog.inlets.enums.StatusEnum;
 import com.flchy.blog.inlets.holder.ArticleTypeHolder;
-import com.flchy.blog.inlets.holder.ConfigHolder;
 import com.flchy.blog.inlets.service.IArticleService;
 import com.flchy.blog.inlets.service.ICommentService;
 import com.flchy.blog.inlets.service.ILinkService;
@@ -34,9 +31,7 @@ import com.flchy.blog.pojo.Article;
 import com.flchy.blog.pojo.ArticleType;
 import com.flchy.blog.pojo.Comment;
 import com.flchy.blog.pojo.Link;
-import com.flchy.blog.utils.HttpRequestor;
-import com.flchy.blog.utils.NewMapUtil;
-import com.flchy.blog.utils.ValidUtils;
+import com.flchy.blog.utils.ip.InternetProtocol;
 
 import eu.bitwalker.useragentutils.Browser;
 import eu.bitwalker.useragentutils.OperatingSystem;
@@ -147,6 +142,7 @@ public class BlogController {
 		comment.setUa(ua);
 		comment.setBrowserName(browserName);
 		comment.setOsName(system);
+		comment.setClientIp(InternetProtocol.getRemoteAddr(request));
 		Comment saveComment = iCommentService.saveComment(comment);
 		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, saveComment);
 	}

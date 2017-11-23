@@ -19,11 +19,14 @@
 		<result column="browser_name" property="browserName" />
 		<result column="os_name" property="osName" />
 		<result column="ua" property="ua" />
+		<result column="image_path" property="imagePath" />
+		<result column="client_ip" property="clientIp" />
+		<result column="server_ip" property="serverIp" />
 	</resultMap>
 	
 	<select id="selectWebComment"  parameterType="java.util.Map" resultType="com.flchy.blog.pojo.Comment">
 		<foreach collection="list" item="item" separator=" UNION ALL ">
-			select id,upperId,articleId,nickname,url,`comment`,`status`,create_time 'createTime',send,notice from  `comment`  
+			select id,upperId,articleId,nickname,url,`comment`,`status`,create_time 'createTime',send,notice,is_admin 'isAdmin',image_path 'imagePath'  from  `comment`  
 			<where>
 			<choose>
 			<when test="item.nickName != null and item.nickName !=''">
@@ -81,4 +84,52 @@ select * from  `comment`  where  `status`=1 and  id in(
      select id from  `comment` where FIND_IN_SET(upperId, getChildLst(-1)) 
 ); 
  -->
+ 
+ 
+ 
+ <select id="selectCommentPage" resultType="java.util.Map">
+	 SELECT
+		cc.nickname 'upperNickname',
+		a.title,
+		c.`id`,
+		c.`upperId`,
+		c.`articleId`,
+		c.`nickname`,
+		c.`mail`,
+		c.`url`,
+		c.`comment`,
+		c.`is_admin` 'isAdmin',
+		c.`browser_name` 'browserName',
+		c.`os_name` 'osName',
+		c.`ua`,
+		c.`status`,
+		c.`create_time` 'createTime',
+		c.`send`,
+		c.`server_ip` 'serverIp',
+		c.`client_ip` 'clientIp',
+		c.`image_path` 'imagePath',
+		c.`notice`
+	FROM
+		(
+			SELECT
+				*
+			FROM
+				`comment`
+				<where>
+					<if test="status != null and status != '' ">
+					and `status`=#{status}
+					</if>
+					<if test="nickname != null and nickname != '' ">
+					and `nickname`  LIKE concat(concat('%',#{nickname}),'%')
+					</if>
+					<if test="articleId != null and articleId != '' ">
+					and `articleId`  = #{articleId}
+					</if>
+				</where>
+		) c
+	LEFT JOIN article a ON a.id = c.articleId
+	LEFT JOIN `comment` cc ON cc.upperId = c.id
+	ORDER BY
+		c.`create_time` DESC
+ </select>
 </mapper>

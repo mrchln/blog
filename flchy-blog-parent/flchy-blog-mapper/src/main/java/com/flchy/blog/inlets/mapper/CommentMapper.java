@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.baomidou.mybatisplus.plugins.pagination.Pagination;
 import com.flchy.blog.base.datasource.annotation.BaseRepository;
 import com.flchy.blog.pojo.Comment;
 
@@ -19,4 +20,6 @@ import com.flchy.blog.pojo.Comment;
 public interface CommentMapper extends BaseMapper<Comment> {
 
 	public List<Comment> selectWebComment(List<Map<String, Object>> parameter);
+
+	public List<Map<String,Object>> selectCommentPage(Pagination page, Comment comment);
 }

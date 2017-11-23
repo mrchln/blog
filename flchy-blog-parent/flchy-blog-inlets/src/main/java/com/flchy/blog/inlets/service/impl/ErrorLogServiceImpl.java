@@ -1,5 +1,11 @@
 package com.flchy.blog.inlets.service.impl;
 
+import java.util.Date;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.flchy.blog.inlets.enums.Keys;
 import com.flchy.blog.inlets.holder.ConfigHolder;
 import com.flchy.blog.inlets.mapper.ErrorLogMapper;
@@ -7,13 +13,6 @@ import com.flchy.blog.inlets.service.IErrorLogService;
 import com.flchy.blog.pojo.ErrorLog;
 import com.flchy.blog.utils.HttpRequestor;
 import com.flchy.blog.utils.NewMapUtil;
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
-
-import java.util.Date;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 
 /**
  * <p>
@@ -27,12 +26,8 @@ import org.springframework.stereotype.Service;
 public class ErrorLogServiceImpl extends ServiceImpl<ErrorLogMapper, ErrorLog> implements IErrorLogService {
 	@Autowired
 	private ErrorLogMapper errorLogMapper;
-	@Value("${mail.http.address}")
-	private String mailAddress;
 	
-	@Value("${system.developer}")
-	private String developer;
-
+	
 	/**
 	 * 添加日志
 	 */
@@ -47,7 +42,7 @@ public class ErrorLogServiceImpl extends ServiceImpl<ErrorLogMapper, ErrorLog> i
 		log.setMessage(exception.getMessage());
 		try {
 			String content="错误原因:"+cause+" <br>错误详情:"+exception.getMessage();
-			new HttpRequestor().doPost(mailAddress+"/send", new NewMapUtil()
+			new HttpRequestor().doPost(ConfigHolder.getConfig(Keys.MAIL_HTTP_ADDRESS.getKey()), new NewMapUtil()
 					.set("to", ConfigHolder.getConfig(Keys.ADMIN_MAIL.getKey()))
 					.set("title", "接口错误:"+clazz)
 					.set("content",content )

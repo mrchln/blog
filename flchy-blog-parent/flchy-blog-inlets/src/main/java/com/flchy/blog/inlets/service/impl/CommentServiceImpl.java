@@ -5,17 +5,14 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;import java.util.function.Function;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
@@ -28,12 +25,11 @@ import com.flchy.blog.inlets.enums.StatusEnum;
 import com.flchy.blog.inlets.holder.ConfigHolder;
 import com.flchy.blog.inlets.mapper.CommentMapper;
 import com.flchy.blog.inlets.service.ICommentService;
-import com.flchy.blog.inlets.web.controller.BlogController;
-import com.flchy.blog.pojo.Article;
 import com.flchy.blog.pojo.Comment;
 import com.flchy.blog.utils.HttpRequestor;
 import com.flchy.blog.utils.NewMapUtil;
 import com.flchy.blog.utils.ValidUtils;
+import com.flchy.blog.utils.ip.IpUtils;
 
 /**
  * <p>
@@ -48,22 +44,39 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
 	private static Logger logger = LoggerFactory.getLogger(CommentServiceImpl.class);
 	@Autowired
 	private CommentMapper commentMapper;
-	@Value("${mail.http.address}")
-	private String mailAddress;
+	
+	
+	/**
+	 * 查询分页
+	 * @param page
+	 * @param comment
+	 * @return
+	 */
+	@Override
+	public Page<Map<String, Object>> selectCommentPage(Page<Map<String, Object>> page,Comment comment){
+		 page.setRecords( commentMapper.selectCommentPage(page, comment));
+		 return page;
+	}
 
 	@Override
 	public Comment saveComment(Comment comment) {
-		try {
-			if(Boolean.valueOf(ConfigHolder.getConfig(Keys.IS_COMMENT_VERIFY.getKey()))){
-				comment.setStatus(StatusEnum.DRAFT.getCode());
-			}else{
-				comment.setStatus(StatusEnum.NORMAL.getCode());
-				isSendMail(comment);
+		if(comment.getIsAdmin()){
+			comment.setStatus(StatusEnum.NORMAL.getCode());
+			isSendMail(comment);
+		}else{
+			try {
+				if(Boolean.valueOf(ConfigHolder.getConfig(Keys.IS_COMMENT_VERIFY.getKey())) ){
+					comment.setStatus(StatusEnum.DRAFT.getCode());
+				}else{
+					comment.setStatus(StatusEnum.NORMAL.getCode());
+					isSendMail(comment);
+				}
+			} catch (Exception e) {
+				logger.error("判断是否需要审核异常  || 不影响运行:"+e.getMessage());
 			}
-		} catch (Exception e) {
-			logger.error("判断是否需要审核异常  || 不影响运行:"+e.getMessage());
+			isSendMailAdmin(comment);
 		}
-		isSendMailAdmin(comment);
+		comment.setServerIp(IpUtils.getHostAddress());
 		comment.setCreateTime(new Date());
 		comment.insert();
 		return comment;
@@ -82,7 +95,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
 					urlPath=ConfigHolder.getConfig(Keys.WEBSITE_URL.getKey())+urlPath;
 					String content=ConfigHolder.getConfig(Keys.COMMENT_MAIL_NOTIFICATION_ADMIN_CONTENT.getKey()).replace("{content}", comment.getComment()).replace("{urlPath}", urlPath).replace("{website}", ConfigHolder.getConfig(Keys.WEBSITE_URL.getKey())).replace("{webName}", ConfigHolder.getConfig(Keys.WEBSITE_NAME.getKey()));
 					try {
-						new HttpRequestor().doPost(mailAddress+"/send", new NewMapUtil()
+						new HttpRequestor().doPost(ConfigHolder.getConfig(Keys.MAIL_HTTP_ADDRESS.getKey()), new NewMapUtil()
 								.set("to", ConfigHolder.getConfig(Keys.ADMIN_MAIL.getKey()))
 								.set("title",ConfigHolder.getConfig(Keys.COMMENT_MAIL_NOTIFICATION_ADMIN_TITLE.getKey()).replace("{sendName}", comment.getNickname()))
 								.set("content",content )
@@ -113,7 +126,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
 							// comment.getComment()+"<br /> 地址:<a href='https://flchy.cn/"+urlPath+"'>https://flchy.cn/"+urlPath+"</a> <br/><br/><br/><a href='https://flchy.cn'>. Blog</a>";
 							try {
 //								+selectById.getNickname()+" 你好,收到来自【"+comment.getNickname()+"】的回复"
-								new HttpRequestor().doPost(mailAddress+"/send", new NewMapUtil()
+								new HttpRequestor().doPost(ConfigHolder.getConfig(Keys.MAIL_HTTP_ADDRESS.getKey()), new NewMapUtil()
 										.set("to", selectById.getMail())
 										.set("title",ConfigHolder.getConfig(Keys.COMMENT_MAIL_NOTIFICATION_TITLE.getKey()).replace("{receiveName}", selectById.getNickname()).replace("{sendName}", comment.getNickname()))
 										.set("content",content )

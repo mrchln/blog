@@ -65,7 +65,7 @@ public class PingUtils {
 		//System.out.println("ip:" + ip + " , ping 2 result " + isPingInetAddress(ip));
 
 		for (int i = 85; i < 255; i++) {
-			String ip = "192.168.88." + i;
+			String ip = "192.168.1." + i;
 			System.out.println("ip:" + ip + " , ping result " + isPingRuntime(ip));
 		}
 
