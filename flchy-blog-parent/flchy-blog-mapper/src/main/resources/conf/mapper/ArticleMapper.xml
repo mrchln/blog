@@ -17,5 +17,55 @@
 		<result column="update_user" property="updateUser" />
 		<result column="update_time" property="updateTime" />
 	</resultMap>
+	
+	<select id="selectPage" resultType="com.flchy.blog.pojo.Article" >
+		SELECT
+		(
+			SELECT
+				count(1)
+			FROM
+				`comment` c
+			WHERE
+				a.id = c.articleId
+			AND c.`status` =  #{status}
+			AND FIND_IN_SET(
+				id,
+				getChildLst (c.id, a.id,  #{status})
+			)
+		) 'commentNum',
+		`id`,
+		`title`,
+		`content`,
+		`synopsis`,
+		`image`,
+		`type_id` 'typeId',
+		`see`,
+		`status`,
+		`create_user` 'createUser',
+		`create_time` 'createTime',
+		`update_user` 'updateUser',
+		`update_time` 'updateTime'
+	FROM
+		article a
+	WHERE
+		a.`status` = #{status}
+		<if test="typeId != null and typeId != '' ">
+		and type_id=#{typeId}
+		</if>
+		<if test="title != null and title != '' ">
+		and title  LIKE concat(concat('%',#{title}),'%')
+		</if>
+		
+		<if test="order == 1 ">
+			ORDER BY create_time desc 
+		</if>
+		<if test="order == 2 ">
+			ORDER BY see desc 
+		</if>
+		<if test="order == 3 ">
+			ORDER BY commentNum desc 
+		</if>
+	
+	</select>
 
 </mapper>

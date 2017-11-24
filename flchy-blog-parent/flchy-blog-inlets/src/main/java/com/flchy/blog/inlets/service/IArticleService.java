@@ -1,5 +1,6 @@
 package com.flchy.blog.inlets.service;
 
+import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.IService;
 import com.flchy.blog.pojo.Article;
 
@@ -12,5 +13,8 @@ import com.flchy.blog.pojo.Article;
  * @since 2017-08-08
  */
 public interface IArticleService extends IService<Article> {
+
+
+	Page<Article> selectArticlePage(Page<Article> page, Article article);
 	
 }

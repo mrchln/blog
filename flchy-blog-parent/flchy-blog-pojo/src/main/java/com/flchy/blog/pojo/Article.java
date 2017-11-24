@@ -23,65 +23,88 @@ import java.io.Serializable;
 @XmlRootElement
 public class Article extends Model<Article> {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    /**
-     * 文章ID
-     */
-	@TableId(value="id", type= IdType.AUTO)
+	/**
+	 * 文章ID
+	 */
+	@TableId(value = "id", type = IdType.AUTO)
 	private Integer id;
-    /**
-     * 文章标题
-     */
+	/**
+	 * 文章标题
+	 */
 	private String title;
-    /**
-     * 文章内容
-     */
+	/**
+	 * 文章内容
+	 */
 	private String content;
-    /**
-     * 简介
-     */
+	/**
+	 * 简介
+	 */
 	private String synopsis;
-    /**
-     * 图片
-     */
+	/**
+	 * 图片
+	 */
 	private String image;
-    /**
-     * 文章分类ID
-     */
+	/**
+	 * 文章分类ID
+	 */
 	@TableField("type_id")
 	private Integer typeId;
-    /**
-     * 查看人数
-     */
+	/**
+	 * 查看人数
+	 */
 	private Integer see;
-    /**
-     * 1：正常，-1：删除2,草稿
-     */
+	/**
+	 * 1：正常，-1：删除2,草稿
+	 */
 	private Integer status;
-    /**
-     * 创建用户
-     */
+	/**
+	 * 创建用户
+	 */
 	@TableField("create_user")
 	private String createUser;
-    /**
-     * 创建时间
-     */
-	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss")
+	/**
+	 * 创建时间
+	 */
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
 	@TableField("create_time")
 	private Date createTime;
-    /**
-     * 修改用户
-     */
+	/**
+	 * 修改用户
+	 */
 	@TableField("update_user")
 	private String updateUser;
-    /**
-     * 修改时间
-     */
-	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss")
+	/**
+	 * 修改时间
+	 */
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
 	@TableField("update_time")
 	private Date updateTime;
 
+	@TableField(exist = false)
+	private Integer commentNum;
+	
+	@TableField(exist = false)
+	private Integer order;
+	
+	
+
+	public Integer getOrder() {
+		return order;
+	}
+
+	public void setOrder(Integer order) {
+		this.order = order;
+	}
+
+	public Integer getCommentNum() {
+		return commentNum;
+	}
+
+	public void setCommentNum(Integer commentNum) {
+		this.commentNum = commentNum;
+	}
 
 	public Integer getId() {
 		return id;

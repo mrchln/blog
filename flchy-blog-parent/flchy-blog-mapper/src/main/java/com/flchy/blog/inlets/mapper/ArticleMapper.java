@@ -2,6 +2,9 @@ package com.flchy.blog.inlets.mapper;
 
 import com.flchy.blog.base.datasource.annotation.BaseRepository;
 import com.flchy.blog.pojo.Article;
+
+import java.util.List;
+
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 
 /**
@@ -14,5 +17,7 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  */
 @BaseRepository
 public interface ArticleMapper extends BaseMapper<Article> {
+
+	public List<Article> selectPage(Article article);
 
 }

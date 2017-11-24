@@ -59,13 +59,16 @@ public class BlogController {
 
 	@PostMapping(value = "/article/page")
 	public Object selectArticlePage(@RequestParam(value = "current", required = true) Integer current,
-			@RequestParam(value = "size", required = true) Integer size, Article article) {
+			@RequestParam(value = "size", required = true) Integer size,@RequestParam(value = "order", required =false) Integer order, Article article) {
 		Integer typeId = article.getTypeId();
 		article = new Article();
 		article.setTypeId(typeId);
+		article.setStatus(StatusEnum.NORMAL.getCode());
+		article.setOrder(order);
 		Page<Article> page = new Page<>(Integer.valueOf(current), Integer.valueOf(size));
-		iArticleService.selectPage(page,
-				new EntityWrapper<Article>(article).where(" status={0} ", StatusEnum.NORMAL.getCode()));
+//		iArticleService.selectPage(page,
+//				new EntityWrapper<Article>(article).where(" status={0} ", StatusEnum.NORMAL.getCode()));
+		iArticleService.selectArticlePage(page, article);
 		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, new ResultPage(page));
 	}
 

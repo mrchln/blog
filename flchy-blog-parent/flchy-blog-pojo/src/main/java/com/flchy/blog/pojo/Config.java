@@ -5,6 +5,7 @@ import java.io.Serializable;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.annotations.TableName;
 import com.baomidou.mybatisplus.enums.IdType;
 
 /**
@@ -15,6 +16,7 @@ import com.baomidou.mybatisplus.enums.IdType;
  * @author nieqs
  * @since 2017-11-22
  */
+@TableName("config")
 public class Config extends Model<Config> {
 
     private static final long serialVersionUID = 1L;
