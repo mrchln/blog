@@ -29,7 +29,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 	
 	@Override
 	public Page<Article> selectArticlePage(Page<Article> page,Article article){
-		 page.setRecords( articleMapper.selectPage(article));
+		 page.setRecords( articleMapper.selectPages(article));
 		 return page;
 	}
 	

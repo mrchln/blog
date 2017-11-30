@@ -13,6 +13,7 @@ public enum Keys {
 	WEBSITE_NAME("WEBSITE_NAME","网站名称"),
 	IS_COMMENT_VERIFY("IS_COMMENT_VERIFY","是否开启评论审核"),
 	MAIL_HTTP_ADDRESS("MAIL_HTTP_ADDRESS","邮箱地址"),
+	BLOG_CONFIG("BLOG_CONFIG","博客配置"),
 	;
 	
 	private String key;

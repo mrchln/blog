@@ -1,6 +1,7 @@
 package com.flchy.blog.inlets.web.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.QueryParam;
@@ -16,14 +17,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.flchy.blog.base.exception.BusinessException;
 import com.flchy.blog.base.response.ResponseCommand;
 import com.flchy.blog.base.response.ResultPage;
 import com.flchy.blog.inlets.config.Sample;
+import com.flchy.blog.inlets.enums.Keys;
 import com.flchy.blog.inlets.enums.StatusEnum;
 import com.flchy.blog.inlets.holder.ArticleTypeHolder;
+import com.flchy.blog.inlets.holder.ConfigHolder;
 import com.flchy.blog.inlets.service.IArticleService;
 import com.flchy.blog.inlets.service.ICommentService;
 import com.flchy.blog.inlets.service.ILinkService;
@@ -155,5 +159,17 @@ public class BlogController {
 	public Object verific(HttpServletRequest request) {
 		return sample.getVerific().getData();
 	}
+	
+	@GetMapping(value = "/getNewestComment")
+	public Object getNewestComment(){
+		Page<Comment> page = new Page<>(1, 10);
+		iCommentService.selectPage(page,new EntityWrapper<Comment>().where(" status = {0}", StatusEnum.NORMAL.getCode()).orderBy("create_time",false));
+		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, new ResultPage(page));
+	}
+	@GetMapping(value = "/getBlogConfig")
+	public Object getBlogConfig(){
+		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, JSON.parseArray(ConfigHolder.getConfig(Keys.BLOG_CONFIG.getKey())));
+	}
+	
 
 }

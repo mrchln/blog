@@ -18,7 +18,7 @@
 		<result column="update_time" property="updateTime" />
 	</resultMap>
 	
-	<select id="selectPage" resultType="com.flchy.blog.pojo.Article" >
+	<select id="selectPages" resultType="com.flchy.blog.pojo.Article" >
 		SELECT
 		(
 			SELECT

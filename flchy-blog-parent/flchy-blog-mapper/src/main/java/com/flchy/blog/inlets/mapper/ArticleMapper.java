@@ -18,6 +18,6 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
 @BaseRepository
 public interface ArticleMapper extends BaseMapper<Article> {
 
-	public List<Article> selectPage(Article article);
+	public List<Article> selectPages(Article article);
 
 }
