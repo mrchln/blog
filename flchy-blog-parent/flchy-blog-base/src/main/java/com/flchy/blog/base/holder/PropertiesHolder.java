@@ -136,6 +136,7 @@ public class PropertiesHolder {
 		return true;
 	}
 
+	
 	/**
 	 * 详细描述：接收一个Resource类型的数组作为参数，将locations标签下值都会被解析成Resource，
 	 * 而这个resource本身则包含了访问这个resource的方法，在这里resource代表的则是properties文件。
