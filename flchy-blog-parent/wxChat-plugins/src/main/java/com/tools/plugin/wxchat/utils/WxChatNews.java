@@ -1,4 +1,4 @@
-package com.flchy.blog.wxchat.utils;
+package com.tools.plugin.wxchat.utils;
 
 import java.text.MessageFormat;
 import java.util.Date;

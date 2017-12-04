@@ -15,6 +15,6 @@ import com.flchy.blog.pojo.Article;
 public interface IArticleService extends IService<Article> {
 
 
-	Page<Article> selectArticlePage(Page<Article> page, Article article);
+	public Page<Article> selectArticlePage(Page<Article> page, Article article);
 	
 }
