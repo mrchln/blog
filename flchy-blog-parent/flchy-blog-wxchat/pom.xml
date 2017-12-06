@@ -21,10 +21,15 @@
 			<version>3.8.1</version>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
+	<!-- 	<dependency>
 			<groupId>com.flchy.blog</groupId>
 			<artifactId>flchy-blog-base</artifactId>
 			<version>${flchy-blog-base.version}</version>
+		</dependency> -->
+		<dependency>
+			<groupId>com.flchy.blog</groupId>
+			<artifactId>wxChat-plugins</artifactId>
+			<version>${wxChat-plugins.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

@@ -28,6 +28,7 @@
 		<module>flchy-blog-inlets-feign-consumer</module>
 		<module>flchy-blog-eureka-admin</module>
 		<module>flchy-blog-server-zipkin</module>
+		<module>wxChat-plugins</module>
 		
 	</modules>
 	<properties>
@@ -51,6 +52,7 @@
 		<flchy-blog-inlets-feign-api.version>0.0.1-SNAPSHOT</flchy-blog-inlets-feign-api.version>
 		<flchy-blog-inlets-feign-client.version>0.0.1-SNAPSHOT</flchy-blog-inlets-feign-client.version>
 		<flchy-blog-inlets-feign-consumer.version>0.0.1-SNAPSHOT</flchy-blog-inlets-feign-consumer.version>
+		<wxChat-plugins.version>0.0.1-SNAPSHOT</wxChat-plugins.version>
 
 		<!-- :::::::::::::::: 核心框架version :::::::::::::::: -->
 		<!-- 基础框架 -->

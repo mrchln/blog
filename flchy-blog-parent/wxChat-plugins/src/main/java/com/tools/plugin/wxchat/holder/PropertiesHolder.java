@@ -1,11 +1,10 @@
-package com.flchy.blog.base.holder;
+package com.tools.plugin.wxchat.holder;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,22 +20,11 @@ import org.springframework.util.Assert;
 import org.springframework.util.ResourceUtils;
 import org.springframework.util.StringUtils;
 
-import com.flchy.blog.utils.PropertiesUtil;
-import com.flchy.blog.utils.StringUtil;
-import com.flchy.blog.utils.secret.EncryptUtil;
 
-
-
-/**
- * 本地Properties属性
- * @author xucong
- * @since 0.0.1-SNAPSHOT
- */
 public class PropertiesHolder {
 	private static Logger logger = LoggerFactory.getLogger(PropertiesHolder.class);
-	private static final String ENCRYPT_DES_KEY = "cube-nlp-@-QT-#$^&*956*(*)";
 	private static Map<String, Object> appProperties = new HashMap<String, Object>();
-	private static final String rootPackage = "properties/";
+	private static final String rootPackage = "proper/";
 
 	static {
 		try {
@@ -129,7 +117,7 @@ public class PropertiesHolder {
 		}
 		if (!tmpPro.isEmpty()) {
 			String environment = tmpPro.getProperty("web.environment.istest");
-			if (!StringUtil.isNullOrEmpty(environment)) {
+			if (!isNullOrEmpty(environment)) {
 				return Boolean.parseBoolean(environment);
 			}
 		}
@@ -137,6 +125,21 @@ public class PropertiesHolder {
 	}
 
 	
+	/**
+	 * 判断字符串是否为空或为空值。<br/>
+	 * 详细描述：判断字符串是否为空或为空值。<br/>
+	 * 使用方式：通过本类的类名直接调用该方法，并传入所需参数。<br/>
+	 * 
+	 * @param str 字符串。<br/>
+	 * @return flag true表示参数是为空或为空值，false则表示不为空或空值。<br/>
+	 */
+	public static boolean isNullOrEmpty(String str) {
+		boolean flag = false;
+		if (null == str || "".equals(str.trim()) || "n/a".equals(str.trim().toLowerCase())  || "null".equals(str.trim().toLowerCase()) || "undefined".equals(str.trim().toLowerCase())) {
+			flag = true;
+		}
+		return flag;
+	}
 	/**
 	 * 详细描述：接收一个Resource类型的数组作为参数，将locations标签下值都会被解析成Resource，
 	 * 而这个resource本身则包含了访问这个resource的方法，在这里resource代表的则是properties文件。
@@ -169,16 +172,12 @@ public class PropertiesHolder {
 			Map<String, Object> propertiesMap = new HashMap<String, Object>((Map) properties);
 			tmpMap.putAll(propertiesMap);
 		}
-		boolean isDecrypted = getIsDecryptedProp(tmpMap);
 		for (Object key : tmpMap.keySet()) {
 			String keyStr = key.toString();
 			String value  = String.valueOf(tmpMap.get(keyStr));
 			if (keyStr.endsWith(".encrypted")) {
 				String newKey   = keyStr.substring(0, keyStr.lastIndexOf(".encrypted"));
 				String newValue = value;
-				if (isDecrypted) {
-					newValue = PropertiesHolder.dencryptProperty(value);
-				}
 				appProperties.put(newKey, newValue);
 			} else {
 				appProperties.put(keyStr, value);
@@ -188,23 +187,6 @@ public class PropertiesHolder {
 		System.out.println("加载Properties配置文件:" + StringUtils.arrayToDelimitedString(locations, ","));
 	}
 
-	/** 输出所有属性文件中配置的属性配置项 **/
-	@SuppressWarnings({ "unused", "rawtypes" })
-	private static void printAllProperties(Resource[] locations) {
-		for (Resource res : locations) {
-			PropertiesUtil propertiesUtil = new PropertiesUtil();
-			try {
-				propertiesUtil.load(new InputStreamReader(res.getInputStream(), "utf-8"));
-				Enumeration enums = propertiesUtil.keys();
-				while (enums.hasMoreElements()) {
-					String propName = (String) enums.nextElement();
-					System.out.println(res.getURL().getPath().substring(res.getURL().getPath().lastIndexOf("/") + 1) + "," + propName + "," + propertiesUtil.getProperty(propName));
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}
 
 	/**
 	 * 获取属性对象。<br/>
@@ -262,44 +244,6 @@ public class PropertiesHolder {
 		return false;
 	}
 
-	/**
-	 * 从属性文件中获取是否解密属性文件。<br/>
-	 * 
-	 * @param props 属性文件。<br/>
-	 * @return 返回boolean类型。
-	 */
-	private static boolean getIsDecryptedProp(Map<String, Object> propertiesMap) {
-		String isDecrypted = String.valueOf(propertiesMap.get("core.global.isDecrypted"));
-		if (isDecrypted != null && isDecrypted.equalsIgnoreCase("true")) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	/**
-	 * 加密属性。<br/>
-	 * 详细描述：对属性进行加密。<br/>
-	 * 使用方式：java代码中可直接调用此静态方法。
-	 * 
-	 * @param prop 要加密的属性。
-	 * @return 返回加密后的属性。
-	 */
-	public static String EncryptProperty(String prop) {
-		return EncryptUtil.encrypt(prop, PropertiesHolder.ENCRYPT_DES_KEY);
-	}
-
-	/**
-	 * 解密属性。<br/>
-	 * 详细描述：对加密的属性进行解密。<br/>
-	 * 使用方式：java代码中可直接调用此静态方法。
-	 * 
-	 * @param prop 加密的属性。
-	 * @return 返回解密后的属性。
-	 */
-	public static String dencryptProperty(String prop) {
-		return EncryptUtil.decrypt(prop, PropertiesHolder.ENCRYPT_DES_KEY);
-	}
 
 	/**
 	 * 根据前缀获取符合条件的所有properties属性值。
@@ -345,10 +289,5 @@ public class PropertiesHolder {
 			}
 		}
 		return resultMap;
-	}
-	
-	public static void main(String[] arges){
-		System.out.println(PropertiesHolder.EncryptProperty("perfect_redis"));
-		System.out.println(PropertiesHolder.dencryptProperty("5DBBD4EE4B69F654ECC3AEF881CA1032"));
 	}
 }
