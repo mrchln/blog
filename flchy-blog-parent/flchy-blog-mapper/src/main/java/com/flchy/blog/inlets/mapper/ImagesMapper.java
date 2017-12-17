@@ -1,7 +1,8 @@
 package com.flchy.blog.inlets.mapper;
 
-import com.flchy.blog.pojo.Images;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.flchy.blog.base.datasource.annotation.BaseRepository;
+import com.flchy.blog.pojo.Images;
 
 /**
  * <p>
@@ -11,6 +12,7 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  * @author nieqs
  * @since 2017-12-03
  */
+@BaseRepository
 public interface ImagesMapper extends BaseMapper<Images> {
 
 }

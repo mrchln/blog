@@ -31,6 +31,8 @@ import com.alibaba.fastjson.JSONArray;
 import com.flchy.blog.base.response.ResponseCommand;
 import com.flchy.blog.common.fastdfs.FastDFSClient;
 import com.flchy.blog.common.fastdfs.FastDSFile;
+import com.flchy.blog.inlets.service.IImagesService;
+import com.flchy.blog.pojo.Images;
 /**
  * 
  * @author 1st
@@ -47,6 +49,8 @@ public class UploadController {
 	private static final String PNG_CONTENT_TYPE = "image/png";
 	@Autowired
 	private FastDFSClient fastDFSClient;
+	@Autowired
+	private IImagesService iImagesService;
 	/*
 	 * 采用spring提供的上传文件的方法
 	 */
@@ -73,9 +77,10 @@ public class UploadController {
 					// fastDSFile.setContent(input2byte(file.getInputStream()));
 					fastDSFile.setContent(file.getBytes());
 					fastDSFile.setExt(fileName.substring(fileName.lastIndexOf(".")+1));
-					JSONArray rs = fastDFSClient.upload(fastDSFile);
-					String url = rs.get(0) + "/" + rs.get(1);
-					urlList.add(url);
+//					JSONArray rs = fastDFSClient.upload(fastDSFile);
+//					String url = rs.get(0) + "/" + rs.get(1);
+					Images imageUpload = iImagesService.imageUpload(fastDSFile,fileName);
+					urlList.add(imageUpload.getImagePath());
 				}
 
 			}

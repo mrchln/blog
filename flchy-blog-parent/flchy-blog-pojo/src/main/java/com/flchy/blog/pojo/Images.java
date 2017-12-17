@@ -2,6 +2,8 @@ package com.flchy.blog.pojo;
 
 import java.util.Date;
 import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.enums.IdType;
 import com.baomidou.mybatisplus.activerecord.Model;
 import java.io.Serializable;
 
@@ -16,7 +18,8 @@ import java.io.Serializable;
 public class Images extends Model<Images> {
 
     private static final long serialVersionUID = 1L;
-
+    
+    @TableId(value="id", type= IdType.AUTO)
 	private Integer id;
     /**
      * 图片地址
@@ -49,7 +52,7 @@ public class Images extends Model<Images> {
     /**
      * 存放类型 如：fastDfs 
      */
-	private String type;
+	private Integer type;
     /**
      * 1：正常，-1：删除,2,草稿
      */
@@ -132,11 +135,11 @@ public class Images extends Model<Images> {
 		this.remoteFileName = remoteFileName;
 	}
 
-	public String getType() {
+	public Integer getType() {
 		return type;
 	}
 
-	public void setType(String type) {
+	public void setType(Integer type) {
 		this.type = type;
 	}
 
