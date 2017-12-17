@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flchy.blog.logging.config.mapper.ILogVisitDao">
+	<resultMap id="LogLogVisitEntityMap"
+		type="com.flchy.blog.logging.config.entity.LogVisit">
+		<result column="log_id" property="logId" />
+		<result column="session_id" property="sessionId" />
+		<result column="res_id" property="resId" />
+		<result column="obj_id" property="objId" />
+		<result column="opr_user_id" property="oprUserId" />
+		<result column="main_account" property="mainAccount" />
+		<result column="visit_begin_time" property="visitBeginTime" />
+		<result column="visit_end_time" property="visitEndTime" />
+		<result column="is_error" property="isError" />
+		<result column="err_msg" property="errMsg" />
+		<result column="server_ip" property="serverIp" />
+		<result column="client_ip" property="clientIp" />
+		<result column="user_agent" property="userAgent" />
+		<result column="browser_type" property="browserType" />
+	</resultMap>
+	
+		<select id="selectLogVisit" resultMap="LogLogVisitEntityMap">
+			SELECT
+				`log_id`,
+				`session_id`,
+				`res_id`,
+				`obj_id`,
+				`opr_user_id`,
+				`main_account`,
+				`visit_begin_time`,
+				`visit_end_time`,
+				`is_error`,
+				`err_msg`,
+				`server_ip`,
+				`client_ip`,
+				`user_agent`,
+				`browser_type`
+		FROM
+			`log_visit`
+			where 1=1
+				<if test="mainAccount != null and mainAccount != ''">
+				and main_account like concat(concat('%',#{mainAccount}),'%')
+				</if>
+				<if test="isError != null and isError != ''">
+				and is_error = #{isError}
+				</if>
+			
+			
+				<if test="visitBeginTimeStart != null">
+				and visit_begin_time >= #{visitBeginTimeStart}
+				</if>
+				<if test="visitBeginTimeStop != null">
+				 <![CDATA[  
+					and visit_begin_time <= #{visitBeginTimeStop}
+				 ]]>  
+				</if>
+				<if test="visitEndTimeStart != null">
+				and visit_end_time >= #{visitEndTimeStart}
+				</if>
+				<if test="visitEndTimeStop != null">
+				 <![CDATA[  
+					and visit_end_time <= #{visitEndTimeStop}
+				 ]]>  
+				</if>			
+		ORDER BY
+			visit_begin_time desc
+		</select>
+</mapper>

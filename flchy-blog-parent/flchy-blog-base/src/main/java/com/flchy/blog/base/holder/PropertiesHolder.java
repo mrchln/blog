@@ -29,7 +29,6 @@ import com.flchy.blog.utils.secret.EncryptUtil;
 
 /**
  * 本地Properties属性
- * @author xucong
  * @since 0.0.1-SNAPSHOT
  */
 public class PropertiesHolder {

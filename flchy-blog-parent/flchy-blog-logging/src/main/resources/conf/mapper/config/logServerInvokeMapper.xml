@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flchy.blog.logging.config.mapper.ILogServerInvokeDao">
+	<resultMap id="LogServerInvokeEntityMap"
+		type="com.flchy.blog.logging.config.entity.LogServerInvoke">
+		<result column="log_id" property="logId" />
+		<result column="interface_id" property="interfaceId" />
+		<result column="invoke_cont" property="invokeCont" />
+		<result column="is_fail" property="isFail" />
+		<result column="err_msg" property="errMsg" />
+		<result column="invoke_begin_time" property="invokeBeginTime" />
+		<result column="invoke_end_time" property="invokeEndTime" />
+		<result column="opr_user_id" property="oprUserId" />
+		<result column="main_account" property="mainAccount" />
+		<result column="server_ip" property="serverIp" />
+	</resultMap>
+	<select id="selectLogServerInvoke" resultMap="LogServerInvokeEntityMap">
+		SELECT
+			`log_id`,
+			`interface_id`,
+			`invoke_cont`,
+			`is_fail`,
+			`err_msg`,
+			`invoke_begin_time`,
+			`invoke_end_time`,
+			`opr_user_id`,
+			`main_account`,
+			`server_ip`
+		FROM
+			`log_server_invoke`
+		where 1=1	
+				<if test="invokeCont != null and invokeCont != ''">
+				and invoke_cont like concat(concat('%',#{invokeCont}),'%')
+				</if>
+				<if test="isFail != null and isFail != ''">
+				and is_fail =#{isFail}
+				</if>
+				<if test="mainAccount != null and mainAccount != ''">
+				and main_account like concat(concat('%',#{mainAccount}),'%')
+				</if>
+		
+		
+				<if test="invokeBeginTimeStart != null">
+				and invoke_begin_time >= #{invokeBeginTimeStart}
+				</if>
+				<if test="invokeBeginTimeStop != null">
+				 <![CDATA[  
+					and invoke_begin_time <= #{invokeBeginTimeStop}
+				 ]]>  
+				</if>
+				<if test="invokeEndTimeStart != null">
+				and invoke_end_time >= #{invokeEndTimeStart}
+				</if>
+				<if test="invokeEndTimeStop != null">
+				 <![CDATA[  
+					and invoke_end_time <= #{invokeEndTimeStop}
+				 ]]>  
+				</if>
+		ORDER BY
+			invoke_begin_time desc
+	</select>
+</mapper>

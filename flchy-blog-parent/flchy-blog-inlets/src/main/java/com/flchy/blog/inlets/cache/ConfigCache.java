@@ -69,21 +69,6 @@ public class ConfigCache extends AbstractCacheHolder {
 		return CACHEKEY;
 	}
 
-	/**
-	 * 调用此方法查询数据时，缓存是有效的，但是当缓存中没有数据，则调用数据库查询枚举信息。<br/>
-	 * 使用方式：在对外提供调用接口holder中，调用getDataBaseValue方法。
-	 * 
-	 * @param groupField
-	 *            枚举字段。
-	 * @param groupId
-	 *            枚举字段id值。
-	 * @return 从数据库中查询出来的枚举值。
-	 */
-	@Override
-	protected Object getDataBaseValue(String groupPropertyName, String groupPropertyValue) {
-		return this.getIArticleTypeService().selectList(new EntityWrapper<Config>());
-	}
-
 	@Override
 	protected Object getDataBaseValue(String groupPropertyName, String propertyName, String propertyValue) {
 		// TODO Auto-generated method stub

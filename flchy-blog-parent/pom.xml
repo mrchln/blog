@@ -29,11 +29,13 @@
 		<module>flchy-blog-eureka-admin</module>
 		<module>flchy-blog-server-zipkin</module>
 		<module>wxChat-plugins</module>
+		<module>flchy-blog-logging</module>
 		
 	</modules>
 	<properties>
 		<!-- :::::::::::::::: 子模块version :::::::::::::::: -->
 		<flchy-blog-inlets.version>0.0.1-SNAPSHOT</flchy-blog-inlets.version>
+		<flchy-blog-logging.version>0.0.1-SNAPSHOT</flchy-blog-logging.version>
 		<flchy-blog-utils.version>0.0.1-SNAPSHOT</flchy-blog-utils.version>
 		<flchy-blog-privilege.version>0.0.1-SNAPSHOT</flchy-blog-privilege.version>
 		<flchy-blog-base.version>0.0.1-SNAPSHOT</flchy-blog-base.version>

@@ -26,7 +26,6 @@ import org.springframework.util.Assert;
 
 /**
  * 用于扩展EhCacheManagerFactoryBean,支持从多个ehcache-config.xml文件中读取配置,方便模块化配置。
- * 
  * @since 0.0.1-SNAPSHOT
  */
 @Service("ehCacheManagerFactory")

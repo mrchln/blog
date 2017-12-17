@@ -35,47 +35,22 @@ public abstract class AbstractCacheHolder implements IWebInitializable {
 
     /**
      * 根据element的key获取对应的value。<br/>
-     * 详细描述：根据key值获取缓存区域中存放的数据集合，在通过数据的代码值从集合中得到该数据。<br/>
+     * 详细描述：根据propertyName获取缓存中存放的数据，在通过propertyName定位到该数据集合中的字段，在找到符合propertyValue值的数据。<br/>
      * 使用方式：该类被继承后直接使用super.getCacheValue或者用this方式都可以调用。
      * 
-     * @param groupPropertyName 缓存区域中的element的key。
-     * @param groupPropertyValue 对应缓存中保存集合中的某一条数据对应的代码值。
-     * @return 参数对应的查询到的具体值。
-     */
-    public Object getCacheValue(String groupPropertyName, String groupPropertyValue) {
-        Cache cache = this.getCacheManager().getCache(this.setCacheKey());
-        if (null != cache) {
-            Element element = cache.get(groupPropertyName);
-            if (null != element) {
-                return getGroupListById(element.getObjectValue(), groupPropertyName, groupPropertyValue);
-            } else {
-                return getDataBaseValue(groupPropertyName, groupPropertyValue);
-            }
-        } else {
-            logger.error(this.setCacheKey() + "缓存区域不存在！");
-            throw new BaseRuntimeException(BaseExceptionEnums.NO_EXIST_CACHE).setParams(new Object[] {this
-                .setCacheKey()});
-        }
-    }
-
-    /**
-     * 根据element的key获取对应的value。<br/>
-     * 详细描述：根据groupPropertyName获取缓存中存放的数据，在通过propertyName定位到该数据集合中的字段，在找到符合propertyValue值的数据。<br/>
-     * 使用方式：该类被继承后直接使用super.getCacheValue或者用this方式都可以调用。
-     * 
-     * @param groupPropertyName 缓存区域中的element的key。
+     * @param cacheNodeKey 缓存区域中的element的key。
      * @param propertyName 集合数据中的字段名称。
      * @param propertyValue 集合数据中该字段的具体值。
      * @return 参数对应的查询到的具体值。
      */
-	public Object getCacheValue(String groupPropertyName, String propertyName, String propertyValue) {
+	public Object getCacheValue(String cacheNodeKey, String propertyName, String propertyValue) {
 		Cache cache = this.getCacheManager().getCache(this.setCacheKey());
 		if (null != cache) {
-			Element element = cache.get(groupPropertyName);
+			Element element = cache.get(cacheNodeKey);
 			if (null != element) {
 				return getGroupListById(element.getObjectValue(), propertyName, propertyValue);
 			} else {
-				return getDataBaseValue(groupPropertyName, propertyName, propertyValue);
+				return getDataBaseValue(cacheNodeKey, propertyName, propertyValue);
 			}
 		} else {
 			logger.error(this.setCacheKey() + "缓存区域不存在！");
@@ -84,17 +59,17 @@ public abstract class AbstractCacheHolder implements IWebInitializable {
 	}
 
     /**
-     * 获取缓存区域中key为groupPropertyName的数据。<br/>
-     * 详细描述：根据传入groupPropertyName的值，从缓存中读取key为groupPropertyName的数据。<br/>
+     * 获取缓存区域中key为propertyName的数据。<br/>
+     * 详细描述：根据传入propertyName的值，从缓存中读取key为propertyName的数据。<br/>
      * 使用方式：该类被继承后直接使用super.getCacheAllValue或者用this方式都可以调用。
      * 
-     * @param groupPropertyName 缓存区域中的element的key。
-     * @return 缓存区域中groupPropertyName的数据。
+     * @param cacheNodeKey 缓存区域中的element的key。
+     * @return 缓存区域中propertyName的数据。
      */
-	public Object getCacheAllValue(String groupPropertyName) {
+	public Object getCacheAllValue(String cacheNodeKey) {
 		Cache cache = this.getCacheManager().getCache(this.setCacheKey());
 		if (null != cache) {
-			return cache.get(groupPropertyName);
+			return cache.get(cacheNodeKey);
 		} else {
 			logger.error(this.setCacheKey() + "缓存区域不存在！");
 			throw new BaseRuntimeException(BaseExceptionEnums.NO_EXIST_CACHE).setParams(new Object[] { this.setCacheKey() });
@@ -102,24 +77,23 @@ public abstract class AbstractCacheHolder implements IWebInitializable {
 	}
 
     /**
-     * 解析obj，获取和groupPropertyValue值相匹配的数据。<br/>
-     * 详细描述：解析obj数据对象中，groupPropertyName字段并且值为groupPropertyValue的数据集合。<br/>
+     * 解析obj，获取和propertyValue值相匹配的数据。<br/>
+     * 详细描述：解析obj数据对象中，propertyName字段并且值为propertyValue的数据集合。<br/>
      * 使用方式：该类被继承后直接使用super.getGroupListById或者用this方式都可以调用。
      * 
-     * @param groupPropertyName 数据中的key值。
-     * @param groupPropertyValue 该数据key值对应的具体值。
+     * @param propertyName 数据中的key值。
+     * @param propertyValue 该数据key值对应的具体值。
      * @param obj 需要被解析的数据对象，可以是list、map。
-     * @return groupPropertyName字段和groupPropertyValue的值对应的数据。
      */
     @SuppressWarnings("unchecked")
-	public List<Object> getGroupListById(Object obj, String groupPropertyName, String groupPropertyValue) {
+	public List<Object> getGroupListById(Object obj, String propertyName, String propertyValue) {
 		List<Object> groupList = new ArrayList<Object>();
 		if (obj instanceof List) {
 			List<Object> list = (List<Object>) obj;
 			for (Object object : list) {
 				if (object instanceof Map) {
 					Map<Object, Object> map = (Map<Object, Object>) object;
-					if (groupPropertyValue.equals(String.valueOf(map.get(groupPropertyName)))) {
+					if (propertyValue.equals(String.valueOf(map.get(propertyName)))) {
 						groupList.add(map);
 					}
 				} else {
@@ -128,8 +102,8 @@ public abstract class AbstractCacheHolder implements IWebInitializable {
 						Field.setAccessible(fieldArray, true);
 						for (int i = 0; i < fieldArray.length; i++) {
 							Field field = fieldArray[i];
-							if (field.getName().equals(groupPropertyName)) {
-								if (groupPropertyValue.equals(field.get(object))) {
+							if (field.getName().equals(propertyName)) {
+								if (propertyValue.equals(field.get(object))) {
 									groupList.add(object);
 								}
 							}
@@ -148,18 +122,18 @@ public abstract class AbstractCacheHolder implements IWebInitializable {
 	}
 
     /**
-     * 把传入的obj数据对象保存或更新到缓存key为groupPropertyName的区域。<br/>
-     * 详细描述：把数据对象obj缓存到key值groupPropertyName的区域，该方法会先删除该区域的数据，在进行添加。<br/>
+     * 把传入的obj数据对象保存或更新到缓存key为propertyName的区域。<br/>
+     * 详细描述：把数据对象obj缓存到key值propertyName的区域，该方法会先删除该区域的数据，在进行添加。<br/>
      * 使用方式：该类被继承后直接使用super.addOrUpdateCacheValue或者用this方式都可以调用。
      * 
-     * @param groupPropertyName 缓存区域中对应的key值。
+     * @param cacheNodeKey 缓存区域中对应的key值。
      * @param obj 要保存或更新的缓存数据。
      */
-	public void addOrUpdateCacheValue(String groupPropertyName, Object obj) {
+	public void addOrUpdateCacheValue(String cacheNodeKey, Object obj) {
 		Cache cache = this.getCacheManager().getCache(this.setCacheKey());
 		if (null != cache) {
-			Element element = new Element(groupPropertyName, obj);
-			cache.remove(groupPropertyName);
+			Element element = new Element(cacheNodeKey, obj);
+			cache.remove(cacheNodeKey);
 			cache.put(element);
 		} else {
 			logger.error(this.setCacheKey() + "缓存区域不存在！");
@@ -168,16 +142,16 @@ public abstract class AbstractCacheHolder implements IWebInitializable {
 	}
 
     /**
-     * 根据groupPropertyName清除该缓存区域。<br/>
-     * 详细描述：根据传入的groupPropertyName值，清除缓存中对应该值的区域。<br/>
+     * 根据propertyName清除该缓存区域。<br/>
+     * 详细描述：根据传入的propertyName值，清除缓存中对应该值的区域。<br/>
      * 使用方式：该类被继承后直接使用super.removeCacheElement或者用this方式都可以调用。
      * 
-     * @param groupPropertyName 缓存区域中对应的key值。
+     * @param cacheNodeKey 缓存区域中对应的key值。
      */
-	public void removeCacheElement(String groupPropertyName) {
+	public void removeCacheElement(String cacheNodeKey) {
 		Cache cache = this.getCacheManager().getCache(this.setCacheKey());
 		if (null != cache) {
-			cache.remove(groupPropertyName);
+			cache.remove(cacheNodeKey);
 		} else {
 			logger.error(this.setCacheKey() + "缓存区域不存在！");
 			throw new BaseRuntimeException(BaseExceptionEnums.NO_EXIST_CACHE).setParams(new Object[] { this.setCacheKey() });
@@ -203,46 +177,35 @@ public abstract class AbstractCacheHolder implements IWebInitializable {
     protected abstract String setCacheKey();
 
     /**
-     * 根据参数到数据库中查询字段名称为groupPropertyValue的所有值。<br/>
-     * 详细描述：缓存区中不存在该数据，则进行回调到数据库中查询字段名称为groupPropertyValue的所有值。<br/>
-     * 使用方式：该方法主要是为了实现回调，首先到缓存中查询，如果不存在会自动调用该方法到数据库中查询。
-     * 
-     * @param groupPropertyName 缓存区域的key值。
-     * @param groupPropertyValue 字段名称。
-     * @return 数据库中查询的结果集。
-     */
-    protected abstract Object getDataBaseValue(String groupPropertyName, String groupPropertyValue);
-
-    /**
      * 根据参数到数据库中查询值为propertyValue的数据。<br/>
      * 详细描述：缓存区中不存在该数据，则进行回调到数据库中查询值为propertyValue的数据。<br/>
      * 使用方式：该方法主要是为了实现回调，首先到缓存中查询，如果不存在会自动调用该方法到数据库中查询。
      * 
-     * @param groupPropertyName 缓存区域的key值。
+     * @param cacheNodeKey 缓存区域的key值。
      * @param propertyName 数据集合中的字段名称。
      * @param propertyValue 数据集合中该字段名称的具体值。
      * @return 数据库中查询的结果集。
      */
-    protected abstract Object getDataBaseValue(String groupPropertyName, String propertyName, String propertyValue);
+    protected abstract Object getDataBaseValue(String cacheNodeKey, String propertyName, String propertyValue);
 
     /**
      * 该方法抽象了saveOrUpdateCacheValue，供外层进行调用。<br/>
      * 详细描述：子类实现该方法，实质是调用父类中的saveOrUpdateCacheValue方法，只是在其方法之外包了一层供外部使用。<br/>
      * 使用方式：子类实现该方法。
      * 
-     * @param groupPropertyName 缓存区域中对应的key值。
+     * @param cacheNodeKey 缓存区域中对应的key值。
      * @param obj 数据对象。
      */
-    protected abstract void saveOrUpdateCacheValue(String groupPropertyName, Object obj);
+    protected abstract void saveOrUpdateCacheValue(String cacheNodeKey, Object obj);
 
     /**
      * 该方法抽象了removeCacheElement，供外层进行调用。<br/>
      * 详细描述：子类实现该方法，实质是调用父类中的removeCacheElement方法，只是在其方法之外包了一层供外部使用。<br/>
      * 使用方式：子类实现该方法。
      * 
-     * @param groupPropertyName 缓存区域中对应的key值。
+     * @param cacheNodeKey 缓存区域中对应的key值。
      */
-    protected abstract void clearCacheValue(String groupPropertyName);
+    protected abstract void clearCacheValue(String cacheNodeKey);
 
     /**
      * 设置初始化时类的依赖关系。<br/>

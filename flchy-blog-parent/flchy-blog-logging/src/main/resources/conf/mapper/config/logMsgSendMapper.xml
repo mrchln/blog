@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flchy.blog.logging.config.mapper.ILogMsgSendDao">
+	<resultMap id="LogMsgSendEntityMap"
+		type="com.flchy.blog.logging.config.entity.LogMsgSend">
+		<result column="log_id" property="logId" />
+		<result column="msg_id" property="msgId" />
+		<result column="msg_type" property="msgType" />
+		<result column="sender" property="sender" />
+		<result column="receiver" property="receiver" />
+		<result column="msg_title" property="msgTitle" />
+		<result column="msg_cont" property="msgCont" />
+		<result column="file_path" property="filePath" />
+		<result column="send_begin_time" property="sendBeginTime" />
+		<result column="send_end_time" property="sendEndTime" />
+		<result column="send_status" property="sendStatus" />
+	</resultMap>
+
+	<select id="selectLogMsgSend" resultMap="LogMsgSendEntityMap">
+		SELECT
+			`log_id`,
+			`msg_id`,
+			`msg_type`,
+			`sender`,
+			`receiver`,
+			`msg_title`,
+			`msg_cont`,
+			`file_path`,
+			`send_begin_time`,
+			`send_end_time`,
+			`send_status`
+			FROM
+			`log_msg_send`
+			
+			WHERE
+				1 = 1
+				<if test="receiver != null and receiver != ''">
+				and receiver like concat(concat('%',#{receiver}),'%')
+				</if>
+				<if test="msgTitle != null and msgTitle != ''">
+				and msg_title like concat(concat('%',#{msgTitle}),'%')
+				</if>
+				
+				<if test="sendBeginTimeStart != null">
+				and send_begin_time >= #{sendBeginTimeStart}
+				</if>
+				<if test="sendBeginTimeStop != null">
+				 <![CDATA[  
+					and send_begin_time <= #{sendBeginTimeStop}
+				 ]]>  
+				</if>
+				<if test="sendEndTimeStart != null">
+				and send_end_time >= #{sendEndTimeStart}
+				</if>
+				<if test="sendEndTimeStop != null">
+				 <![CDATA[  
+					and send_end_time <= #{sendEndTimeStop}
+				 ]]>  
+				</if>
+			ORDER BY
+			send_begin_time desc
+	</select>
+</mapper>

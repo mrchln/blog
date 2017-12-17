@@ -30,6 +30,7 @@ import com.flchy.blog.inlets.holder.ConfigHolder;
 import com.flchy.blog.inlets.service.IArticleService;
 import com.flchy.blog.inlets.service.ICommentService;
 import com.flchy.blog.inlets.service.ILinkService;
+import com.flchy.blog.logging.annotation.Visit;
 import com.flchy.blog.pojo.Article;
 import com.flchy.blog.pojo.ArticleType;
 import com.flchy.blog.pojo.Comment;
@@ -59,7 +60,7 @@ public class BlogController {
 	private ICommentService iCommentService;
 	@Autowired
 	private Sample sample;
-
+	@Visit("查询文章分页")
 	@PostMapping(value = "/article/page")
 	public Object selectArticlePage(@RequestParam(value = "current", required = true) Integer current,
 			@RequestParam(value = "size", required = true) Integer size,@RequestParam(value = "order", required =false) Integer order, Article article) {

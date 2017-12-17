@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flchy.blog.logging.config.mapper.ILogLoginDao">
+	<resultMap id="LogLoginEntityMap"
+		type="com.flchy.blog.logging.config.entity.LogLogin">
+		<result column="log_id" property="logId" />
+		<result column="session_id" property="sessionId" />
+		<result column="opr_user_id" property="oprUserId" />
+		<result column="main_account" property="mainAccount" />
+		<result column="server_ip" property="serverIp" />
+		<result column="client_ip" property="clientIp" />
+		<result column="login_time" property="loginTime" />
+		<result column="user_agent" property="userAgent" />
+		<result column="browser_type" property="browserType" />
+	</resultMap>
+	
+	<select id="selectLogLogin" resultMap="LogLoginEntityMap">
+		SELECT
+		`log_id`,
+		`session_id`,
+		`opr_user_id`,
+		`main_account`,
+		`server_ip`,
+		`client_ip`,
+		`login_time`,
+		`user_agent`,
+		`browser_type`
+	FROM
+	`log_login`
+	where 1=1 
+	<if test="startDate != null">
+	and login_time >= #{startDate}
+	</if>
+	<if test="stopDate != null">
+	 <![CDATA[  
+	 and login_time <= #{stopDate}
+	 ]]>  
+	</if>
+	<if test="mainAccount != null and mainAccount != ''">
+	and main_account like concat(concat('%',#{mainAccount}),'%')
+	</if>
+	<if test="browserType != null and browserType != ''">
+	and browser_type like  concat(concat('%',#{browserType}),'%')
+	</if>
+	order by login_time desc 
+	</select>
+</mapper>

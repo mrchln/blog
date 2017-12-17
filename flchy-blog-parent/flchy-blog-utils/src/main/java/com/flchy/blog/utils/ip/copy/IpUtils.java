@@ -38,4 +38,16 @@ public class IpUtils {
 		}
 		return null;
 	}
+	public static String getIPAddress() {
+		try {
+			InetAddress addr = InetAddress.getLocalHost();
+			if (null != addr) {
+				String ip = addr.getHostAddress().toString();// 获得本机IP　　
+				return ip ;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 }
