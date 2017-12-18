@@ -43,7 +43,7 @@ public class ServerInvokeLog  implements AbstractLog ,ScheduledService{
 	private ArrayBlockingQueue<Map<String,Object>> arrayBlockingQueue;
 	private final static int DEFAULT_QUEUE_CAPACITY = 1024;
 	private final static int BATCH_INSERT_COUNT = 10;
-	private String sqlInsert ="INSERT INTO `bi_config`.`log_server_invoke` (`log_id`, `interface_id`, `invoke_cont`, `is_fail`, `err_msg`, `invoke_begin_time`, `invoke_end_time`, `opr_user_id`, `main_account`, `server_ip`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	private String sqlInsert ="INSERT INTO `log_server_invoke` (`log_id`, `interface_id`, `invoke_cont`, `is_fail`, `err_msg`, `invoke_begin_time`, `invoke_end_time`, `opr_user_id`, `main_account`, `server_ip`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	private String sqlInsertWithoutValues;
 	
 	private final int[] PARAM_TYPES = new int[] {

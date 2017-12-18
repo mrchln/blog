@@ -43,7 +43,7 @@ public class VisitLog  implements AbstractLog ,ScheduledService{
 	private ArrayBlockingQueue<Map<String,Object>> arrayBlockingQueue;
 	private final static int DEFAULT_QUEUE_CAPACITY = 1024;
 	private final static int BATCH_INSERT_COUNT = 128;
-	private String sqlInsert ="INSERT INTO `bi_config`.`log_visit` (`log_id`, `session_id`, `res_id`, `obj_id`, `opr_user_id`, `main_account`, `visit_begin_time`, `visit_end_time`, `is_error`, `err_msg`, `server_ip`, `client_ip`, `user_agent`, `browser_type`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	private String sqlInsert ="INSERT INTO `log_visit` (`log_id`, `session_id`, `res_id`, `obj_id`, `opr_user_id`, `main_account`, `visit_begin_time`, `visit_end_time`, `is_error`, `err_msg`, `server_ip`, `client_ip`, `user_agent`, `browser_type`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	private String sqlInsertWithoutValues;
 	
 	private final int[] PARAM_TYPES = new int[] {
@@ -79,6 +79,7 @@ public class VisitLog  implements AbstractLog ,ScheduledService{
 	@Override
 	public void start(Map<String, Object> visitMap) {
 		this.offer(visitMap);
+		flush();
 	}
 	
 	/**

@@ -39,7 +39,7 @@ public class GlobalExceptionHandler {
 		logger.error("业务异常:" + exception.getMessage());
 		logger.error("-------------------------分割线end---------------------------");
 		try{
-		iErrorLogService.insertException(exception);
+//		iErrorLogService.insertException(exception);
 		}catch (Exception e) {
 			logger.error("-------------------------分割线start-------------------------");
 			logger.error("日志添加错误:严重" + e.getMessage());

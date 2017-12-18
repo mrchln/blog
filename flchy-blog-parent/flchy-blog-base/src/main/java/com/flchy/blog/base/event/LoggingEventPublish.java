@@ -23,7 +23,6 @@ import com.flchy.blog.base.holder.SpringContextHolder;
  * @Title:Web事件发布 对应LoggingEventListener(ApplicationListener),由LoggingEventListener继续处理
  *                例如发布日志：LoggingEventPublish.getInstance().operateEvent(OperateCodeEnum.LOOK,"跳转到内页查看",
  *                false, null, destObj, resCode, startTime, new Date());
- * @author xucong
  */
 @Component
 public class LoggingEventPublish implements ApplicationEventPublisherAware {

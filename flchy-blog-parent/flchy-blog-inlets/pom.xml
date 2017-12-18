@@ -125,11 +125,11 @@
 		<!-- <dependency> <groupId>org.springframework.cloud</groupId> <artifactId>spring-cloud-starter-eureka</artifactId> 
 			</dependency> <dependency> <groupId>org.springframework.cloud</groupId> <artifactId>spring-cloud-starter-zipkin</artifactId> 
 			</dependency> -->
-			<dependency>
+	<!-- 		<dependency>
 			    <groupId>eu.bitwalker</groupId>
 			    <artifactId>UserAgentUtils</artifactId>
 			    <version>1.20</version>
-			</dependency>
+			</dependency> -->
 			<dependency>
 			    <groupId>com.baidu.aip</groupId>
 			    <artifactId>java-sdk</artifactId>
@@ -142,11 +142,6 @@
 				<scope>true</scope>
 				<version>1.5.8.RELEASE</version>
 			</dependency> -->
-			<dependency>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-starter-aop</artifactId>
-				<version>${spring-boot.version}</version>
-			</dependency>
 	</dependencies>
 
 	<dependencyManagement>

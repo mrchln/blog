@@ -47,7 +47,7 @@ public class MsgSendLog  implements AbstractLog ,ScheduledService{
 	private ArrayBlockingQueue<Map<String,Object>> arrayBlockingQueue;
 	private final static int DEFAULT_QUEUE_CAPACITY = 1024;
 	private final static int BATCH_INSERT_COUNT = 128;
-	private String sqlInsert ="INSERT INTO `bi_config`.`log_msg_send` (`log_id`, `msg_id`, `msg_type`, `sender`, `receiver`, `msg_title`, `msg_cont`, `file_path`, `send_begin_time`, `send_end_time`, `send_status`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	private String sqlInsert ="INSERT INTO `log_msg_send` (`log_id`, `msg_id`, `msg_type`, `sender`, `receiver`, `msg_title`, `msg_cont`, `file_path`, `send_begin_time`, `send_end_time`, `send_status`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	private String sqlInsertWithoutValues;
 	
 	private final int[] PARAM_TYPES = new int[] {

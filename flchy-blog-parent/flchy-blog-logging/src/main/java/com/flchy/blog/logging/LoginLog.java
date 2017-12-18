@@ -47,7 +47,7 @@ public class LoginLog  implements AbstractLog ,ScheduledService{
 	private ArrayBlockingQueue<Map<String,Object>> arrayBlockingQueue;
 	private final static int DEFAULT_QUEUE_CAPACITY = 1024;
 	private final static int BATCH_INSERT_COUNT = 10;
-	private String sqlInsert ="INSERT INTO `bi_config`.`log_login` (`log_id`, `session_id`, `opr_user_id`, `main_account`, `server_ip`, `client_ip`, `login_time`, `user_agent`, `browser_type`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	private String sqlInsert ="INSERT INTO `log_login` (`log_id`, `session_id`, `opr_user_id`, `main_account`, `server_ip`, `client_ip`, `login_time`, `user_agent`, `browser_type`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	private String sqlInsertWithoutValues;
 	
 	private final int[] PARAM_TYPES = new int[] {

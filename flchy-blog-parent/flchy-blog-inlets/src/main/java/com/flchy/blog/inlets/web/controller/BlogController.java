@@ -64,6 +64,7 @@ public class BlogController {
 	@PostMapping(value = "/article/page")
 	public Object selectArticlePage(@RequestParam(value = "current", required = true) Integer current,
 			@RequestParam(value = "size", required = true) Integer size,@RequestParam(value = "order", required =false) Integer order, Article article) {
+		System.out.println(100/0);
 		Integer typeId = article.getTypeId();
 		article = new Article();
 		article.setTypeId(typeId);

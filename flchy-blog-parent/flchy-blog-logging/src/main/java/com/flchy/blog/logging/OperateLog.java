@@ -44,7 +44,7 @@ public class OperateLog  implements AbstractLog ,ScheduledService{
 	private ArrayBlockingQueue<Map<String,Object>> arrayBlockingQueue;
 	private final static int DEFAULT_QUEUE_CAPACITY = 1024;
 	private final static int BATCH_INSERT_COUNT = 128;
-	private String sqlInsert ="INSERT INTO `bi_config`.`log_operate` (`log_id`, `session_id`, `res_id`, `opr_type`, `opr_obj`, `opr_cont`, `opr_user_id`, `main_account`, `opr_begin_time`, `opr_end_time`, `is_error`, `err_msg`, `server_ip`, `client_ip`, `user_agent`, `browser_type`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	private String sqlInsert ="INSERT INTO `log_operate` (`log_id`, `session_id`, `res_id`, `opr_type`, `opr_obj`, `opr_cont`, `opr_user_id`, `main_account`, `opr_begin_time`, `opr_end_time`, `is_error`, `err_msg`, `server_ip`, `client_ip`, `user_agent`, `browser_type`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	private String sqlInsertWithoutValues;
 	
 	private final int[] PARAM_TYPES = new int[] {
