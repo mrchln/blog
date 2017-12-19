@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
+import com.flchy.blog.base.annotation.Log;
+import com.flchy.blog.base.enums.OperateCodeEnum;
 import com.flchy.blog.base.exception.BusinessException;
 import com.flchy.blog.base.response.ResponseCommand;
 import com.flchy.blog.base.response.ResultPage;
@@ -30,7 +32,6 @@ import com.flchy.blog.inlets.holder.ConfigHolder;
 import com.flchy.blog.inlets.service.IArticleService;
 import com.flchy.blog.inlets.service.ICommentService;
 import com.flchy.blog.inlets.service.ILinkService;
-import com.flchy.blog.logging.annotation.Visit;
 import com.flchy.blog.pojo.Article;
 import com.flchy.blog.pojo.ArticleType;
 import com.flchy.blog.pojo.Comment;
@@ -60,7 +61,7 @@ public class BlogController {
 	private ICommentService iCommentService;
 	@Autowired
 	private Sample sample;
-	@Visit("查询文章分页")
+	@Log(value="查询文章分页",type=OperateCodeEnum.PUBLIC)
 	@PostMapping(value = "/article/page")
 	public Object selectArticlePage(@RequestParam(value = "current", required = true) Integer current,
 			@RequestParam(value = "size", required = true) Integer size,@RequestParam(value = "order", required =false) Integer order, Article article) {
@@ -77,6 +78,7 @@ public class BlogController {
 		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, new ResultPage(page));
 	}
 
+	@Log(value="查询文章",type=OperateCodeEnum.PUBLIC)
 	@GetMapping(value = "/article/{id}")
 	public Object selectArticleKey(@PathVariable Integer id) {
 		Article article = iArticleService.selectById(id);
@@ -89,13 +91,16 @@ public class BlogController {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				article.setSee(article.getSee() + 1);
-				article.updateById();
+				Article updateArticle=new  Article();
+				updateArticle.setId(article.getId());
+				updateArticle.setSee(article.getSee() + 1);
+				updateArticle.updateById();
 			}
 		}).start();
 		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, article);
 	}
 	
+	@Log(value="查询关于我",type=OperateCodeEnum.PUBLIC)
 	@GetMapping(value = "/about")
 	public Object selectAbout() {
 		Article article = iArticleService.selectById(-1);
@@ -108,13 +113,13 @@ public class BlogController {
 		}).start();
 		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, article);
 	}
-
+	@Log(value="查询文章类型",type=OperateCodeEnum.PUBLIC)
 	@GetMapping("/articleType")
 	public Object selectarticleType(@QueryParam("id") Integer id) {
 		List<ArticleType> response = ArticleTypeHolder.getArticleType(id);
 		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, response);
 	}
-
+	@Log(value="查询友情链接",type=OperateCodeEnum.PUBLIC)
 	@GetMapping(value = "/link")
 	public Object selectLink(@QueryParam("id") Integer id) {
 		if (id != null) {
@@ -124,14 +129,14 @@ public class BlogController {
 				.selectList(new EntityWrapper<Link>().where("status={0}", StatusEnum.NORMAL.getCode()));
 		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, response);
 	}
-
+	@Log(value="查询评论",type=OperateCodeEnum.PUBLIC)
 	@PostMapping(value = "/comment/page")
 	public Object selectWebCommentPage(@RequestParam(value = "current", required = true) Integer current,
 			@RequestParam(value = "size", required = true) Integer size, Integer articleId,@RequestParam(value = "nickName", required = false) String nickName) {
 		ResultPage selectWebComment = iCommentService.selectWebComment(articleId, current, size,nickName);
 		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, selectWebComment);
 	}
-
+	@Log(value="评论 文章",type=OperateCodeEnum.PUBLIC)
 	@PostMapping(value = "/comment")
 	public Object insertComment(@ModelAttribute Comment comment, HttpServletRequest request) {
 		
@@ -155,18 +160,19 @@ public class BlogController {
 		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, saveComment);
 	}
 	
-
+	@Log(value="测试",type=OperateCodeEnum.PUBLIC)
 	@GetMapping(value = "/verific")
 	public Object verific(HttpServletRequest request) {
 		return sample.getVerific().getData();
 	}
-	
+	@Log(value="查询最新评论",type=OperateCodeEnum.PUBLIC)
 	@GetMapping(value = "/getNewestComment")
 	public Object getNewestComment(){
 		Page<Comment> page = new Page<>(1, 10);
 		iCommentService.selectPage(page,new EntityWrapper<Comment>().where(" status = {0}", StatusEnum.NORMAL.getCode()).orderBy("create_time",false));
 		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, new ResultPage(page));
 	}
+	@Log(value="查询Blog配置",type=OperateCodeEnum.PUBLIC)
 	@GetMapping(value = "/getBlogConfig")
 	public Object getBlogConfig(){
 		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, JSON.parseArray(ConfigHolder.getConfig(Keys.BLOG_CONFIG.getKey())));

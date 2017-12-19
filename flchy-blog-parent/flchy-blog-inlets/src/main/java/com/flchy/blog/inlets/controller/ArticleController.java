@@ -39,7 +39,6 @@ public class ArticleController {
 
 	/**
 	 * 添加
-	 * 
 	 * @param article
 	 * @return
 	 */

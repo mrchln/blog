@@ -7,6 +7,7 @@ package com.flchy.blog.base.enums;
  
 public enum OperateCodeEnum {
     UNKNOW("UNKNOW"),
+    PUBLIC("PUBLIC"),
     INSERT("INSERT"),
     UPDATE("UPDATE"), 
     DELETE("DELETE"),

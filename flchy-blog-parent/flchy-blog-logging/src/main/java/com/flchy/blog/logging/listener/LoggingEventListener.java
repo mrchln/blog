@@ -7,6 +7,7 @@ import com.flchy.blog.base.event.AbstractWebVisitEvent;
 import com.flchy.blog.base.event.impl.InvokeEvent;
 import com.flchy.blog.base.event.impl.LoginEvent;
 import com.flchy.blog.base.event.impl.MsgSendEvent;
+import com.flchy.blog.base.event.impl.PublicLogEvent;
 import com.flchy.blog.base.event.impl.UsageEvent;
 import com.flchy.blog.base.event.impl.VisitEvent;
 import com.flchy.blog.base.holder.SpringContextHolder;
@@ -117,6 +118,24 @@ public class LoggingEventListener implements ApplicationListener<AbstractWebVisi
 					.set("send_begin_time",sendEvent.getSendBeginTime())
 					.set("send_end_time",sendEvent.getSendEndTime())
 					.set("send_status",sendEvent.getSendTtatus())
+					.get());
+		}
+		if(event instanceof PublicLogEvent){
+			PublicLogEvent publicLogEvent=(PublicLogEvent) event;
+			bean= SpringContextHolder.getBean("publicLog", AbstractLog.class);
+			bean.start(new NewMapUtil().set("log_id",IDGenerator.getId())
+					.set("opr_obj",publicLogEvent.getOprObj())
+					.set("opr_cont",publicLogEvent.getOprCont())
+					.set("account",publicLogEvent.getAccount())
+					.set("begin_time",publicLogEvent.getBeginTime())
+					.set("end_time",publicLogEvent.getEndTime())
+					.set("is_error",publicLogEvent.getIsError())
+					.set("err_msg",publicLogEvent.getErrMsg())
+					.set("server_ip",publicLogEvent.getServerip())
+					.set("client_ip",publicLogEvent.getClientIp())
+					.set("user_agent",publicLogEvent.getUserAgent())
+					.set("browser_type",publicLogEvent.getBrowserType())
+					.set("system",publicLogEvent.getSystem())
 					.get());
 		}
 	}

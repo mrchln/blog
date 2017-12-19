@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,29 +27,27 @@ import com.flchy.blog.utils.sql.SqlUtils;
 
 
 /**
- * 访问日志日志批量添加
+ * 记录开放接口日志批量添加
  * @author nieqs
  *
  */
 
-@Component("visitLog")
-public class VisitLog  implements AbstractLog ,ScheduledService{
+@Component("publicLog")
+public class PublicLog  implements AbstractLog ,ScheduledService{
 	
-	public static VisitLog getInstance() {
-		return SpringContextHolder.getBean(VisitLog.class);
+	public static PublicLog getInstance() {
+		return SpringContextHolder.getBean(PublicLog.class);
 	}
 	
-	private static Logger logger = LoggerFactory.getLogger(VisitLog.class);
+	private static Logger logger = LoggerFactory.getLogger(PublicLog.class);
 	
 	private ArrayBlockingQueue<Map<String,Object>> arrayBlockingQueue;
 	private final static int DEFAULT_QUEUE_CAPACITY = 1024;
 	private final static int BATCH_INSERT_COUNT = 128;
-	private String sqlInsert ="INSERT INTO `log_visit` (`log_id`, `session_id`, `res_id`, `obj_id`, `opr_user_id`, `main_account`, `visit_begin_time`, `visit_end_time`, `is_error`, `err_msg`, `server_ip`, `client_ip`, `user_agent`, `browser_type`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	private String sqlInsert ="INSERT INTO `db_config`.`log_public` ( `log_id`, `opr_obj`, `opr_cont`, `account`, `begin_time`, `end_time`, `is_error`, `err_msg`, `server_ip`, `client_ip`, `user_agent`, `browser_type`, `system`) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	private String sqlInsertWithoutValues;
 	
 	private final int[] PARAM_TYPES = new int[] {
-				Types.VARCHAR,
-				Types.VARCHAR,
 				Types.VARCHAR,
 				Types.VARCHAR,
 				Types.VARCHAR,
@@ -61,12 +60,13 @@ public class VisitLog  implements AbstractLog ,ScheduledService{
 				Types.VARCHAR,
 				Types.VARCHAR,
 				Types.VARCHAR,
+				Types.VARCHAR,
 	};
 	
 	@Autowired
 	private ConfigDataSource configDataSource;
 	
-	public VisitLog() {
+	public PublicLog() {
 		this.arrayBlockingQueue = new ArrayBlockingQueue<Map<String,Object>>(DEFAULT_QUEUE_CAPACITY);
 	}
 	
@@ -148,19 +148,18 @@ public class VisitLog  implements AbstractLog ,ScheduledService{
 				for(Map<String,Object> messageLog : shardingFlushEntries) {
 					Object[] params = new Object[] {
 							messageLog.get("log_id"),
-							messageLog.get("session_id"),
-							messageLog.get("res_id"),
-							messageLog.get("obj_id"),
-							messageLog.get("opr_user_id"),
-							messageLog.get("main_account"),
-							messageLog.get("visit_begin_time"),
-							messageLog.get("visit_end_time"),
+							messageLog.get("opr_obj"),
+							messageLog.get("opr_cont"),
+							messageLog.get("account"),
+							messageLog.get("begin_time"),
+							messageLog.get("end_time"),
 							messageLog.get("is_error"),
 							messageLog.get("err_msg"),
 							messageLog.get("server_ip"),
 							messageLog.get("client_ip"),
 							messageLog.get("user_agent"),
 							messageLog.get("browser_type"),
+							messageLog.get("system"),
 					};
 					
 					SqlUtils.appendSqlValues(sqlBuilder, params, PARAM_TYPES);
@@ -198,19 +197,18 @@ public class VisitLog  implements AbstractLog ,ScheduledService{
 						for (Map<String, Object> messageLog : shardingFlushEntries) {
 							try {
 								pstmt.setString(1,String.valueOf(messageLog.get("log_id")));
-								pstmt.setString(2, String.valueOf(messageLog.get("session_id")));
-								pstmt.setString(3, String.valueOf(messageLog.get("res_id")));
-								pstmt.setString(4, String.valueOf(messageLog.get("obj_id")));
-								pstmt.setString(5, String.valueOf(messageLog.get("opr_user_id")));
-								pstmt.setString(6, String.valueOf(messageLog.get("main_account")));
-								pstmt.setObject(7,messageLog.get("visit_begin_time"));
-								pstmt.setObject(8,messageLog.get("visit_end_time"));
-								pstmt.setInt(9, Integer.valueOf(messageLog.get("is_error").toString()));
-								pstmt.setString(10, String.valueOf(messageLog.get("err_msg")));
-								pstmt.setString(11, String.valueOf(messageLog.get("server_ip")));
-								pstmt.setString(12, String.valueOf(messageLog.get("client_ip")));
-								pstmt.setString(13, String.valueOf(messageLog.get("user_agent")));
-								pstmt.setString(14, String.valueOf(messageLog.get("browser_type")));
+								pstmt.setString(2, String.valueOf(messageLog.get("opr_obj")));
+								pstmt.setString(3, String.valueOf(messageLog.get("opr_cont")));
+								pstmt.setString(4, String.valueOf(messageLog.get("account")));
+								pstmt.setObject(5,(Date)messageLog.get("begin_time"));
+								pstmt.setObject(6,(Date)messageLog.get("end_time"));
+								pstmt.setObject(7, messageLog.get("is_error"));
+								pstmt.setString(8, String.valueOf(messageLog.get("err_msg")));
+								pstmt.setString(9, String.valueOf(messageLog.get("server_ip")));
+								pstmt.setString(10, String.valueOf(messageLog.get("client_ip")));
+								pstmt.setString(11, String.valueOf(messageLog.get("user_agent")));
+								pstmt.setString(12, String.valueOf(messageLog.get("browser_type")));
+								pstmt.setString(13, String.valueOf(messageLog.get("system")));
 								pstmt.executeUpdate();
 							} catch (SQLException ex2) {
 								logger.error("SQL exception while save ods user info : " + ex2.getMessage() + ", failed message: \n\t" + messageLog.toString(), ex2);
@@ -238,7 +236,7 @@ public class VisitLog  implements AbstractLog ,ScheduledService{
 	}
 	
 	public String getName() {
-		return "访问日志日志批量添加";
+		return "记录功能操作日志批量添加";
 	}
 	
 	@Override

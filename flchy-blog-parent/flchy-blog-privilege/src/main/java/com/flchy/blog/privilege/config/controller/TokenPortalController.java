@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.flchy.blog.base.annotation.Log;
+import com.flchy.blog.base.enums.OperateCodeEnum;
 import com.flchy.blog.base.exception.BusinessException;
 import com.flchy.blog.base.response.ResponseCommand;
 import com.flchy.blog.plugin.redis.RedisBusines;
@@ -36,7 +38,6 @@ public class TokenPortalController {
 	@Autowired
 	private RedisBusines redisBusines;
 	private static int expire = 60 * 60 * 2;
-
 	@PostMapping("/login")
 	public Object login(@RequestParam(value = "userName", required = false) String userName,
 			@RequestParam(value = "passWord", required = false) String passWord,

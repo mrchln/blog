@@ -15,6 +15,7 @@ import com.flchy.blog.base.enums.StatusEnum;
 import com.flchy.blog.base.event.impl.InvokeEvent;
 import com.flchy.blog.base.event.impl.LoginEvent;
 import com.flchy.blog.base.event.impl.MsgSendEvent;
+import com.flchy.blog.base.event.impl.PublicLogEvent;
 import com.flchy.blog.base.event.impl.UsageEvent;
 import com.flchy.blog.base.event.impl.VisitEvent;
 import com.flchy.blog.base.holder.SpringContextHolder;
@@ -115,6 +116,29 @@ public class LoggingEventPublish implements ApplicationEventPublisherAware {
 	public void msgSendEvent(String msgId, MsgTypeEnum msgType, String sender, String receiver, String msgTitle, String msgCont, String filePath, Date sendBeginTime, Date sendEndTime, StatusEnum sendTtatus){
 		MsgSendEvent event=new MsgSendEvent(this, msgId, msgType.getValue(), sender, receiver, msgTitle, msgCont, filePath, sendBeginTime, sendEndTime, sendTtatus.getValue());
 		this.eventPublisher.publishEvent(event);
+	}
+	
+	/**
+	 * 开放接口日志
+	 * @param oprObj
+	 * @param oprCont
+	 * @param account
+	 * @param beginTime
+	 * @param endTime
+	 * @param isError
+	 * @param errMsg
+	 * @param serverip
+	 * @param clientIp
+	 * @param userAgent
+	 * @param browserType
+	 * @param system
+	 */
+	public void publicLogEvent(String oprObj, String oprCont, String account, Date beginTime, Date endTime,
+			Integer isError, String errMsg, String serverip, String clientIp, String userAgent, String browserType,
+			String system){
+		PublicLogEvent event=new PublicLogEvent(this, oprObj, oprCont, account, beginTime, endTime, isError, errMsg, serverip, clientIp, userAgent, browserType, system);
+		this.eventPublisher.publishEvent(event);
+		
 	}
 
 }
