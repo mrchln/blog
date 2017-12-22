@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
+import com.flchy.blog.base.annotation.Log;
+import com.flchy.blog.base.enums.OperateCodeEnum;
 import com.flchy.blog.base.exception.BusinessException;
 import com.flchy.blog.base.response.ResponseCommand;
 import com.flchy.blog.base.response.ResultPage;
@@ -47,6 +49,7 @@ public class CommentController {
 	private ICommentService iCommentService;
 	
 	@PostMapping(value = "/page")
+	@Log(value="查询评论分页",type=OperateCodeEnum.SELECT)
 	public Object selectArticlePage(@RequestParam(value = "current", required = true) Integer current,
 			@RequestParam(value = "size", required = true) Integer size, Comment comment) {
 		if(comment.getStatus()==null){
@@ -59,6 +62,7 @@ public class CommentController {
 	}
 
 	@GetMapping(value="/{id}")
+	@Log(value="通过ID查询评论",type=OperateCodeEnum.SELECT)
 	public Object selectArticleKey(@PathVariable Integer id,@RequestParam(value = "token", required = false) String token) {
 		Comment article = iCommentService.selectById(id);
 		if (article == null) {
@@ -76,6 +80,7 @@ public class CommentController {
 	 * @return
 	 */
 	@PostMapping
+	@Log(value="添加评论",type=OperateCodeEnum.INSERT)
 	public Object insert(@ModelAttribute Comment comment) {
 		if (comment == null) {
 			throw new BusinessException("添加为空！");
@@ -96,6 +101,7 @@ public class CommentController {
 	 * @return
 	 */
 	@PostMapping("reply")
+	@Log(value="回复评论",type=OperateCodeEnum.INSERT)
 	public Object reply(@ModelAttribute Comment comment, HttpServletRequest request) {
 		if (comment == null) {
 			throw new BusinessException("添加为空！");
@@ -132,6 +138,7 @@ public class CommentController {
 	 * @return
 	 */
 	@PutMapping
+	@Log(value="修改评论",type=OperateCodeEnum.UPDATE)
 	public Object update(Comment comment) {
 		if (comment.getId() == null) {
 			throw new BusinessException("ID must preach");
@@ -144,6 +151,7 @@ public class CommentController {
 	}
 
 	@DeleteMapping
+	@Log(value="删除评论",type=OperateCodeEnum.DELETE)
 	public Object delete(Comment comment) {
 		Comment selectById = comment.selectById();
 		if(selectById.getStatus()==StatusEnum.DELETE.getCode()){

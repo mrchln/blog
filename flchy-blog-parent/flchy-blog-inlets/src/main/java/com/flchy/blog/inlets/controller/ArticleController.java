@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
+import com.flchy.blog.base.annotation.Log;
+import com.flchy.blog.base.enums.OperateCodeEnum;
 import com.flchy.blog.base.exception.BusinessException;
 import com.flchy.blog.base.response.ResponseCommand;
 import com.flchy.blog.base.response.ResultPage;
@@ -43,6 +45,7 @@ public class ArticleController {
 	 * @return
 	 */
 	@PostMapping
+	@Log(value="添加文章",type=OperateCodeEnum.INSERT)
 	public Object insert(@ModelAttribute Article article) {
 		if (article == null) {
 			throw new BusinessException("添加为空！");
@@ -65,6 +68,7 @@ public class ArticleController {
 	 * @return
 	 */
 	@PutMapping
+	@Log(value="修改文章",type=OperateCodeEnum.UPDATE)
 	public Object update(Article article) {
 		if (article.getId() == null) {
 			throw new BusinessException("ID must preach");
@@ -77,6 +81,7 @@ public class ArticleController {
 	}
 
 	@DeleteMapping
+	@Log(value="删除文章",type=OperateCodeEnum.DELETE)
 	public Object delete(Article article) {
 		Article selectById = article.selectById();
 		if(selectById.getStatus()==StatusEnum.DELETE.getCode()){
@@ -92,6 +97,7 @@ public class ArticleController {
 	}
 
 	@PostMapping(value = "/page")
+	@Log(value="查询文章分页",type=OperateCodeEnum.SELECT)
 	public Object selectArticlePage(@RequestParam(value = "current", required = true) Integer current,
 			@RequestParam(value = "size", required = true) Integer size, Article article) {
 		Page<Article> page = new Page<>(Integer.valueOf(current), Integer.valueOf(size));
@@ -100,6 +106,7 @@ public class ArticleController {
 	}
 
 	@GetMapping(value="/{id}")
+	@Log(value="通过ID查询文章",type=OperateCodeEnum.SELECT)
 	public Object selectArticleKey(@PathVariable Integer id,@RequestParam(value = "token", required = false) String token) {
 		Article article = iArticleService.selectById(id);
 		if (article == null) {
@@ -115,6 +122,7 @@ public class ArticleController {
 	 * @return
 	 */
 	@RequestMapping(value="deleted",method=RequestMethod.POST)
+	@Log(value="查询已删除文章",type=OperateCodeEnum.SELECT)
 	public Object selectArticleDeleted(@RequestParam(value = "current", required = true) Integer current,
 			@RequestParam(value = "size", required = true) Integer size) {
 		Page<Article> page = new Page<>(Integer.valueOf(current), Integer.valueOf(size));

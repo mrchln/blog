@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.flchy.blog.base.annotation.Log;
+import com.flchy.blog.base.enums.OperateCodeEnum;
 import com.flchy.blog.base.exception.BusinessException;
 import com.flchy.blog.base.response.ResponseCommand;
 import com.flchy.blog.inlets.service.ILinkService;
@@ -35,6 +37,7 @@ public class LinkController {
 	private ILinkService iLinkService;
 
 	@PostMapping
+	@Log(value="添加友情链接",type=OperateCodeEnum.INSERT)
 	public Object insert(Link entity) {
 		entity.setCreateTime(new Date());
 		boolean isok = iLinkService.insert(entity);
@@ -45,6 +48,7 @@ public class LinkController {
 	}
 
 	@PutMapping
+	@Log(value="修改友情链接",type=OperateCodeEnum.UPDATE)
 	public Object update(Link entity) {
 		if (entity.getId() == null) {
 			throw new BusinessException("ID must preach");
@@ -58,6 +62,7 @@ public class LinkController {
 	}
 
 	@DeleteMapping
+	@Log(value="删除友情链接",type=OperateCodeEnum.DELETE)
 	public Object delete(Link entity) {
 		boolean isok = iLinkService.delete(new EntityWrapper<Link>(entity));
 		if (!isok) {
@@ -67,6 +72,7 @@ public class LinkController {
 	}
 
 	@GetMapping
+	@Log(value="获取友情链接",type=OperateCodeEnum.SELECT)
 	public Object selectKey(@QueryParam("id") Integer id) {
 		if (id != null) {
 			return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, iLinkService.selectById(id));

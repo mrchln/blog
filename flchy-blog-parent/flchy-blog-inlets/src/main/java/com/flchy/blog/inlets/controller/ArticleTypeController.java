@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.flchy.blog.base.annotation.Log;
+import com.flchy.blog.base.enums.OperateCodeEnum;
 import com.flchy.blog.base.exception.BusinessException;
 import com.flchy.blog.base.response.ResponseCommand;
 import com.flchy.blog.inlets.holder.ArticleTypeHolder;
@@ -34,6 +36,7 @@ public class ArticleTypeController {
 	private IArticleTypeService iArticleTypeService;
 	
 	@PostMapping
+	@Log(value="添加文章类型",type=OperateCodeEnum.INSERT)
 	public Object add(ArticleType entity){
 		boolean isok=iArticleTypeService.insert(entity);
 		if (!isok) {
@@ -44,6 +47,7 @@ public class ArticleTypeController {
 	}
 	
 	@PutMapping
+	@Log(value="修改文章类型",type=OperateCodeEnum.UPDATE)
 	public Object update(ArticleType entity){
 		if(entity.getId()==null){
 			throw new BusinessException("ID must preach");
@@ -57,6 +61,7 @@ public class ArticleTypeController {
 	}
 	
 	@DeleteMapping
+	@Log(value="删除文章类型",type=OperateCodeEnum.DELETE)
 	public Object delete(ArticleType entity){
 		boolean isok = iArticleTypeService.delete(new EntityWrapper<ArticleType>(entity));
 		if (!isok) {
@@ -67,6 +72,7 @@ public class ArticleTypeController {
 	}
 		
 	@GetMapping
+	@Log(value="查询文章类型",type=OperateCodeEnum.SELECT)
 	public Object selectKey(@QueryParam("id") Integer id) {
 //		if(id!=null){
 //			return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, iArticleTypeService.selectById(id));

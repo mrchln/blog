@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
+import com.flchy.blog.base.annotation.Log;
+import com.flchy.blog.base.enums.OperateCodeEnum;
 import com.flchy.blog.base.exception.BusinessException;
 import com.flchy.blog.base.response.ResponseCommand;
 import com.flchy.blog.base.response.ResultPage;
@@ -38,6 +40,7 @@ public class ConfigController {
 	
 	
 	@PostMapping(value = "/page")
+	@Log(value="查询配置信息分页",type=OperateCodeEnum.SELECT)
 	public Object selectArticlePage(@RequestParam(value = "current", required = true) Integer current,
 			@RequestParam(value = "size", required = true) Integer size, Config article) {
 			Page<Config> page = new Page<>(Integer.valueOf(current), Integer.valueOf(size));
@@ -46,6 +49,7 @@ public class ConfigController {
 	}
 	
 	@PostMapping
+	@Log(value="添加配置信息",type=OperateCodeEnum.INSERT)
 	public Object insert(Config entity) {
 		boolean isok = iConfigService.insert(entity);
 		if (!isok) {
@@ -56,6 +60,7 @@ public class ConfigController {
 	}
 
 	@PutMapping
+	@Log(value="修改配置信息",type=OperateCodeEnum.UPDATE)
 	public Object update(Config entity) {
 		if (entity.getId() == null) {
 			throw new BusinessException("ID must preach");
@@ -69,6 +74,7 @@ public class ConfigController {
 	}
 
 	@DeleteMapping
+	@Log(value="删除配置信息",type=OperateCodeEnum.DELETE)
 	public Object delete(Config entity) {
 		if(entity.getId()==null){
 			throw new BusinessException("ID must preach");
@@ -82,6 +88,7 @@ public class ConfigController {
 	}
 
 	@GetMapping
+	@Log(value="获取配置信息",type=OperateCodeEnum.SELECT)
 	public Object selectKey(@QueryParam("id") Integer id) {
 		if (id != null) {
 			return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, iConfigService.selectById(id));

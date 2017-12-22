@@ -52,10 +52,10 @@ public class AuthFilter implements Filter {
 		HttpServletResponse response = (HttpServletResponse) httpResponse;
 		HttpServletRequest request = (HttpServletRequest) httpRequest;
 		//微信调试后面删除
-		chain.doFilter(request, response);
-		if (true) {
-			return;
-		}
+//		chain.doFilter(request, response);
+//		if (true) {
+//			return;
+//		}
 		
 		if (request.getMethod().equals("OPTIONS")) {
 			chain.doFilter(request, response);

@@ -1,8 +1,10 @@
 package com.flchy.blog.logging.listener;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.Cookie;
@@ -16,8 +18,6 @@ import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.joda.time.DateTime;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -43,8 +43,8 @@ import eu.bitwalker.useragentutils.UserAgent;
 @Aspect
 @Component
 public class InterceptorLog {
-//	private static Logger logger = LoggerFactory.getLogger(InterceptorLog.class);
 	private ThreadLocal<Long> startTime = new ThreadLocal<Long>();
+	private ThreadLocal<String> requestParameter = new ThreadLocal<String>();
 	private static String serverIp;
 	static {
 		serverIp = IpUtils.getIPAddress();
@@ -67,6 +67,25 @@ public class InterceptorLog {
 	public void logBefore(JoinPoint joinPoint) {
 		// 开始计时
 		startTime.set(System.currentTimeMillis());
+		Object[] arguments = joinPoint.getArgs(); // 获得参数列表
+		//防止controller修改请求参数后数据
+		if (arguments==null || arguments.length <= 0) {
+			requestParameter.set(null);
+		} else {
+			List<Object> arrList=new ArrayList<>();
+			for (int i = 0; i < arguments.length; i++) {
+				Object object = arguments[i];
+				//RequestFacade 不是请求参数
+				if(!(object instanceof HttpServletRequest)){
+					arrList.add(object);
+				}
+			}
+			if(arrList.size()<1){
+				requestParameter.set(null);
+			}else{
+				requestParameter.set(JSONArray.toJSONString(arrList));
+			}
+		}
 	}
 
 	/**
@@ -108,9 +127,13 @@ public class InterceptorLog {
 			OperatingSystem os = userAgent.getOperatingSystem();
 			// 系统名称
 			String system = os.getName();
-			LoggingEventPublish.getInstance().publicLogEvent(value, JSONArray.toJSONString(joinPoint.getArgs()),
-					JSON.toJSONString(cookieMap), new Date(start), DateTime.now().toDate(), -1, null, serverIp,
-					remoteAddr, ua, browserName, system);
+			String cookieJson = JSON.toJSONString(cookieMap);
+			try {
+				LoggingEventPublish.getInstance().publicLogEvent(value, requestParameter.get(), cookieJson, new Date(start),
+						DateTime.now().toDate(), -1, null, serverIp, remoteAddr, ua, browserName, system);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		} else {
 			if (type.equals(OperateCodeEnum.SELECT)) {
 				LoggingEventPublish.getInstance().visitEvent(adoptToken, methodName, value, "1", "admin", -1, null,
@@ -118,7 +141,7 @@ public class InterceptorLog {
 			} else {
 				ErrorMsgBean bean = new ErrorMsgBean();
 				bean.setMethodName(methodName);
-				bean.setParameters(JSONArray.toJSONString(joinPoint.getArgs()));
+				bean.setParameters( requestParameter.get());
 				bean.setTime(endTime + "");
 				// bean.setResult(result.toString());
 				LoggingEventPublish.getInstance().usageEvent(adoptToken, methodName, type, value,
@@ -126,7 +149,6 @@ public class InterceptorLog {
 						serverIp, remoteAddr, ua, browserName);
 			}
 		}
-
 	}
 
 	/**
@@ -160,7 +182,7 @@ public class InterceptorLog {
 		bean.setErrorCode(e.getClass().getName());
 		bean.setMessage(e.getMessage());
 		bean.setMethodName(methodName);
-		bean.setParameters(JSONArray.toJSONString(joinPoint.getArgs()));
+		bean.setParameters(requestParameter.get());
 		bean.setTime(endTime + "");
 		if (type.equals(OperateCodeEnum.PUBLIC)) {
 			Map<String, Object> cookieMap = new HashMap<>();
@@ -174,7 +196,7 @@ public class InterceptorLog {
 			OperatingSystem os = userAgent.getOperatingSystem();
 			// 系统名称
 			String system = os.getName();
-			LoggingEventPublish.getInstance().publicLogEvent(value, JSONArray.toJSONString(joinPoint.getArgs()),
+			LoggingEventPublish.getInstance().publicLogEvent(value, requestParameter.get(),
 					JSON.toJSONString(cookieMap), new Date(start), DateTime.now().toDate(), 1, e.getMessage(), serverIp,
 					remoteAddr, ua, browserName, system);
 		} else {
@@ -189,41 +211,4 @@ public class InterceptorLog {
 			}
 		}
 	}
-
-	/**
-	 * 拦截器具体实现
-	 * 
-	 * @param pjp
-	 * @return JsonResult（被拦截方法的执行结果，或需要登录的错误提示。）
-	 *//*
-		 * @Around("execution(* com.flchy.blog..*(..))  and @annotation(com.flchy.blog.logging.annotation.Visit)"
-		 * ) //指定拦截器规则；也可以直接把"execution(* com.xjj………)"写进这里 public Object
-		 * Interceptor(ProceedingJoinPoint pjp){ Date
-		 * beginDate=DateTime.now().toDate(); long beginTime =
-		 * System.currentTimeMillis(); MethodSignature signature =
-		 * (MethodSignature) pjp.getSignature(); Method method =
-		 * signature.getMethod(); //获取被拦截的方法 String methodName =
-		 * method.getName(); //获取被拦截的方法名 logger.info("请求开始，方法：{}", methodName);
-		 * Object result = null; RequestAttributes ra =
-		 * RequestContextHolder.getRequestAttributes(); ServletRequestAttributes
-		 * sra = (ServletRequestAttributes) ra; HttpServletRequest request =
-		 * sra.getRequest();
-		 * 
-		 * String adoptToken = request.getParameter("token"); String remoteAddr
-		 * = InternetProtocol.getRemoteAddr(request); String ua =
-		 * request.getHeader("User-Agent"); //转成UserAgent对象 UserAgent userAgent
-		 * = UserAgent.parseUserAgentString(ua); //获取浏览器信息 Browser browser =
-		 * userAgent.getBrowser(); //浏览器名称 String browserName =
-		 * browser.getName(); boolean isError=false; String errMsg=null; try {
-		 * if(result == null){ // 一切正常的情况下，继续执行被拦截的方法 result = pjp.proceed(); }
-		 * } catch (Throwable e) { isError=true; errMsg=e.getMessage();
-		 * logger.info("exception: ", e); //异常 } long costMs =
-		 * System.currentTimeMillis() - beginTime; Visit annotation =
-		 * method.getAnnotation(Visit.class); String value = annotation.value();
-		 * logger.info("{}请求结束，耗时：{}ms", methodName, costMs);
-		 * LoggingEventPublish.getInstance().visitEvent(adoptToken, "res",
-		 * value, "1", "admin", isError?1:-1, errMsg, serverIp, remoteAddr, ua,
-		 * browserName, beginDate, DateTime.now().toDate()); return result; }
-		 */
-
 }

@@ -12,7 +12,8 @@ public enum OperateCodeEnum {
     UPDATE("UPDATE"), 
     DELETE("DELETE"),
     SELECT("SELECT"),
-    EXPORT("EXPORT");
+    EXPORT("EXPORT"),
+    UPLOAD("UPLOAD");
     
     private String value;
     

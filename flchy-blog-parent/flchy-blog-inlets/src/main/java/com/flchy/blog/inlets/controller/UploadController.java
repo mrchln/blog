@@ -28,6 +28,8 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import com.alibaba.fastjson.JSONArray;
+import com.flchy.blog.base.annotation.Log;
+import com.flchy.blog.base.enums.OperateCodeEnum;
 import com.flchy.blog.base.response.ResponseCommand;
 import com.flchy.blog.common.fastdfs.FastDFSClient;
 import com.flchy.blog.common.fastdfs.FastDSFile;
@@ -55,6 +57,7 @@ public class UploadController {
 	 * 采用spring提供的上传文件的方法
 	 */
 	@RequestMapping("upload")
+	@Log(value="上传图片",type=OperateCodeEnum.UPLOAD)
 	public Object springUpload(HttpServletRequest request) throws Exception {
 		List<String> urlList = new ArrayList<>();
 		// 将当前上下文初始化给 CommonsMutipartResolver （多部分解析器）
