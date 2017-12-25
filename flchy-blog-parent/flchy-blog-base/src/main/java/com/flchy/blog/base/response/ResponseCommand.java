@@ -9,9 +9,10 @@ import java.io.Serializable;
  */
 public class ResponseCommand implements Serializable {
 	private static final long serialVersionUID = 6700648664405181335L;
-	public final static int STATUS_SUCCESS = 0;
-	public final static int STATUS_ERROR = 1;
-	public final static int STATUS_LOGIN_ERROR = 2;
+	public final static int STATUS_SUCCESS = 0;//成功
+	public final static int STATUS_ERROR = 1;//请求错误
+	public final static int STATUS_LOGIN_ERROR = 2;//登录过期
+	public final static int STATUS_AUTHORITY_ERROR = 3; //没有权限
 
 	private int status;
 	private Object result;

@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zuobiao.analysis.privilege.config.dao.IBaseInfoUserDao">
+
+    <resultMap id="BaseInfoUserEntityMap" type="com.zuobiao.analysis.privilege.config.entity.BaseInfoUserEntity">
+        <result column="pk_id" property="userId" />
+        <result column="user_name" property="userName" />
+        <result column="passWord" property="passWord" />
+        <result column="nick_name" property="nickName" />
+        <result column="nick_name_qp" property="nickNameQp" />
+        <result column="sex" property="sex" />
+        <result column="email" property="email" />
+        <result column="phone_no" property="phoneNo" />
+        <result column="address" property="address" />
+        <result column="postcode" property="postcode" />
+        <result column="remark" property="remark" />
+        <result column="valid_begin_date" property="validBegin" />
+        <result column="valid_end_date" property="validEnd" />
+        <result column="photo_path" property="photoPath" />
+        <result column="birthday" property="birthday" />
+        <result column="status" property="status" />
+		<result column="create_user" property="createUser" />
+		<result column="create_time" property="createTime" />
+		<result column="update_user" property="updateUser" />
+		<result column="update_time" property="updateTime" />
+    </resultMap>
+    <sql id="BaseInfoUserEntity_Column_List">
+        `pk_id` , `user_name` , `passWord` , `nick_name` , `nick_name_qp` , `sex` , `email` , `phone_no`, `address` , `postcode` , `remark` , `valid_begin_date` ,`valid_end_date` , `photo_path` ,`birthday` , `status` , `create_user` , `create_time` , `update_user` , `update_time` 
+    </sql>
+    <select id="selectUserByUserName" parameterType="java.lang.String" resultMap="BaseInfoUserEntityMap">
+        select
+            <include refid="BaseInfoUserEntity_Column_List" />
+        from `conf_info_user`
+        where 1=1
+        and user_name=#{userName}
+        AND valid_begin_date &lt;= curdate()
+		AND valid_end_date &gt;= curdate()
+        AND STATUS != -1
+    </select>
+    
+      <select id="selectUserByUser" parameterType="com.zuobiao.analysis.privilege.config.entity.BaseInfoUserEntity" resultMap="BaseInfoUserEntityMap">
+        select
+            <include refid="BaseInfoUserEntity_Column_List" />
+        from `conf_info_user`
+        <where>
+          and STATUS != -1
+        <if test="userName != null and userName !=''">
+             and user_name=#{userName}
+        </if>
+        <if test="nickName != null and nickName !=''">
+             and nick_name  LIKE concat(concat('%',#{nickName}),'%')
+        </if>
+        <if test="nickNameQp != null and nickNameQp !=''">
+             and nick_name_qp=#{nickNameQp}
+        </if>
+        <if test="sex != null and sex !=''">
+             and sex=#{sex}
+        </if>
+        <if test="email != null and email !=''">
+             and email=#{email}
+        </if>
+        <if test="phoneNo != null and phoneNo !=''">
+             and phone_no=#{phoneNo}
+        </if>
+    
+        <if test="postcode != null and postcode !=''">
+             and postcode=#{postcode}
+        </if>
+        </where>
+    </select>
+      <select id="verificationUserByUser" parameterType="com.zuobiao.analysis.privilege.config.entity.BaseInfoUserEntity" resultMap="BaseInfoUserEntityMap">
+        select
+            <include refid="BaseInfoUserEntity_Column_List" />
+        from `conf_info_user`
+        <where>
+          and STATUS != -1
+        <if test="userName != null and userName !=''">
+             and user_name=#{userName}
+        </if>
+        <if test="email != null and email !=''">
+             and email=#{email}
+        </if>
+        <if test="phoneNo != null and phoneNo !=''">
+             and phone_no=#{phoneNo}
+        </if>
+        <if test="userId != null and userId !=''">
+             and pk_id  != #{userId}
+        </if>
+        
+        </where>
+    </select>
+    
+    
+     <select id="selectDeletedUser" parameterType="com.zuobiao.analysis.privilege.config.entity.BaseInfoUserEntity" resultMap="BaseInfoUserEntityMap">
+        select
+            <include refid="BaseInfoUserEntity_Column_List" />
+        from `conf_info_user`
+        <where>
+          and STATUS = -1
+        <if test="userName != null and userName !=''">
+             and user_name=#{userName}
+        </if>
+        <if test="nickName != null and nickName !=''">
+             and nick_name LIKE concat(concat('%',#{nickName}),'%')
+        </if>
+        <if test="nickNameQp != null and nickNameQp !=''">
+             and nick_name_qp=#{nickNameQp}
+        </if>
+        <if test="sex != null and sex !=''">
+             and sex=#{sex}
+        </if>
+        <if test="email != null  and email !=''">
+             and email=#{email}
+        </if>
+  
+        <if test="postcode != null and postcode !=''">
+             and postcode=#{postcode}
+        </if>
+        </where>
+    </select>
+    
+    
+    <update id="updateUser" parameterType="com.zuobiao.analysis.privilege.config.entity.BaseInfoUserEntity">
+    UPDATE `conf_info_user`
+		<set>
+		<if test="userName != null and userName !=''">
+			`user_name` =#{userName},
+		</if>
+		<if test="nickName != null and nickName !=''">
+			`nick_name` =#{nickName},
+		</if>
+		<if test="nickNameQp != null and nickNameQp !=''">
+			`nick_name_qp` =#{nickNameQp},
+		</if>
+		<if test="sex != null and sex !=''">
+			`sex` =#{sex},
+		</if>
+		<if test="email != null and email !=''">
+			`email` =#{email},
+		</if>
+		<if test="phoneNo != null and phoneNo !=''">
+			`phone_no` =#{phoneNo},
+		</if>
+		<if test="address != null and address !=''">
+			`address` =#{address},
+		</if>
+		<if test="postcode != null and postcode !=''">
+			`postcode` =#{postcode},
+		</if>
+		<if test="remark != null and remark !=''">
+			`remark` =#{remark},
+		</if>
+		<if test="validBegin != null">
+			`valid_begin_date` =#{validBegin},
+		</if>
+		<if test="validEnd != null">
+			`valid_end_date` =#{validEnd},
+		</if>
+		<if test="photoPath != null and photoPath !=''">
+			`photo_path` =#{photoPath},
+		</if>
+		<if test="birthday != null">
+			`birthday` =#{birthday},
+		</if>
+		<if test="status != null and status !=''">
+			`status` =#{status},
+		</if>
+		<if test="updateUser != null and updateUser !=''">
+			`update_user` =#{updateUser},
+		</if>
+		 </set>
+		WHERE
+			(`pk_id` = #{userId})    
+    </update>
+    
+    
+    <update id="deleteUser" parameterType="java.lang.Integer">
+	    UPDATE `conf_info_user` SET `status`=-1 WHERE `pk_id` in 
+	     <foreach collection="list" item="item"  open="(" close=")" separator=",">
+	     #{item}
+	     </foreach>
+    </update>
+    <update id="restoreUser" parameterType="java.lang.Integer">
+	    UPDATE `conf_info_user` SET `status`=1 WHERE `pk_id` in 
+	     <foreach collection="list" item="item"  open="(" close=")" separator=",">
+	     #{item}
+	     </foreach>
+    </update>
+
+	<select id="selectUserByUserId" parameterType="java.lang.Integer" resultMap="BaseInfoUserEntityMap">
+		select <include refid='BaseInfoUserEntity_Column_List' />   from `conf_info_user`  where pk_id=#{userId}
+	</select>
+
+	<select id="selectUserByRoleIdSelected"  resultType="java.util.Map">
+	SELECT
+		u.`pk_id` 'userId',
+		u.`user_name` 'userName',
+		u.`password`,
+		u.`nick_name` 'nickName',
+		u.`nick_name_qp` 'nickNameQp',
+		u.`sex`,
+		u.`email`,
+		u.`phone_no` 'phoneNo',
+		u.`address`,
+		u.`postcode`,
+		u.`remark`,
+		u.`valid_begin_date` 'validBeginDate',
+		u.`valid_end_date` 'validEndDate',
+		u.`photo_path` 'photoPath',
+		u.`birthday`,
+		u.`status` ,
+		u.`create_user` 'createUser',
+		u.`create_time` 'createTime',
+		u.`update_user` 'updateUser',
+		u.`update_time` 'updateTime',
+		ur.pk_id 'userRoleID'
+	FROM
+		priv_map_user_role ur
+	INNER JOIN conf_info_user u ON u.pk_id = ur.user_id
+	WHERE
+		ur.`status` = 1
+	AND u.`status` = 1
+	AND role_id = #{roleId}
+		<if test="nickName != null and nickName != ''">
+				and u.`nick_name`  LIKE concat(concat('%',#{nickName}),'%')
+		</if>
+	
+	</select>
+	<select id="selectUserByRoleIdNotSelected"  parameterType="java.lang.Integer" resultMap="BaseInfoUserEntityMap">
+		SELECT
+			u.`pk_id`,
+			u.`user_name`,
+			u.`password`,
+			u.`nick_name`,
+			u.`nick_name_qp`,
+			u.`sex`,
+			u.`email`,
+			u.`phone_no`,
+			u.`address`,
+			u.`postcode`,
+			u.`remark`,
+			u.`valid_begin_date`,
+			u.`valid_end_date`,
+			u.`photo_path`,
+			u.`birthday`,
+			u.`status`,
+			u.`create_user`,
+			u.`create_time`,
+			u.`update_user`,
+			u.`update_time`
+		FROM
+			conf_info_user u
+		WHERE
+			u.`status` = 1
+		AND u.pk_id NOT IN (
+			SELECT
+				ur.user_id
+			FROM
+				priv_map_user_role ur
+			WHERE
+				ur.`status` = 1
+			AND ur.role_id = #{roleId}
+		)
+		<if test="nickName != null and nickName != ''">
+				and u.`nick_name`  LIKE concat(concat('%',#{nickName}),'%')
+		</if>
+		
+	</select>
+</mapper>

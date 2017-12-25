@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zuobiao.analysis.privilege.config.dao.IBaseResPanelDao">
+	<resultMap id="BaseResPanelEntityMap" type="com.zuobiao.analysis.privilege.config.entity.BaseResPanelEntity">
+		<result column="pk_id" property="panelId" />
+		<result column="panel_name" property="panelName" />
+		<result column="menu_id" property="menuId" />
+		<result column="remark" property="remark" />
+		<result column="status" property="status" />
+		<result column="create_user" property="createUser" />
+		<result column="create_time" property="createTime" />
+		<result column="update_user" property="updateUser" />
+		<result column="update_time" property="updateTime" />
+	</resultMap>
+
+	<sql id="BaseResPanelEntity_Column_List">
+		 `pk_id` ,  `panel_name` , `menu_id` , `remark` , `status` , `create_user` , `create_time` , `update_user` , `update_time` 
+	</sql>
+	
+	<select id="selectResPanel" parameterType="com.zuobiao.analysis.privilege.config.entity.BaseResPanelEntity" resultMap="BaseResPanelEntityMap">
+		select  <include refid="BaseResPanelEntity_Column_List" /> 
+			 from `conf_info_panel`
+			 <where>
+			 	and status !=-1
+			 	<if test="panelName != null and  panelName != ''">
+			 	and  `panel_name` LIKE concat(concat('%',#{panelName}),'%')
+			 	</if>
+			 	<if test="panelId != null and  panelId != ''">
+			 	and `pk_id` = #{panelId}
+			 	</if>
+			 	<if test="menuId != null  and  menuId != ''">
+			 	and `menu_id` = #{menuId}
+			 	</if>
+			 </where>
+	</select>
+	
+	<update id="update" parameterType="com.zuobiao.analysis.privilege.config.entity.BaseResPanelEntity" >
+	UPDATE `conf_info_panel`
+		<set>
+			<if test="panelName != null   and  panelName != ''">
+				  `panel_name` = #{panelName},
+			</if>
+			<if test="menuId != null and  menuId != ''">
+				  `menu_id` = #{menuId},
+			</if>
+			<if test="remark != null  and  remark != ''">
+				  `remark` = #{remark},
+			</if>
+			<if test="updateUser != null  and  updateUser != ''">
+				  `update_user` = #{updateUser},
+			</if>
+			<if test="updateTime != null  and  updateTime != ''">
+				  `update_time` = #{updateTime},
+			</if>
+		</set>
+		WHERE
+			(`pk_id` = #{panelId})
+	</update>
+	
+	<update id="delete" parameterType="java.lang.Integer">
+		UPDATE `conf_info_panel`
+			set `status` = -1
+			WHERE `pk_id` in 
+		     <foreach collection="list" item="item"  open="(" close=")" separator=",">
+		     #{item}
+		     </foreach>
+	</update>
+	<update id="deleteByMenuId" parameterType="java.lang.Integer">
+		UPDATE `conf_info_panel`
+			set `status` = -1
+			WHERE `menu_id` in 
+		     <foreach collection="list" item="item"  open="(" close=")" separator=",">
+		     #{item}
+		     </foreach>
+	</update>
+	
+	<select id="selectVisitPanel"  resultMap="BaseResPanelEntityMap">
+		SELECT
+			p.`pk_id`,
+			p.`panel_name`,
+			p.`menu_id`,
+			p.`remark`,
+			p.`status`,
+			p.`create_user`,
+			p.`create_time`,
+			p.`update_user`,
+			p.`update_time`
+		FROM
+			conf_info_panel p
+		WHERE
+			p.`status` = 1
+		AND p.menu_id IN (
+			SELECT
+				cv.menu_id
+			FROM
+				priv_conf_visit cv
+			INNER JOIN priv_map_role_visit rv ON rv.priv_visit_id = cv.priv_visit_id
+			INNER JOIN priv_map_user_role ur ON ur.role_id = rv.role_id
+			WHERE
+				cv.`status` = 1
+			AND rv.`status` = 1
+			AND ur.`status` = 1
+			<if test="userId !=null and userId !='' ">
+				AND ur.user_id = #{userId}
+			</if>
+			<if test="privVisitId !=null and privVisitId !=''">
+				AND cv.priv_visit_id = #{privVisitId}
+			</if>
+			)
+			<if test="panelId !=null and panelId !=''">
+				AND p.pk_id  =#{panelId}
+			</if>
+			<if test="panelName !=null and panelName !=''">
+				AND p.panel_name  LIKE concat(concat('%',#{panelName}),'%')
+			</if>
+	</select>
+	
+	<select id="selectByAllVisitPanel" resultMap="BaseResPanelEntityMap">
+	SELECT
+		p.`pk_id`,
+		p.`panel_name`,
+		p.`menu_id`,
+		p.`remark`,
+		p.`status`,
+		p.`create_user`,
+		p.`create_time`,
+		p.`update_user`,
+		p.`update_time`,
+	v.priv_visit_id
+	FROM
+		conf_info_panel p
+	inner JOIN priv_conf_visit v ON v.menu_id = p.menu_id
+	WHERE
+		p.`status` = 1
+	AND v.`status` = 1
+	<if test="privVisitId !=null and privVisitId !=''">
+			and priv_visit_id=#{privVisitId}
+	</if>
+	<if test="panelId !=null and panelId !=''">
+		AND p.pk_id  =#{panelId}
+	</if>
+	<if test="menuId !=null and menuId !=''">
+		AND p.menu_id  =#{menuId}
+	</if>
+	<if test="panelName !=null and panelName !=''">
+		AND p.panel_name  LIKE concat(concat('%',#{panelName}),'%')
+	</if>
+	</select>
+	
+	<select id="selectByRoleSelected"  resultType="java.util.Map">
+		SELECT
+			p.`pk_id` 'panelId',
+			p.`panel_name` 'panelName',
+			p.`menu_id` 'menuId',
+			p.`remark`,
+			p.`status`,
+			p.`create_user` 'createUser',
+			p.`create_time`  'createTime',
+			p.`update_user` 'updateUser',
+			p.`update_time` 'updateTime',
+			rp.pk_id 'rolePanelId'
+		FROM
+			conf_info_panel p
+		INNER JOIN priv_map_role_panel rp ON rp.panel_id = p.pk_id
+		WHERE
+			p.`status` = 1
+		AND rp.`status` = 1
+			and rp.role_id=#{roleId}
+			<if test="menuId !=null and menuId !=''">
+					and p.menu_id =#{menuId}
+			</if>
+			<if test="panelName !=null and panelName !=''">
+				AND p.panel_name  LIKE concat(concat('%',#{panelName}),'%')
+			</if>
+	</select>
+	
+		<select id="selectByRoleNotSelected"  resultMap="BaseResPanelEntityMap">
+		SELECT
+			p.`pk_id`,
+			p.`panel_name`,
+			p.`menu_id`,
+			p.`remark`,
+			p.`status`,
+			p.`create_user`,
+			p.`create_time`,
+			p.`update_user`,
+			p.`update_time`
+		FROM
+			conf_info_panel p
+		WHERE
+			p.`status` = 1
+		
+		AND p.pk_id not in (
+		select rp.panel_id FROM priv_map_role_panel rp where rp.`status`=1 and  rp.role_id=#{roleId}
+		)
+		
+			<if test="menuId !=null and menuId !=''">
+					and p.menu_id =#{menuId}
+			</if>
+			<if test="panelName !=null and panelName !=''">
+				AND p.panel_name  LIKE concat(concat('%',#{panelName}),'%')
+			</if>
+	</select>
+</mapper>

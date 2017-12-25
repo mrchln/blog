@@ -19,7 +19,7 @@ import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.flchy.blog.base.exception.BusinessException;
-import com.flchy.blog.base.response.ResultPage;
+import com.flchy.blog.base.response.PageHelperResult;
 import com.flchy.blog.inlets.enums.Keys;
 import com.flchy.blog.inlets.enums.StatusEnum;
 import com.flchy.blog.inlets.holder.ConfigHolder;
@@ -142,7 +142,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
 		}
 	}
 	@Override
-	public ResultPage selectWebComment(Integer articleId, Integer current, Integer size,String nickName) {
+	public PageHelperResult selectWebComment(Integer articleId, Integer current, Integer size,String nickName) {
 		if (articleId == null)
 			throw new BusinessException("文章ID不能为空");
 		Page<Comment> page = new Page<>(Integer.valueOf(current), Integer.valueOf(size));
@@ -171,7 +171,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
 			page.setRecords(list);
 		}
 
-		return new ResultPage(page);
+		return new PageHelperResult(page);
 	}
 	
 	public List<Comment>  getChildComment(Integer id,Map<Integer, List<Comment>> comments,List<Comment> childComment){

@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zuobiao.analysis.privilege.config.dao.IBaseResElementDao">
+	<resultMap id="BaseResElementEntityMap" type="com.zuobiao.analysis.privilege.config.entity.BaseResElementEntity">
+		<result column="pk_id" property="elementId" />
+		<result column="element_name" property="elementName" />
+		<result column="element_type" property="elementType" />
+		<result column="menu_id" property="menuId" />
+		<result column="panel_id" property="panelId" />
+		<result column="remark" property="remark" />
+		<result column="status" property="status" />
+		<result column="create_user" property="createUser" />
+		<result column="create_time" property="createTime" />
+		<result column="update_user" property="updateUser" />
+		<result column="update_time" property="updateTime" />
+		<result column="update_time" property="updateTime" />
+		<result column="panel_name" property="panelName" />
+	</resultMap>
+
+	<sql id="BaseResElementEntity_Column_List">
+		 `pk_id` ,  `element_name` , `element_type` , `menu_id` , `panel_id` , `remark` , `status` , `create_user` , `create_time` , `update_user` , `update_time` 
+	</sql>
+	
+	<select id="selectResElement" parameterType="com.zuobiao.analysis.privilege.config.entity.BaseResElementEntity" resultType="com.zuobiao.analysis.privilege.config.entity.BaseResElementEntity">
+		SELECT
+				e.`pk_id` 'elementId',
+				e.`element_name` 'elementName',
+				e.`element_type` 'elementType',
+				e.`menu_id` 'menuId',
+				e.`panel_id` 'panelId',
+				e.`remark` 'remark',
+				e.`status` 'status',
+				e.`create_user` 'createUser',
+				e.`create_time` 'createTime',
+				e.`update_user` 'updateUser',
+				e.`update_time` 'updateTime',
+				ifnull(
+				(
+					SELECT
+						p.panel_name
+					FROM
+						conf_info_panel p
+					WHERE
+						p.pk_id = e.panel_id
+				), 'N/A') 'panelName'
+			FROM
+				`conf_info_element` e
+			 <where>
+			 	and status !=-1
+			 	<if test="elementName != null and elementName != ''">
+			 	and  `element_name` LIKE concat(concat('%',#{elementName}),'%')
+			 	</if>
+			 	<if test="elementId != null and elementId != ''">
+			 	and `pk_id` = #{elementId}
+			 	</if>
+			 	<if test="elementType != null  and elementType != ''">
+			 	and `element_type` = #{elementType}
+			 	</if>
+			 	<if test="menuId != null and menuId != ''">
+			 	and `menu_id` = #{menuId}
+			 	</if>
+			 	<if test="panelId != null and panelId != ''">
+			 	and `panel_id` = #{panelId}
+			 	</if>
+			 </where>
+	</select>
+	
+	<update id="update" parameterType="com.zuobiao.analysis.privilege.config.entity.BaseResElementEntity" >
+		UPDATE `conf_info_element`
+		<set>
+			<if test="elementName != null and elementName != ''">
+				  `element_name` = #{elementName},
+			</if>
+			<if test="elementType != null  and elementType != ''">
+				  `element_type` = #{elementType},
+			</if>
+			<if test="menuId != null  and menuId != ''">
+				  `menu_id` = #{menuId},
+			</if>
+			<if test="panelId != null and panelId != ''">
+				  `panel_id` = #{panelId},
+			</if>
+			<if test="remark != null and remark != ''">
+				  `remark` = #{remark},
+			</if>
+			<if test="updateUser != null and updateUser != ''">
+				  `update_user` = #{updateUser},
+			</if>
+			<if test="updateTime != null  and updateTime != ''">
+				  `update_time` = #{updateTime},
+			</if>
+		</set>
+		WHERE
+			(`pk_id` = #{elementId})
+	</update>
+	
+	
+	<update id="delete" parameterType="java.lang.Integer">
+		UPDATE `conf_info_element`
+			set `status` = -1
+			WHERE `pk_id` in 
+		     <foreach collection="list" item="item"  open="(" close=")" separator=",">
+		     #{item}
+		     </foreach>
+	</update>
+	<update id="deleteByPanelId" parameterType="java.lang.Integer">
+		UPDATE `conf_info_element`
+			set `status` = -1
+			WHERE `panel_id` in 
+		     <foreach collection="list" item="item"  open="(" close=")" separator=",">
+		     #{item}
+		     </foreach>
+	</update>
+	<update id="deleteByMenuId" parameterType="java.lang.Integer">
+		UPDATE `conf_info_element`
+			set `status` = -1
+			WHERE `menu_id` in 
+		     <foreach collection="list" item="item"  open="(" close=")" separator=",">
+		     #{item}
+		     </foreach>
+	</update>
+	
+	
+	<select id="selectVisitElement" resultMap="BaseResElementEntityMap">
+	
+	SELECT
+		e.`pk_id`,
+		e.`element_name`,
+		e.`element_type`,
+		e.`menu_id`,
+		e.`panel_id`,
+		e.`remark`,
+		e.`status`,
+		e.`create_user`,
+		e.`create_time`,
+		e.`update_user`,
+		e.`update_time`,
+				ifnull(
+							(
+								SELECT
+									p.panel_name
+								FROM
+									conf_info_panel p
+								WHERE
+									p.pk_id = e.panel_id
+							), 'N/A') 'panel_name'
+	FROM
+		conf_info_element e
+	WHERE
+		e.`status` = 1
+and  e.menu_id IN (
+	SELECT
+		cv.menu_id
+	FROM
+		priv_conf_visit cv
+	INNER JOIN priv_map_role_visit rv ON rv.priv_visit_id = cv.priv_visit_id
+	INNER JOIN priv_map_user_role ur ON ur.role_id = rv.role_id
+	WHERE
+		cv.`status` = 1
+	AND rv.`status` = 1
+	AND ur.`status` = 1
+	<if test="userId != null and userId != ''">
+		AND ur.user_id =#{userId}
+	</if>
+	<if test="privVisitId != null and privVisitId != ''">
+		AND cv.priv_visit_id=#{privVisitId}
+	</if>
+)
+
+
+and  e.panel_id IN (
+	SELECT
+		e.panel_id
+	FROM
+	priv_conf_visit cv
+	INNER JOIN priv_map_role_visit rv ON rv.priv_visit_id = cv.priv_visit_id
+	INNER JOIN priv_map_user_role ur ON ur.role_id = rv.role_id
+	INNER JOIN 	priv_map_role_element re on re.role_id=rv.role_id
+	INNER JOIN conf_info_element  e on e.pk_id =re.element_id
+	WHERE
+		cv.`status` = 1
+	AND rv.`status` = 1
+	AND ur.`status` = 1
+	AND re.`status` = 1
+	AND e.`status` = 1
+	<if test="userId != null and userId != ''">
+		AND ur.user_id =#{userId}
+	</if>
+	<if test="privVisitId != null and privVisitId != ''">
+		AND cv.priv_visit_id=#{privVisitId}
+	</if>
+	<if test="panelId != null and panelId != ''">
+		and e.panel_id=#{panelId}
+	</if>
+)
+	<if test="elementId != null and elementId != ''">
+		AND e.pk_id=#{elementId}
+	</if>
+	<if test="elementName !=null and elementName !=''">
+		AND e.element_name  LIKE concat(concat('%',#{elementName}),'%')
+	</if>
+	</select>
+	
+	<select id="selectByRoleSelected"  resultType="java.util.Map">
+		SELECT
+			e.`pk_id` 'elementId',
+			e.`element_name` 'elementName',
+			e.`element_type` 'elementType',
+			e.`menu_id` 'menuId',
+			e.`panel_id` 'panelId',
+			e.`remark`,
+			e.`status`,
+			e.`create_user` 'createUser',
+			e.`create_time` 'createTime',
+			e.`update_user` 'updateUser',
+			e.`update_time` 'updateTime',
+			re.pk_id 'roleElementId',
+			ifnull(
+							(
+								SELECT
+									p.panel_name
+								FROM
+									conf_info_panel p
+								WHERE
+									p.pk_id = e.panel_id
+							), 'N/A') 'panelName'
+		FROM
+			conf_info_element e
+		INNER JOIN priv_map_role_element re ON re.element_id = e.pk_id
+		WHERE
+			e.`status` = 1
+		AND re.`status` = 1
+		AND re.role_id = #{roleId}
+		AND e.menu_id = #{menuId}
+			
+		<if test="panelId !=null and panelId !=''">
+					AND e.panel_id = #{panelId}
+		</if>
+		<if test="elementName !=null and elementName !=''">
+				AND e.element_name LIKE concat(concat('%',#{elementName}),'%')
+		</if>
+	</select>
+	<select id="selectByRoleNotSelected"  resultMap="BaseResElementEntityMap">
+		SELECT
+			e.`pk_id`,
+			e.`element_name`,
+			e.`element_type`,
+			e.`menu_id`,
+			e.`panel_id`,
+			e.`remark`,
+			e.`status`,
+			e.`create_user`,
+			e.`create_time`,
+			e.`update_user`,
+			e.`update_time`
+		FROM
+			conf_info_element e
+		WHERE
+			e.`status` = 1
+		AND e.pk_id NOT IN (
+			SELECT
+				re.element_id
+			FROM
+				priv_map_role_element re
+			WHERE
+			re.`status`=1 and
+				re.role_id = #{roleId}
+		)
+		AND e.menu_id = #{menuId}
+		<if test="panelId !=null and panelId !=''">
+					AND e.panel_id = #{panelId}
+		</if>
+		<if test="elementName !=null and elementName !=''">
+				AND e.element_name LIKE concat(concat('%',#{elementName}),'%')
+		</if>
+	</select>
+	
+	<select id="selectByAdminRole" resultMap="BaseResElementEntityMap">
+	SELECT
+		e.`pk_id`,
+		e.`element_name`,
+		e.`element_type`,
+		e.`menu_id`,
+		e.`panel_id`,
+		e.`remark`,
+		e.`status`,
+		e.`create_user`,
+		e.`create_time`,
+		e.`update_user`,
+		e.`update_time`
+	FROM
+		conf_info_element e
+	LEFT JOIN priv_conf_visit v on v.menu_id=e.menu_id
+	WHERE
+		e.`status` = 1
+	<if test="privVisitId != null and privVisitId != ''">
+		AND v.priv_visit_id=#{privVisitId}
+	</if>
+	<if test="panelId != null and panelId != ''">
+		and e.panel_id=#{panelId}
+	</if>
+		<if test="elementId != null and elementId != ''">
+		AND e.pk_id=#{elementId}
+	</if>
+	<if test="elementName !=null and elementName !=''">
+		AND e.element_name  LIKE concat(concat('%',#{elementName}),'%')
+	</if>
+	</select>
+</mapper>

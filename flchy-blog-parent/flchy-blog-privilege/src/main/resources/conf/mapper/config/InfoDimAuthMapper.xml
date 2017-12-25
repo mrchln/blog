@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zuobiao.analysis.privilege.config.dao.IBaseInfoDimAuthDao">
+	<resultMap id="BaseInfoDimAuthEntityMap" type="com.zuobiao.analysis.privilege.config.entity.BaseInfoDimAuthEntity">
+		<result column="pk_id" property="id" />
+		<result column="json_info" property="jsonInfo" />
+		<result column="remark" property="remark" />
+		<result column="status" property="status" />
+		<result column="create_user" property="createUser" />
+		<result column="create_time" property="createTime" />
+		<result column="update_user" property="updateUser" />
+		<result column="update_time" property="updateTime" />
+	</resultMap>
+
+	<sql id="BaseInfoDimAuthEntity_Column_List">
+		 `pk_id` ,  `json_info` , `remark` , `status` , `create_user` , `create_time` , `update_user` , `update_time` 
+	</sql>
+	
+	<select id="selectDimAuthInfoByDimAuthIds" resultMap="BaseInfoDimAuthEntityMap">
+	select
+		     <include refid="BaseInfoDimAuthEntity_Column_List" />
+		from `conf_info_dataauth`
+		where  1=1
+		and `pk_id` IN
+		<foreach item="item" collection="dimAuthIdArray" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+		AND STATUS != -1
+	</select>
+	
+	<select id="selectDimAuth" parameterType="com.zuobiao.analysis.privilege.config.entity.BaseInfoDimAuthEntity" resultMap="BaseInfoDimAuthEntityMap">
+		select  <include refid="BaseInfoDimAuthEntity_Column_List" /> 
+			 from `conf_info_dataauth`
+			 <where>
+			 	and status !=-1
+			 	<if test="remark != null">
+			 	and  `remark` LIKE concat(concat('%',#{remark}),'%')
+			 	</if>
+			 	<if test="id != null">
+			 	and `pk_id` = #{id}
+			 	</if>
+			 </where>
+	</select>
+	
+	<update id="update" parameterType="com.zuobiao.analysis.privilege.config.entity.BaseInfoDimAuthEntity" >
+	UPDATE `conf_info_dataauth`
+		<set>
+			<if test="jsonInfo != null">
+				  `json_info` = #{jsonInfo},
+			</if>
+			<if test="remark != null">
+				  `remark` = #{remark},
+			</if>
+			<if test="updateUser != null">
+				  `update_user` = #{updateUser},
+			</if>
+			<if test="updateTime != null">
+				  `update_time` = #{updateTime},
+			</if>
+		</set>
+		WHERE
+			(`pk_id` = #{id})
+	</update>
+	
+	<update id="delete" parameterType="java.lang.Integer">
+		UPDATE `conf_info_dataauth`
+			set `status` = -1
+			WHERE `pk_id` in 
+		     <foreach collection="list" item="item"  open="(" close=")" separator=",">
+		     #{item}
+		     </foreach>
+	</update>
+	
+	
+	<select id="selectByUser" resultMap="BaseInfoDimAuthEntityMap">
+		SELECT
+			d.`pk_id`,
+			d.`json_info`,
+			d.`remark`,
+			d.`status`,
+			d.`create_user`,
+			d.`create_time`,
+			d.`update_user`,
+			d.`update_time`
+		FROM
+			conf_info_dataauth d
+		INNER JOIN priv_map_role_dataauth rd ON rd.dimauth_id = d.pk_id
+		WHERE
+			d.`status` = 1
+		AND rd.`status` = 1
+		AND rd.role_id IN (
+			SELECT
+				ur.role_id
+			FROM
+				priv_map_user_role ur
+			WHERE
+				ur.`status` = 1
+			AND ur.user_id = #{userId}
+		)
+		<if test="remark != null and remark !=''">
+			d.`remark` LIKE concat(concat('%',#{remark}),'%')
+		</if>
+	</select>
+	<select id="selectByRole" resultType="java.util.Map">
+		SELECT
+			d.`pk_id` 'id',
+			d.`json_info` 'jsonInfo',
+			d.`remark`,
+			d.`status`,
+			d.`create_user` 'createUser',
+			d.`create_time` 'createTime',
+			d.`update_user` 'updateUser',
+			d.`update_time` 'updateTime',
+			rd.pk_id 'roldDataauthId'
+		FROM
+			conf_info_dataauth d
+		INNER JOIN priv_map_role_dataauth rd ON rd.dimauth_id = d.pk_id
+		WHERE
+			d.`status` = 1
+		AND rd.`status` = 1
+		AND rd.role_id =#{roleId}
+		<if test="remark != null and remark !=''">
+			d.`remark` LIKE concat(concat('%',#{remark}),'%')
+		</if>
+	</select>
+	
+	<select id="selectByRoleNotSelected" resultMap="BaseInfoDimAuthEntityMap">
+	SELECT
+		d.`pk_id`,
+		d.`json_info`,
+		d.`remark`,
+		d.`status`,
+		d.`create_user`,
+		d.`create_time`,
+		d.`update_user`,
+		d.`update_time`
+	FROM
+		conf_info_dataauth d
+	WHERE
+		d.`status` = 1
+	AND d.pk_id NOT IN (
+		SELECT
+			rd.dimauth_id
+		FROM
+			priv_map_role_dataauth rd
+		WHERE
+			rd.`status`=1
+
+		and	rd.role_id = #{roleId}
+	)
+	<if test="remark != null and remark !=''">
+			d.`remark` LIKE concat(concat('%',#{remark}),'%')
+		</if>
+	</select>
+</mapper>

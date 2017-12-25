@@ -19,7 +19,7 @@ import com.flchy.blog.base.annotation.Log;
 import com.flchy.blog.base.enums.OperateCodeEnum;
 import com.flchy.blog.base.exception.BusinessException;
 import com.flchy.blog.base.response.ResponseCommand;
-import com.flchy.blog.base.response.ResultPage;
+import com.flchy.blog.base.response.PageHelperResult;
 import com.flchy.blog.inlets.holder.ConfigHolder;
 import com.flchy.blog.inlets.service.IConfigService;
 import com.flchy.blog.pojo.Config;
@@ -45,7 +45,7 @@ public class ConfigController {
 			@RequestParam(value = "size", required = true) Integer size, Config article) {
 			Page<Config> page = new Page<>(Integer.valueOf(current), Integer.valueOf(size));
 			iConfigService.selectPage(page, new EntityWrapper<Config>(article));
-		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, new ResultPage(page));
+		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, new PageHelperResult(page));
 	}
 	
 	@PostMapping

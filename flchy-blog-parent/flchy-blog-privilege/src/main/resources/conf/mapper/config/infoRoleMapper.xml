@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zuobiao.analysis.privilege.config.dao.IBaseInfoRoleDao">
+	<resultMap id="BaseInfoRoleEntityMap" type="com.zuobiao.analysis.privilege.config.entity.BaseInfoRoleEntity">
+		<result column="pk_id" property="roleId" />
+		<result column="role_name" property="roleName" />
+		<result column="role_name_qp" property="roleNameQp" />
+		<result column="remark" property="remark" />
+		<result column="sort_index" property="sortIndex" />
+		<result column="valid_begin_date" property="validBegin" />
+		<result column="valid_end_date" property="validEnd" />
+		<result column="status" property="status" />
+		<result column="create_user" property="createUser" />
+		<result column="create_time" property="createTime" />
+		<result column="update_user" property="updateUser" />
+		<result column="update_time" property="updateTime" />
+	</resultMap>
+	
+	<sql id="BaseInfoRoleEntityMap_Column_List">
+		`pk_id` , `role_name` , `role_name_qp` , `remark` , `sort_index` , `valid_begin_date` , `valid_end_date`, `status` , `create_user` , `create_time` , `update_user` , `update_time` 
+	</sql>
+	
+	<select id="selectRolesByRoleIds" resultMap="BaseInfoRoleEntityMap">
+		select
+		   <include refid="BaseInfoRoleEntityMap_Column_List" />
+		 from `conf_info_role`
+		where 1=1
+		and `pk_id` IN
+		<foreach item="item" collection="roleIdArray" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+		AND STATUS != -1
+	</select> 
+	
+	<select id="selectRoles" resultMap="BaseInfoRoleEntityMap" parameterType="com.zuobiao.analysis.privilege.config.entity.BaseInfoRoleEntity">
+	select
+		   <include refid="BaseInfoRoleEntityMap_Column_List" />
+		 from `conf_info_role`
+		 <where>
+		 	and status=1
+			 <if test="roleName != null and roleName != ''">
+			 		and `role_name`  LIKE concat(concat('%',#{roleName}),'%')
+			 </if>
+			 <if test="remark != null and remark != ''">
+			 		and `remark`  LIKE concat(concat('%',#{remark}),'%')
+			 </if>
+		 </where>
+	</select>
+	
+	<update id="updateRole" parameterType="com.zuobiao.analysis.privilege.config.entity.BaseInfoRoleEntity">
+	UPDATE `conf_info_role`
+	<set>
+		<if test="roleName != null and roleName != ''">
+			 `role_name` =#{roleName},
+		</if>
+		<if test="roleNameQp != null and roleNameQp != ''">
+			 `role_name_qp` = #{roleNameQp},
+		</if>
+		<if test="remark != null and remark != ''">
+			 `remark` = #{remark},
+		</if>
+		<if test="sortIndex != null and sortIndex != ''">
+			 `sort_index` = #{sortIndex},
+		</if>
+		<if test="validBegin != null">
+			 `valid_begin_date` = #{validBegin},
+		</if>
+		<if test="validEnd != null">
+			 `valid_end_date` = #{validEnd},
+		</if>
+		<if test="updateUser != null and updateUser != ''">
+			 `update_user` = #{updateUser},
+		</if>
+		<if test="updateTime != null  and updateTime != ''">
+			 `update_time` = #{updateTime},
+		</if>
+	</set>
+	WHERE
+		(`pk_id` =#{roleId});
+	</update>
+	
+	
+	<update id="deleteRole" parameterType="java.lang.Integer">
+	   	UPDATE `conf_info_role`
+	   	 SET `status`=-1  WHERE `pk_id` in 
+	     <foreach collection="list" item="item"  open="(" close=")" separator=",">
+	     #{item}
+	     </foreach>
+	
+	</update>
+	
+</mapper>

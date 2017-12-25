@@ -1,6 +1,6 @@
 package com.flchy.blog.privilege.extend.filter;
 
-import java.io.IOException;
+/*import java.io.IOException;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -29,13 +29,13 @@ import com.flchy.blog.base.response.ResponseCommand;
 import com.flchy.blog.plugin.redis.RedisBusines;
 import com.flchy.blog.pojo.ConfUrl;
 import com.flchy.blog.privilege.config.controller.TokenPortalController;
-import com.flchy.blog.privilege.config.emun.UrlPathType;
 import com.flchy.blog.privilege.config.service.IConfUrlService;
-import com.flchy.blog.utils.NewMapUtil;
+import com.flchy.blog.privilege.enums.UrlPathType;
+import com.flchy.blog.utils.NewMapUtil;*/
 
-@Component
-public class AuthFilter implements Filter {
-	private static final Logger logger = LoggerFactory.getLogger(TokenPortalController.class);
+//@Component
+public class AuthFilter  {//implements Filter
+/*	private static final Logger logger = LoggerFactory.getLogger(TokenPortalController.class);
 	@Autowired
 	private RedisBusines redisBusines;
 	@Autowired
@@ -133,12 +133,12 @@ public class AuthFilter implements Filter {
 		return true;
 	}
 
-	/**
+	*//**
 	 * 获取headers
 	 * 
 	 * @param request
 	 * @return
-	 */
+	 *//*
 	private Map<String, String> getHeadersInfo(HttpServletRequest request) {
 		Map<String, String> map = new HashMap<String, String>();
 		Enumeration<?> headerNames = request.getHeaderNames();
@@ -154,5 +154,5 @@ public class AuthFilter implements Filter {
 	public void init(FilterConfig arg0) throws ServletException {
 		System.out.println("请求访问权限过滤器初始化");
 	}
-
+*/
 }

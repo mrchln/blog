@@ -13,7 +13,7 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.flchy.blog.base.response.ResponseCommand;
-import com.flchy.blog.base.response.ResultPage;
+import com.flchy.blog.base.response.PageHelperResult;
 import com.flchy.blog.common.fastdfs.FastDFSClient;
 import com.flchy.blog.common.fastdfs.FastDSFile;
 import com.flchy.blog.inlets.enums.StatusEnum;

@@ -1,6 +1,6 @@
 package com.flchy.blog.inlets.service;
 
-import com.flchy.blog.base.response.ResultPage;
+import com.flchy.blog.base.response.PageHelperResult;
 import com.flchy.blog.pojo.Comment;
 
 import java.util.Map;
@@ -21,7 +21,7 @@ public interface ICommentService extends IService<Comment> {
 	Comment saveComment(Comment comment);
 
 
-	ResultPage selectWebComment(Integer articleId, Integer current, Integer size, String nickName);
+	PageHelperResult selectWebComment(Integer articleId, Integer current, Integer size, String nickName);
 
 
 	Page<Map<String, Object>> selectCommentPage(Page<Map<String, Object>> page, Comment comment);

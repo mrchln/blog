@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zuobiao.analysis.privilege.config.dao.IBaseMapRoleElementDao">
+	<resultMap id="BaseMapRoleElementEntityMap" type="com.zuobiao.analysis.privilege.config.entity.BaseMapRoleElementEntity">
+		<result column="pk_id" property="id" />
+		<result column="role_id" property="roleId" />
+		<result column="element_id" property="elementId" />
+		<result column="status" property="status" />
+		<result column="create_user" property="createUser" />
+		<result column="create_time" property="createTime" />
+		<result column="update_user" property="updateUser" />
+		<result column="update_time" property="updateTime" />
+	</resultMap>
+	
+	<sql id="BaseMapRoleElementEntity_Column_List">
+		`pk_id` , `role_id` , `element_id` , `status` , `create_user` , `create_time` , `update_user` , `update_time` 
+	</sql>
+	
+	<select id="selectRoleElementByRoleIds" resultMap="BaseMapRoleElementEntityMap">
+		SELECT 
+			<include refid="BaseMapRoleElementEntity_Column_List"/>
+		FROM
+			`priv_map_role_element`
+		WHERE 1=1
+		and `role_id` IN
+		<foreach item="item" collection="roleIdArray" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+		AND STATUS != -1
+	</select>
+	
+	<select id="selectRoleElementByRoleIdMenuIds" resultMap="BaseMapRoleElementEntityMap">
+		SELECT
+			re.`pk_id`,
+			re.`role_id`,
+			re.`element_id`,
+			re.`status`,
+			re.`create_user`,
+			re.`create_time`,
+			re.`update_user`,
+			re.`update_time`
+		FROM
+			priv_map_role_element re
+		LEFT JOIN conf_info_element e ON e.pk_id = re.element_id
+		WHERE
+			re.`status` = 1
+		AND e.`status` = 1
+		AND re.role_id = #{roleId}
+		AND e.menu_id in
+		<foreach item="item" collection="menuIds" open="(" separator="," close=")">
+					#{item}
+		</foreach>
+	
+	</select>
+	
+	<select id="selectRoleElementBySelected" resultMap="BaseMapRoleElementEntityMap">
+	SELECT
+		re.`pk_id`,
+		`role_id`,
+		`element_id`,
+		re.`status`,
+		re.`create_user`,
+		re.`create_time`,
+		re.`update_user`,
+		re.`update_time`
+	FROM
+		`priv_map_role_element` re
+	INNER JOIN `conf_info_element` e ON re.element_id = e.pk_id
+	WHERE
+		1 = 1
+	AND re. STATUS != - 1
+	AND e.`status` !=- 1
+	<if test="roleId != null and roleId != ''" >
+	and `role_id` =#{roleId}
+	</if>
+	<if test="menuId != null and menuId != ''" >
+	and e.`menu_id` =#{menuId}
+	</if>
+	<if test="panelId != null and panelId != ''" >
+	and e.panel_id = #{panelId}
+	</if>
+	</select>
+	
+	
+		<update id="delete" parameterType="java.lang.Integer">
+				UPDATE `priv_map_role_element`
+				set `status` = -1
+				WHERE `pk_id` in 
+			     <foreach collection="list" item="item"  open="(" close=")" separator=",">
+			     	#{item}
+			     </foreach>
+		</update>
+		
+			<insert id="insertCodeBatch" parameterType="com.zuobiao.analysis.privilege.config.entity.BaseMapRoleElementEntity">
+					INSERT INTO `priv_map_role_element` (
+						`role_id`,
+						`element_id`,
+						`status`,
+						`create_user`,
+						`create_time`
+					)
+					VALUES
+				 <foreach collection="list" item="item"  separator=",">
+					(
+					#{item.roleId},
+					#{item.elementId},
+					#{item.status},
+					#{item.createUser},
+					#{item.createTime}
+					)
+				</foreach>
+			</insert>
+			
+			
+		<select id="selectRoleElementByPanelId" resultMap="BaseMapRoleElementEntityMap">
+			SELECT
+					re.*
+				FROM
+					priv_map_role_element re 
+				LEFT JOIN conf_info_element  e on re.element_id=e.pk_id
+				where re.`status`=1
+				and e.`status`=1
+				and role_id=#{roleId}
+				and e.panel_id in
+				<foreach item="item" collection="panelId" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+	</select>
+</mapper>

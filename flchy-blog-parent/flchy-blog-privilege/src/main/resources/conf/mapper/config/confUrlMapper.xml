@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zuobiao.analysis.privilege.config.dao.IBaseConfUrlDao">
+	<resultMap id="BaseConfUrlEntityMap"
+		type="com.zuobiao.analysis.privilege.config.entity.BaseConfUrlEntity">
+		<result column="pk_id" property="urlId" />
+		<result column="url_path" property="urlPath" />
+		<result column="method" property="method" />
+		<result column="status" property="status" />
+		<result column="create_user" property="createUser" />
+		<result column="create_time" property="createTime" />
+		<result column="update_user" property="updateUser" />
+		<result column="update_time" property="updateTime" />
+	</resultMap>
+
+	<sql id="BaseConfUrlEntity_Column_List">
+		`pk_id` , `url_path`, `method` , `status` , `create_user` ,
+		`create_time` , `update_user` , `update_time`
+	</sql>
+	<select id="selectConfUrlByUrlIds" resultMap="BaseConfUrlEntityMap">
+		select
+		<include refid="BaseConfUrlEntity_Column_List" />
+		from `priv_conf_url`
+		WHERE 1=1
+		and `pk_id` IN
+		<foreach item="item" collection="urlIdArray" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+		AND STATUS != -1
+	</select>
+
+	<select id="selectConfUrlByUrlPath" resultMap="BaseConfUrlEntityMap">
+		select
+		<include refid="BaseConfUrlEntity_Column_List" />
+		from `priv_conf_url`
+		WHERE 1=1
+		and `url_path` = #{urlPath}
+		<if test="method != null">
+			and `method` = #{method}
+		</if>
+		AND STATUS != -1
+	</select>
+
+	<insert id="saveConfUrlByUrlIds" parameterType="java.util.Map">
+		insert into priv_conf_url(
+		`url_path` ,
+		<if test="method != null">
+			`method` ,
+		</if>
+		`status` ,
+		`create_user` ,
+		`create_time`
+		)VALUES(
+		#{urlPath},
+		<if test="method != null">
+			#{method},
+		</if>
+		#{status},
+		#{createUser},
+		#{createTime}
+		)
+	</insert>
+
+	<select id="select" resultMap="BaseConfUrlEntityMap"
+		parameterType="com.zuobiao.analysis.privilege.config.entity.BaseConfUrlEntity">
+		select
+		<include refid="BaseConfUrlEntity_Column_List" />
+		from `priv_conf_url`
+		<where>
+			and status=1
+			<if test="urlPath != null">
+				and url_path LIKE concat(concat('%',#{urlPath}),'%')
+			</if>
+			<if test="method != null">
+				and method = #{method}
+			</if>
+		</where>
+	</select>
+
+	<update id="delete" parameterType="java.lang.Integer">
+		UPDATE `priv_conf_url`
+		set `status` = -1
+		WHERE `pk_id` in
+		<foreach collection="list" item="item" open="(" close=")"
+			separator=",">
+			#{item}
+		</foreach>
+	</update>
+
+
+	<select id="selectUrlSelected" resultType="java.util.Map">
+	SELECT
+		u.`pk_id` 'urlId',
+		u.`url_path` 'urlPath',
+		u.`method`,
+		u.`status`,
+		u.`create_user` 'createUser',
+		u.`create_time` 'createTime',
+		u.`update_user` 'updateUser',
+		u.`update_time` 'updateTime',
+		vu.pk_id 'visitUrlId'
+		FROM
+		priv_map_visit_url vu
+		INNER JOIN priv_conf_url u ON vu.url_id = u.pk_id
+		WHERE
+		vu.`status` = 1
+		AND u.`status` = 1
+		and vu.priv_visit_id=#{privVisitId}
+		<if test="urlPath != null and urlPath != ''">
+			and u.url_path LIKE concat(concat('%',#{urlPath}),'%')
+		</if>
+	</select>
+	<select id="selectUrlNotSelected" resultMap="BaseConfUrlEntityMap">
+		SELECT
+				u.`pk_id`,
+				u.`url_path` ,
+				u.`method`,
+				u.`status`,
+				u.`create_user`,
+				u.`create_time`,
+				u.`update_user` ,
+				u.`update_time`
+		FROM
+		priv_conf_url u 
+		WHERE u.`status` = 1
+		AND u.pk_id NOT IN (
+					SELECT
+						vu.url_id
+					FROM
+						priv_map_visit_url vu
+					WHERE
+						vu.`status` = 1
+					AND vu.priv_visit_id = #{privVisitId}
+				)
+		<if test="urlPath != null and urlPath != ''">
+			and u.url_path LIKE concat(concat('%',#{urlPath}),'%')
+		</if>
+	</select>
+
+</mapper>

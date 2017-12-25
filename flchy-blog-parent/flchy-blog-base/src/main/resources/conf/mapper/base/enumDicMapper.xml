@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flchy.blog.base.dbconfig.dao.IEnumDicDao">
+    <parameterMap id="EnumDicBean" type="com.flchy.blog.base.dbconfig.bean.EnumDicBean"/>
+	<parameterMap id="EnumDicEntity" type="com.flchy.blog.base.dbconfig.entity.EnumDicEntity"/>
+	<resultMap id="EnumDicEntityMap" type="com.flchy.blog.base.dbconfig.entity.EnumDicEntity">
+		<result column="pk_id" property="id" />
+		<result column="enum_code" property="enumCode" />
+		<result column="enum_group" property="enumGroup" />
+		<result column="enum_value" property="enumValue" />
+		<result column="enum_txt" property="enumTxt" />
+		<result column="remark" property="remark" />
+		<result column="sort_index" property="sortIndex" />
+		<result column="is_cache" property="isCache" />
+		<result column="status" property="status" />
+		<result column="create_user" property="createUser" />
+		<result column="create_time" property="createTime" />
+		<result column="update_user" property="updateUser" />
+		<result column="update_time" property="updateTime" />
+	</resultMap>
+	
+	<sql id="EnumDicEntity_Column_List">
+		`pk_id` , `enum_code` , `enum_group` , `enum_value` , `enum_txt` , `remark` , `sort_index` , `is_cache`, `status` , `create_user` , `create_time` , `update_user` , `update_time` 
+	</sql>
+	
+	<select id="selectEnumsListByObj" parameterMap="EnumDicBean" resultMap="EnumDicEntityMap">
+		select
+		   <include refid="EnumDicEntity_Column_List" />
+		 from `dic_enum`
+		where 1=1
+		and status = 1
+		<if test='enumCode!=null'>
+			and enum_code =#{enumCode}
+		</if>
+		<if test='enumGroup!=null'>
+			and enum_group = #{enumGroup}
+		</if>
+		<if test='enumValue!=null'>
+			and enum_value =#{enumValue}
+		</if>
+		<if test='enumTxt!=null'>
+			and enum_txt = #{enumTxt}
+		</if>
+		<if test='isCache!=null'>
+			and is_cache =#{isCache}
+		</if>
+		<if test='status!=null'>
+			and status =#{status}
+		</if>
+		order  by enum_group,sort_index
+	</select> 
+	
+	
+	<update id="updateEnum" parameterType="com.flchy.blog.base.dbconfig.entity.EnumDicEntity" >
+		UPDATE `dic_enum`
+		<set>
+			<if test="enumCode != null and enumCode != ''">
+				  `enum_code` = #{enumCode},
+			</if>
+			<if test="enumGroup != null  and enumGroup != ''">
+				  `enum_group` = #{enumGroup},
+			</if>
+			<if test="enumValue != null  and enumValue != ''">
+				  `enum_value` = #{enumValue},
+			</if>
+			<if test="enumTxt != null and enumTxt != ''">
+				  `enum_txt` = #{enumTxt},
+			</if>
+			<if test="remark != null and remark != ''">
+				  `remark` = #{remark},
+			</if>
+			<if test="sortIndex != null and sortIndex != ''">
+				  `sort_index` = #{sortIndex},
+			</if>
+			<if test="isCache != null and isCache != ''">
+				  `is_cache` = #{isCache},
+			</if>
+			<if test="updateUser != null and updateUser != ''">
+				  `update_user` = #{updateUser},
+			</if>
+			<if test="updateTime != null">
+				  `update_time` = #{updateTime},
+			</if>
+		</set>
+		WHERE
+			(`pk_id` = #{id})
+	</update>
+	
+	
+	<update id="deleteEnum" parameterType="java.lang.Integer">
+		UPDATE `dic_enum`
+			set `status` = -1
+			WHERE `pk_id` in 
+		     <foreach collection="list" item="item"  open="(" close=")" separator=",">
+		     #{item}
+		     </foreach>
+	</update>
+	
+	
+</mapper>

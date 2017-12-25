@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zuobiao.analysis.privilege.config.dao.IBaseInfoMenuDao">
+	<resultMap id="BaseInfoMenuEntityMap" type="com.zuobiao.analysis.privilege.config.entity.BaseInfoMenuEntity">
+		<result column="pk_id" property="menuId" />
+		<result column="menu_pid" property="menuPid" />
+		<result column="menu_name" property="menuName" />
+		<result column="alias" property="alias" />
+		<result column="menu_name_qp" property="menuNameQp" />
+		<result column="remark" property="remark" />
+		<result column="menu_level" property="menuLevel" />
+		<result column="url_path" property="urlPath" />
+		<result column="menu_cls" property="menuCls" />
+		<result column="load_target" property="loadTarget" />
+		<result column="sort_index" property="sortIndex" />
+		<result column="is_share" property="isShare" />
+		<result column="full_path" property="fullPath" />
+		<result column="menu_type" property="menuType" />
+		<result column="status" property="status" />
+		<result column="create_user" property="createUser" />
+		<result column="create_time" property="createTime" />
+		<result column="update_user" property="updateUser" />
+		<result column="update_time" property="updateTime" />
+		<result column="priv_visit_id" property="privVisitId" />
+	</resultMap>
+	
+	<sql id="BaseInfoMenuEntity_Column_List">
+		`pk_id` , `menu_pid` , `menu_name` ,`alias`, `menu_name_qp` , `remark` , `menu_level` , `url_path` , `menu_cls`, `load_target` , `sort_index` , `is_share` , `full_path` , `menu_type`, `status` , `create_user` , `create_time` , `update_user` , `update_time` 
+	</sql>
+	
+	<select id="selectMenuInfoById" parameterType="java.lang.Integer" resultMap="BaseInfoMenuEntityMap">
+		select
+		   <include refid="BaseInfoMenuEntity_Column_List" />
+		 from `conf_info_menu`
+		 where 1=1
+		<if test='menuId!=null'>
+			and pk_id =#{menuId}
+		</if>
+		AND STATUS != -1
+	</select> 
+	
+	<select id="selectAllMenuList"  resultMap="BaseInfoMenuEntityMap">
+		SELECT
+			`pk_id`,
+			`menu_pid`,
+			`menu_name`,
+			`alias`,
+			`menu_name_qp`,
+			m.`remark`,
+			`menu_level`,
+			`url_path`,
+			`menu_cls`,
+			`load_target`,
+			`sort_index`,
+			`is_share`,
+			`full_path`,
+			`menu_type`,
+			m.`status`,
+			m.`create_user`,
+			m.`create_time`,
+			m.`update_user`,
+			m.`update_time`,
+			v.priv_visit_id
+		FROM
+			`conf_info_menu` m
+		INNER JOIN `priv_conf_visit` v ON m.pk_id = v.menu_id
+		WHERE
+			1 = 1
+		AND m.STATUS != - 1 and v.`status` != - 1
+	</select> 
+	
+	<insert id="insert"    parameterType="com.zuobiao.analysis.privilege.config.entity.BaseInfoMenuEntity" useGeneratedKeys="true"  keyProperty="menuId">
+		INSERT INTO `conf_info_menu` ( `menu_pid`, `menu_name`,`alias`, `menu_name_qp`, `remark`, `menu_type`, `menu_level`, `url_path`, `menu_cls`, `load_target`, `sort_index`, `full_path`, `is_share`, `status`, `create_user`, `create_time`) VALUES (#{menuPid}, #{menuName},#{alias}, #{menuNameQp}, #{remark}, #{menuType}, #{menuLevel}, #{urlPath}, #{menuCls}, #{loadTarget}, #{sortIndex}, #{fullPath}, #{isShare}, #{status}, #{createUser}, #{createTime})
+	</insert>
+	
+	<update id="update" parameterType="com.zuobiao.analysis.privilege.config.entity.BaseInfoMenuEntity" >
+	UPDATE `conf_info_menu`
+	<set>
+		<if test="menuPid != null and menuPid != ''">
+		 `menu_pid` =#{menuPid},
+		</if>
+		<if test="menuName != null and menuName != ''">
+		 `menu_name` =#{menuName},
+		</if>
+		<if test="alias != null and alias != ''">
+		 `alias` = #{alias},
+		</if>
+		<if test="menuNameQp != null  and menuNameQp != ''">
+		 `menu_name_qp` =#{menuNameQp},
+		</if>
+		<if test="remark != null   and remark != ''">
+		 `remark` =#{remark},
+		</if>
+		<if test="menuType != null ">
+		 `menu_type` =#{menuType},
+		</if>
+		<if test="menuLevel != null  and menuLevel != ''">
+		 `menu_level` =#{menuLevel},
+		</if>
+		<if test="urlPath != null   and urlPath != ''">
+		 `url_path` =#{urlPath},
+		</if>
+		<if test="menuCls != null    and menuCls != ''">
+		 `menu_cls` =#{menuCls},
+		</if>
+		<if test="loadTarget != null ">
+		 `load_target` =#{loadTarget},
+		</if>
+		<if test="sortIndex != null">
+		 `sort_index` =#{sortIndex},
+		</if>
+		<if test="fullPath != null   and fullPath != ''">
+		 `full_path` =#{fullPath},
+		</if>
+		<if test="isShare != null">
+		 `is_share` =#{isShare},
+		</if>
+		<if test="status != null">
+		 `status` =#{status},
+		</if>
+		<if test="updateUser != null   and updateUser != ''">
+		 `update_user` =#{updateUser},
+		</if>
+		<if test="updateTime != null">
+		 `update_time` =#{updateTime},
+		</if>
+	</set>
+		WHERE
+			(`pk_id` =#{menuId})
+	</update>
+	
+	
+	<update id="delete" parameterType="java.lang.Integer">
+	UPDATE `conf_info_menu`
+		set `status` = -1
+		WHERE `pk_id` in 
+	     <foreach collection="list" item="item"  open="(" close=")" separator=",">
+	     #{item}
+	     </foreach>
+	</update>
+	
+	
+	<select id="selectMenuByUserId"   resultMap="BaseInfoMenuEntityMap">
+	SELECT
+		m.*,
+		cv.priv_visit_id
+		FROM
+			priv_conf_visit  cv
+		INNER JOIN priv_map_role_visit rv 
+		on cv.priv_visit_id=rv.priv_visit_id
+		INNER JOIN priv_map_user_role ur on ur.role_id=rv.role_id
+		INNER JOIN  conf_info_menu m on m.pk_id=cv.menu_id
+		
+		where 
+		 cv.`status`=1
+		and rv.`status`=1
+		and ur.`status`=1
+		and m.`status`=1
+		and user_id=#{userId}
+	</select>
+	<select id="selectMenuByRoleId"   parameterType="java.lang.Integer"  resultType="java.util.Map">
+	SELECT
+		m.`pk_id` 'menuId',
+		m.`menu_pid` 'menuPid',
+		m.`menu_name` 'menuName',
+		m.`alias`,
+		m.`menu_name_qp` 'menuNameQp',
+		m.`remark`,
+		m.`menu_type` 'menuType',
+		m.`menu_level` 'menuLevel',
+		m.`url_path` 'urlPath',
+		m.`menu_cls` 'menuCls',
+		m.`load_target` 'loadTarget',
+		m.`sort_index` 'sortIndex',
+		m.`full_path` 'fullPath' ,
+		m.`is_share`'isShare',
+		m.`status`,
+		m.`create_user` 'createUser',
+		m.`create_time` 'createTime',
+		m.`update_user` 'updateUser',
+		m.`update_time` 'updateTime',
+		rv.pk_id 'roleVisitId'
+	FROM
+		conf_info_menu m
+	INNER JOIN priv_conf_visit cv ON cv.menu_id = m.pk_id
+	INNER JOIN priv_map_role_visit rv ON rv.priv_visit_id = cv.priv_visit_id
+	WHERE
+		m.`status` = 1
+	AND cv.`status` = 1
+	AND rv.`status` = 1
+	AND rv.role_id = #{roleId}
+	</select>
+	
+	
+	
+	
+	<select id="selectByRoleIdAllMenu"   resultType="java.util.Map">
+		SELECT
+			m.`pk_id` 'menuId',
+			m.`menu_pid` 'menuPid',
+			m.`menu_name` 'menuName',
+			m.`alias`,
+			m.`menu_name_qp` 'menuNameQp',
+			m.`remark`,
+			m.`menu_type` 'menuType',
+			m.`menu_level` 'menuLevel',
+			m.`url_path` 'urlPath',
+			m.`menu_cls` 'menuCls',
+			m.`load_target` 'loadTarget',
+			m.`sort_index` 'sortIndex',
+			m.`full_path` 'fullPath' ,
+			m.`is_share`'isShare',
+			m.`status`,
+			m.`create_user` 'createUser',
+			m.`create_time` 'createTime',
+			m.`update_user` 'updateUser',
+			m.`update_time` 'updateTime',
+			cv.priv_visit_id 'privVisitId',
+			(
+				SELECT
+					v.priv_visit_id
+				FROM
+					priv_map_role_visit v
+				WHERE
+					v.priv_visit_id = cv.priv_visit_id
+				AND v.`status` = 1
+				AND role_id = #{roleId}
+			) 'selected'
+		FROM
+			conf_info_menu m
+		INNER JOIN priv_conf_visit cv ON cv.menu_id = m.pk_id
+		WHERE
+			m.`status` = 1
+		AND cv.`status` = 1
+	</select>
+</mapper>

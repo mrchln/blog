@@ -23,7 +23,7 @@ import com.flchy.blog.base.annotation.Log;
 import com.flchy.blog.base.enums.OperateCodeEnum;
 import com.flchy.blog.base.exception.BusinessException;
 import com.flchy.blog.base.response.ResponseCommand;
-import com.flchy.blog.base.response.ResultPage;
+import com.flchy.blog.base.response.PageHelperResult;
 import com.flchy.blog.inlets.config.Sample;
 import com.flchy.blog.inlets.enums.Keys;
 import com.flchy.blog.inlets.enums.StatusEnum;
@@ -75,7 +75,7 @@ public class BlogController {
 //		iArticleService.selectPage(page,
 //				new EntityWrapper<Article>(article).where(" status={0} ", StatusEnum.NORMAL.getCode()));
 		iArticleService.selectArticlePage(page, article);
-		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, new ResultPage(page));
+		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, new PageHelperResult(page));
 	}
 
 	@Log(value="查询文章",type=OperateCodeEnum.PUBLIC)
@@ -133,7 +133,7 @@ public class BlogController {
 	@PostMapping(value = "/comment/page")
 	public Object selectWebCommentPage(@RequestParam(value = "current", required = true) Integer current,
 			@RequestParam(value = "size", required = true) Integer size, Integer articleId,@RequestParam(value = "nickName", required = false) String nickName) {
-		ResultPage selectWebComment = iCommentService.selectWebComment(articleId, current, size,nickName);
+		PageHelperResult selectWebComment = iCommentService.selectWebComment(articleId, current, size,nickName);
 		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, selectWebComment);
 	}
 	@Log(value="评论 文章",type=OperateCodeEnum.PUBLIC)
@@ -170,7 +170,7 @@ public class BlogController {
 	public Object getNewestComment(){
 		Page<Comment> page = new Page<>(1, 10);
 		iCommentService.selectPage(page,new EntityWrapper<Comment>().where(" status = {0}", StatusEnum.NORMAL.getCode()).orderBy("create_time",false));
-		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, new ResultPage(page));
+		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, new PageHelperResult(page));
 	}
 	@Log(value="查询Blog配置",type=OperateCodeEnum.PUBLIC)
 	@GetMapping(value = "/getBlogConfig")

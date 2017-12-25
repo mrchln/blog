@@ -22,7 +22,7 @@ import com.flchy.blog.base.annotation.Log;
 import com.flchy.blog.base.enums.OperateCodeEnum;
 import com.flchy.blog.base.exception.BusinessException;
 import com.flchy.blog.base.response.ResponseCommand;
-import com.flchy.blog.base.response.ResultPage;
+import com.flchy.blog.base.response.PageHelperResult;
 import com.flchy.blog.inlets.enums.Keys;
 import com.flchy.blog.inlets.enums.StatusEnum;
 import com.flchy.blog.inlets.holder.ConfigHolder;
@@ -58,7 +58,7 @@ public class CommentController {
 		Page<Map<String, Object>> page = new Page<>(Integer.valueOf(current), Integer.valueOf(size));
 		iCommentService.selectCommentPage(page, comment);
 //		iCommentService.selectPage(page, new EntityWrapper<Comment>(comment).orderBy("create_time", false));
-		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, new ResultPage(page));
+		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, new PageHelperResult(page));
 	}
 
 	@GetMapping(value="/{id}")

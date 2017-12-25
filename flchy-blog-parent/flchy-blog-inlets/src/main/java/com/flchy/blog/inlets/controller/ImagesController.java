@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.flchy.blog.base.annotation.Log;
 import com.flchy.blog.base.enums.OperateCodeEnum;
 import com.flchy.blog.base.response.ResponseCommand;
-import com.flchy.blog.base.response.ResultPage;
+import com.flchy.blog.base.response.PageHelperResult;
 import com.flchy.blog.inlets.service.IImagesService;
 import com.flchy.blog.pojo.Images;
 
@@ -33,6 +33,6 @@ public class ImagesController {
 			@RequestParam(value = "size", required = true) Integer size, Images images) {
 
 		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS,
-				new ResultPage(iImagesService.selectImagePage(current, size, images)));
+				new PageHelperResult(iImagesService.selectImagePage(current, size, images)));
 	}
 }

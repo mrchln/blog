@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 
 import com.flchy.blog.base.datasource.ConfigDataSource;
 import com.flchy.blog.base.holder.SpringContextHolder;
-import com.flchy.blog.common.service.ScheduledService;
+import com.flchy.blog.base.service.ScheduledService;
 import com.flchy.blog.utils.StringUtil;
 import com.flchy.blog.utils.sql.JdbcUtil;
 import com.flchy.blog.utils.sql.SqlUtils;

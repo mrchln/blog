@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 import com.flchy.blog.base.holder.PropertiesHolder;
 import com.flchy.blog.base.holder.SpringContextHolder;
-import com.flchy.blog.common.service.ScheduledService;
+import com.flchy.blog.base.service.ScheduledService;
 
 /**
  * 定时任务
