@@ -1,0 +1,7 @@
+<ehcache>
+	<!-- 菜单资源缓存配置区域 -->
+	<cache name="com.flchy.blog.privilege.menu" maxElementsInMemory="10000"
+		eternal="true" maxElementsOnDisk="1000" overflowToDisk="true"
+		timeToIdleSeconds="0" timeToLiveSeconds="0"
+		memoryStoreEvictionPolicy="LFU" />
+</ehcache>

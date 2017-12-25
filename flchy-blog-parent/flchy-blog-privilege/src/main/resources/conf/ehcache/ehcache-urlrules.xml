@@ -1,0 +1,7 @@
+<ehcache>
+	<!-- URL规则资源缓存配置区域 -->
+	<cache name="com.flchy.blog.privilege.urlrules" maxElementsInMemory="10000"
+		eternal="true" maxElementsOnDisk="1000" overflowToDisk="true"
+		timeToIdleSeconds="0" timeToLiveSeconds="0"
+		memoryStoreEvictionPolicy="LFU" />
+</ehcache>

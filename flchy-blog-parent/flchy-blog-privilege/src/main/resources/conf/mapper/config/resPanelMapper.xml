@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.zuobiao.analysis.privilege.config.dao.IBaseResPanelDao">
-	<resultMap id="BaseResPanelEntityMap" type="com.zuobiao.analysis.privilege.config.entity.BaseResPanelEntity">
+<mapper namespace="com.flchy.blog.privilege.config.dao.IBaseResPanelDao">
+	<resultMap id="BaseResPanelEntityMap" type="com.flchy.blog.privilege.config.entity.BaseResPanelEntity">
 		<result column="pk_id" property="panelId" />
 		<result column="panel_name" property="panelName" />
 		<result column="menu_id" property="menuId" />
@@ -17,7 +17,7 @@
 		 `pk_id` ,  `panel_name` , `menu_id` , `remark` , `status` , `create_user` , `create_time` , `update_user` , `update_time` 
 	</sql>
 	
-	<select id="selectResPanel" parameterType="com.zuobiao.analysis.privilege.config.entity.BaseResPanelEntity" resultMap="BaseResPanelEntityMap">
+	<select id="selectResPanel" parameterType="com.flchy.blog.privilege.config.entity.BaseResPanelEntity" resultMap="BaseResPanelEntityMap">
 		select  <include refid="BaseResPanelEntity_Column_List" /> 
 			 from `conf_info_panel`
 			 <where>
@@ -34,7 +34,7 @@
 			 </where>
 	</select>
 	
-	<update id="update" parameterType="com.zuobiao.analysis.privilege.config.entity.BaseResPanelEntity" >
+	<update id="update" parameterType="com.flchy.blog.privilege.config.entity.BaseResPanelEntity" >
 	UPDATE `conf_info_panel`
 		<set>
 			<if test="panelName != null   and  panelName != ''">

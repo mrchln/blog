@@ -49,8 +49,8 @@ public class LoggingEventPublish implements ApplicationEventPublisherAware {
 	 * @param browserType
 	 * @param loginTime
 	 */
-	public void loginEvent(String userId, String sessionId,String mainUserId, String serverIp, String clientIp, String userAgent, String browserType, Date loginTime) {
-		LoginEvent loginEvent = new LoginEvent(this, userId,sessionId, mainUserId, serverIp, clientIp, userAgent, browserType, DateTime.now().toDate());
+	public void loginEvent(String userId, String sessionId,String mainUserId, String serverIp, String clientIp, String userAgent, String browserType, Date loginTime,Integer isSuccess,String parameter) {
+		LoginEvent loginEvent = new LoginEvent(this, userId,sessionId, mainUserId, serverIp, clientIp, userAgent, browserType, loginTime, isSuccess, parameter);
 		this.eventPublisher.publishEvent(loginEvent);
 	}
 

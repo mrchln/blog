@@ -17,7 +17,7 @@ import com.flchy.blog.utils.helper.ObjectClassHelper;
 @Component
 public class EnumDicCache extends AbstractCacheHolder {
 	private static final Logger logger = LoggerFactory.getLogger(EnumDicCache.class);
-    private static final String cacheKey = "com.zuobiao.analysis.base.enumdic";
+    private static final String cacheKey = "com.flchy.blog.base.base.enumdic";
     /** 缓存区域中的element的key */
     private static final String cacheNodeKey = "enumDicInfo";
     

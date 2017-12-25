@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.zuobiao.analysis.privilege.config.dao.IBaseConfUrlDao">
+<mapper namespace="com.flchy.blog.privilege.config.dao.IBaseConfUrlDao">
 	<resultMap id="BaseConfUrlEntityMap"
-		type="com.zuobiao.analysis.privilege.config.entity.BaseConfUrlEntity">
+		type="com.flchy.blog.privilege.config.entity.BaseConfUrlEntity">
 		<result column="pk_id" property="urlId" />
 		<result column="url_path" property="urlPath" />
 		<result column="method" property="method" />
@@ -63,7 +63,7 @@
 	</insert>
 
 	<select id="select" resultMap="BaseConfUrlEntityMap"
-		parameterType="com.zuobiao.analysis.privilege.config.entity.BaseConfUrlEntity">
+		parameterType="com.flchy.blog.privilege.config.entity.BaseConfUrlEntity">
 		select
 		<include refid="BaseConfUrlEntity_Column_List" />
 		from `priv_conf_url`

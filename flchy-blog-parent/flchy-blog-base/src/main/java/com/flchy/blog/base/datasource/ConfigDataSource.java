@@ -1,9 +1,7 @@
 package com.flchy.blog.base.datasource;
 
 import java.sql.SQLException;
-
 import javax.sql.DataSource;
-
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.annotation.MapperScan;
@@ -34,7 +32,7 @@ import com.flchy.blog.base.datasource.annotation.ConfigRepository;
 //扫描 Mapper 接口并容器管理
 @MapperScan(basePackages = ConfigDataSource.PACKAGE, sqlSessionFactoryRef = "clusterSqlSessionFactory", annotationClass = ConfigRepository.class)
 public class ConfigDataSource {
-	static final String PACKAGE = "com.flchy.blog.**.mapper";
+	static final String PACKAGE = "com.flchy.blog.**.dao";
 	static final String MAPPER_LOCATION = "classpath*:conf/mapper/**/*.xml";
 	// 连接Url路径
 		@Value("${configs.datasource.url}")

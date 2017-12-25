@@ -23,6 +23,7 @@ import com.flchy.blog.base.annotation.Log;
 import com.flchy.blog.base.enums.OperateCodeEnum;
 import com.flchy.blog.base.exception.BusinessException;
 import com.flchy.blog.base.response.ResponseCommand;
+import com.flchy.blog.base.response.VisitsMapResult;
 import com.flchy.blog.base.response.PageHelperResult;
 import com.flchy.blog.inlets.config.Sample;
 import com.flchy.blog.inlets.enums.Keys;
@@ -32,10 +33,13 @@ import com.flchy.blog.inlets.holder.ConfigHolder;
 import com.flchy.blog.inlets.service.IArticleService;
 import com.flchy.blog.inlets.service.ICommentService;
 import com.flchy.blog.inlets.service.ILinkService;
+import com.flchy.blog.plugin.redis.RedisBusines;
 import com.flchy.blog.pojo.Article;
 import com.flchy.blog.pojo.ArticleType;
 import com.flchy.blog.pojo.Comment;
 import com.flchy.blog.pojo.Link;
+import com.flchy.blog.privilege.enums.LoginAuthResultEnums;
+import com.flchy.blog.utils.NewMapUtil;
 import com.flchy.blog.utils.ip.InternetProtocol;
 
 import eu.bitwalker.useragentutils.Browser;
@@ -59,6 +63,8 @@ public class BlogController {
 	private ILinkService iLinkService;
 	@Autowired
 	private ICommentService iCommentService;
+	@Autowired
+	private RedisBusines redisBusines;
 	@Autowired
 	private Sample sample;
 	@Log(value="查询文章分页",type=OperateCodeEnum.PUBLIC)
@@ -139,7 +145,13 @@ public class BlogController {
 	@Log(value="评论 文章",type=OperateCodeEnum.PUBLIC)
 	@PostMapping(value = "/comment")
 	public Object insertComment(@ModelAttribute Comment comment, HttpServletRequest request) {
-		
+		String remoteAddr = InternetProtocol.getRemoteAddr(request);
+		String ipkey="comment:"+remoteAddr;
+		String string = redisBusines.get(ipkey);
+		Integer commentNum=0;
+		if(string!=null){
+			commentNum = Integer.valueOf(string);
+		}
 		String ua = request.getHeader("User-Agent");
 		// 转成UserAgent对象
 		UserAgent userAgent = UserAgent.parseUserAgentString(ua);
@@ -155,8 +167,14 @@ public class BlogController {
 		comment.setUa(ua);
 		comment.setBrowserName(browserName);
 		comment.setOsName(system);
-		comment.setClientIp(InternetProtocol.getRemoteAddr(request));
-		Comment saveComment = iCommentService.saveComment(comment);
+		comment.setClientIp(remoteAddr);
+		Comment saveComment =null;
+		if(commentNum>15){
+			 iCommentService.saveComment(comment,true);
+		}else{
+			 iCommentService.saveComment(comment);
+		}
+		redisBusines.setEx(ipkey, String.valueOf(commentNum+=1),60* 30 * 24);
 		return new ResponseCommand(ResponseCommand.STATUS_SUCCESS, saveComment);
 	}
 	

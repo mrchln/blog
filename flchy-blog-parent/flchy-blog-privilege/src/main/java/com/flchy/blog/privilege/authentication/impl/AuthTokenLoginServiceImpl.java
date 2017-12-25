@@ -14,10 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import com.alibaba.fastjson.JSON;
 import com.flchy.blog.base.event.LoggingEventPublish;
-import com.flchy.blog.base.holder.PropertiesHolder;
 import com.flchy.blog.base.response.VisitsMapResult;
-import com.flchy.blog.plugin.redis.RedisHolder;
+import com.flchy.blog.plugin.redis.RedisBusines;
 import com.flchy.blog.plugin.redis.util.StringUtil;
 import com.flchy.blog.privilege.authentication.IAuthTokenLoginService;
 import com.flchy.blog.privilege.authentication.ITokenAuthentService;
@@ -37,7 +37,6 @@ import com.flchy.blog.utils.ip.copy.IpUtils;
 
 import eu.bitwalker.useragentutils.Browser;
 import eu.bitwalker.useragentutils.UserAgent;
-import redis.clients.jedis.BinaryJedisCluster;
 
 
 /**
@@ -46,24 +45,45 @@ import redis.clients.jedis.BinaryJedisCluster;
 @Service
 public class AuthTokenLoginServiceImpl implements IAuthTokenLoginService {
 	private static Logger logger = LoggerFactory.getLogger(AuthTokenLoginServiceImpl.class);
-	private static final String tokenServerKey = "com.analysis";
-	// TODO 测试令牌存货时间设为12小时，正式时记得改回来
-	private static final int DEFAULT_INVALID_TIME = 60* 30 * 24 ;//* 30 * 24
+	private static final String tokenServerKey = "com.flchy.blog";
+	// TODO 测试令牌存货时间设为2小时，正式时记得改回来
+	private static final int DEFAULT_INVALID_TIME = 60* 30 * 2 ;//* 30 * 24
+	//登录次数存储时间
+	private static final int DEFAULT_NUM_TIME = 60* 30 * 24 ;//* 30 * 24
+	
 	@Autowired
 	private ITokenPrivilegeService tokenPrivilegeService;
 	@Autowired
 	private ITokenAuthentService tokenAuthentService;
-	private static BinaryJedisCluster jedisCluster;
-	static {
-		jedisCluster = RedisHolder.getJedisCluster(PropertiesHolder.getProperty("plugin.redis.address"),PropertiesHolder.getProperty("plugin.redis.password"));
-	}
+	@Autowired
+	private RedisBusines redisBusines;
 	/**
 	 * 执行登录校验
 	 */
 	public VisitsMapResult authc(String loginName, String loginPass, HttpServletRequest request) {
+		String remoteAddr = InternetProtocol.getRemoteAddr(request);
+		String ipkey="login"+remoteAddr;
+		String string = redisBusines.get(ipkey);
+		Integer loginNum=0;
+		if(string!=null){
+			 loginNum = Integer.valueOf(string);
+			 if(loginNum>5){
+				 return new VisitsMapResult(new NewMapUtil("message", LoginAuthResultEnums.LOGIN_RESTRICTED.toString()).get());
+			 }
+		}
+		
+		String ua = request.getHeader("User-Agent");
+		//转成UserAgent对象
+		UserAgent userAgent = UserAgent.parseUserAgentString(ua); 
+		//获取浏览器信息
+		Browser browser = userAgent.getBrowser();  
+		//浏览器名称
+		String browserName = browser.getName();
 		// 查询用户表数据
 		BaseUser userInfo = PrivilegeHolder.getProvider().getUserByUserName(loginName);
 		if (null == userInfo) {
+			LoggingEventPublish.getInstance().loginEvent(null,null, null, IpUtils.getIPAddress(), remoteAddr, ua, browserName, new Date(),-1,JSON.toJSONString(request.getParameterMap()));
+			redisBusines.setEx(ipkey, String.valueOf(loginNum+=1),DEFAULT_NUM_TIME);
 			return new VisitsMapResult(new NewMapUtil("message", LoginAuthResultEnums.LOGIN_FAIL_USER_NOTEXSIST.toString()).get());
 		}
 		// 获取用户密码
@@ -71,21 +91,17 @@ public class AuthTokenLoginServiceImpl implements IAuthTokenLoginService {
 		if (!StringUtil.isNullOrEmpty(passWord) && !StringUtil.isNullOrEmpty(loginPass)) {
 			// 数据库存储MD5密码
 			if ((new Md5Hash(loginPass).toHex()).equals(passWord)) {
-				String remoteAddr = InternetProtocol.getRemoteAddr(request);
-				String ua = request.getHeader("User-Agent");
-				//转成UserAgent对象
-				UserAgent userAgent = UserAgent.parseUserAgentString(ua); 
-				//获取浏览器信息
-				Browser browser = userAgent.getBrowser();  
-				//浏览器名称
-				String browserName = browser.getName();
 				String adoptToken = this.sessionLoginCache(userInfo, remoteAddr);
-				LoggingEventPublish.getInstance().loginEvent(userInfo.getUserId().toString(),adoptToken, userInfo.getUserName(), IpUtils.getIPAddress(), remoteAddr, ua, browserName, new Date());
+				LoggingEventPublish.getInstance().loginEvent(userInfo.getUserId().toString(),adoptToken, userInfo.getUserName(), IpUtils.getIPAddress(), remoteAddr, ua, browserName, new Date(),1,null);
 				return new VisitsMapResult(new NewMapUtil("message", LoginAuthResultEnums.LOGIN_SUCCESS.toString()).get(),adoptToken);
 			} else {
+				LoggingEventPublish.getInstance().loginEvent(String.valueOf(userInfo.getUserId()),null, userInfo.getUserName(), IpUtils.getIPAddress(), remoteAddr, ua, browserName, new Date(),-1,JSON.toJSONString(request.getParameterMap()));
+				redisBusines.setEx(ipkey, String.valueOf(loginNum+=1),DEFAULT_NUM_TIME);
 				return new VisitsMapResult(new NewMapUtil("message", LoginAuthResultEnums.LOGIN_FAIL_PWD_INCORRECT.toString()).get());
 			}
 		} else {
+			LoggingEventPublish.getInstance().loginEvent(String.valueOf(userInfo.getUserId()),null, userInfo.getUserName(), IpUtils.getIPAddress(), remoteAddr, ua, browserName, new Date(),-1,JSON.toJSONString(request.getParameterMap()));
+			redisBusines.setEx(ipkey, String.valueOf(loginNum+=1),DEFAULT_NUM_TIME);
 			return new VisitsMapResult(new NewMapUtil("message", LoginAuthResultEnums.LOGIN_FAIL_PWD_INCORRECT.toString()).get());
 		}
 	}
@@ -146,13 +162,13 @@ public class AuthTokenLoginServiceImpl implements IAuthTokenLoginService {
 		String adoptToken = this.generateToken(userInfo.getUserName(), userInfo.getPassWord(), remoteAddr);
 		// 入库redis公有缓存
 		try {
-			if (null != jedisCluster) {
+			if (null != redisBusines) {
 				// 重复的令牌，再次生成
-				if (null != jedisCluster.get(adoptToken.getBytes("utf-8"))) {
+				if (null != redisBusines.get(adoptToken.getBytes("utf-8"))) {
 					adoptToken = this.generateToken(userInfo.getUserName(), userInfo.getPassWord(), remoteAddr);
 				}
 				// session到Redis库
-				jedisCluster.setex(adoptToken.getBytes("utf-8"), DEFAULT_INVALID_TIME, BeanUtil.objectToByte(userInfo));
+				redisBusines.setEx(adoptToken.getBytes(), BeanUtil.objectToByte(userInfo), DEFAULT_INVALID_TIME);
 			} else {
 				logger.error("Failed to get the distributed redis connection , connection is null; Please contact the administrator");
 			}

@@ -41,6 +41,8 @@ public class LoggingEventListener implements ApplicationListener<AbstractWebVisi
 					.set("login_time",loginEvent.getLoginTime())
 					.set("user_agent",loginEvent.getUserAgent())
 					.set("browser_type",loginEvent.getBrowserType())
+					.set("is_success",loginEvent.getIsSuccess())
+					.set("parameter",loginEvent.getParameter())
 					.get());
 		}
 		// 菜单点击事件

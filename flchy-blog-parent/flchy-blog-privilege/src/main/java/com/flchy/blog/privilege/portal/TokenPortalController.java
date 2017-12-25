@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.flchy.blog.base.holder.PropertiesHolder;
 import com.flchy.blog.base.response.ResponseCommand;
 import com.flchy.blog.base.response.VisitsMapResult;
+import com.flchy.blog.plugin.redis.RedisBusines;
 import com.flchy.blog.plugin.redis.util.StringUtil;
 import com.flchy.blog.privilege.authentication.IAuthTokenLoginService;
 import com.flchy.blog.privilege.authentication.ITokenAuthentService;
@@ -45,8 +46,6 @@ public class TokenPortalController {
 	private ITokenPrivilegeService tokenPrivilegeService;
 	@Autowired
 	private ITokenAuthentService tokenAuthentService;
-	@Autowired
-	private ApplicationContext applicationContext;
 	/**
 	 * 登录验证,登录成功返回令牌token
 	 */

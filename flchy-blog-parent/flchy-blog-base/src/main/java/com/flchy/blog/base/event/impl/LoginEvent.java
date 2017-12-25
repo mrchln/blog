@@ -17,13 +17,18 @@ public class LoginEvent extends AbstractWebVisitEvent {
 	private String userAgent;
 	private String browserType;
 	private Date loginTime;
+	private Integer isSuccess;
+	private String parameter;
+	
+
+	
 
 	public LoginEvent(Object source) {
 		super(source);
 	}
 
 	public LoginEvent(Object source, String userId, String sessionId, String mainUserId, String serverIp,
-			String clientIp, String userAgent, String browserType, Date loginTime) {
+			String clientIp, String userAgent, String browserType, Date loginTime,Integer isSuccess,String parameter) {
 		super(source);
 		this.userId = userId;
 		this.sessionId = sessionId;
@@ -33,8 +38,26 @@ public class LoginEvent extends AbstractWebVisitEvent {
 		this.userAgent = userAgent;
 		this.browserType = browserType;
 		this.loginTime = loginTime;
+		this.isSuccess=isSuccess;
+		this.parameter=parameter;
+	}
+	
+	
+	public String getParameter() {
+		return parameter;
 	}
 
+	public void setParameter(String parameter) {
+		this.parameter = parameter;
+	}
+
+	public Integer getIsSuccess() {
+		return isSuccess;
+	}
+
+	public void setIsSuccess(Integer isSuccess) {
+		this.isSuccess = isSuccess;
+	}
 	public String getUserId() {
 		return userId;
 	}

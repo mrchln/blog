@@ -68,7 +68,35 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
 				if(Boolean.valueOf(ConfigHolder.getConfig(Keys.IS_COMMENT_VERIFY.getKey())) ){
 					comment.setStatus(StatusEnum.DRAFT.getCode());
 				}else{
-					comment.setStatus(StatusEnum.NORMAL.getCode());
+						comment.setStatus(StatusEnum.NORMAL.getCode());
+					isSendMail(comment);
+				}
+			} catch (Exception e) {
+				logger.error("判断是否需要审核异常  || 不影响运行:"+e.getMessage());
+			}
+			isSendMailAdmin(comment);
+		}
+		comment.setServerIp(IpUtils.getHostAddress());
+		comment.setCreateTime(new Date());
+		comment.insert();
+		return comment;
+	}
+	@Override
+	public Comment saveComment(Comment comment,Boolean isDraft) {
+		if(comment.getIsAdmin()){
+			comment.setStatus(StatusEnum.NORMAL.getCode());
+			isSendMail(comment);
+		}else{
+			try {
+				if(Boolean.valueOf(ConfigHolder.getConfig(Keys.IS_COMMENT_VERIFY.getKey())) ){
+					comment.setStatus(StatusEnum.DRAFT.getCode());
+				}else{
+					if(isDraft){
+						comment.setStatus(StatusEnum.DRAFT.getCode());
+					}else{
+						comment.setStatus(StatusEnum.NORMAL.getCode());
+					}
+					
 					isSendMail(comment);
 				}
 			} catch (Exception e) {

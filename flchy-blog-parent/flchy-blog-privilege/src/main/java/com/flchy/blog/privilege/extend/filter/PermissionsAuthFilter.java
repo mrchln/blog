@@ -21,13 +21,14 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.shiro.web.util.WebUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.alibaba.fastjson.JSON;
 import com.flchy.blog.base.holder.PropertiesHolder;
 import com.flchy.blog.base.holder.SpringContextHolder;
 import com.flchy.blog.base.response.ResponseCommand;
 import com.flchy.blog.base.response.VisitsMapResult;
-import com.flchy.blog.plugin.redis.RedisHolder;
+import com.flchy.blog.plugin.redis.RedisBusines;
 import com.flchy.blog.plugin.redis.util.StringUtil;
 import com.flchy.blog.privilege.config.bean.BaseUser;
 import com.flchy.blog.privilege.config.bean.ConfUrlBean;
@@ -37,18 +38,12 @@ import com.flchy.blog.utils.MD5;
 import com.flchy.blog.utils.NewMapUtil;
 import com.flchy.blog.utils.ip.InternetProtocol;
 
-import redis.clients.jedis.BinaryJedisCluster;
-
 public class PermissionsAuthFilter implements Filter {
 	private static Logger logger = LoggerFactory.getLogger(PermissionsAuthFilter.class);
 	private static String loginAction = "/authc/login";
 	private static String[] allowedUrls;
-	private static BinaryJedisCluster jedisCluster;
-	static {
-		jedisCluster = RedisHolder.getJedisCluster(PropertiesHolder.getProperty("plugin.redis.address"),PropertiesHolder.getProperty("plugin.redis.password"));
-		getAllowedUrls();
-	}
-
+	@Autowired
+	private RedisBusines redisBusines;
 	@Override
 	public void destroy() {
 		System.out.println("请求访问权限过滤器销毁");
@@ -126,13 +121,13 @@ public class PermissionsAuthFilter implements Filter {
 	
 	private boolean isAccessAllowed(String requestUri, String adoptToken, String method) {
 		// 校验Redis客户端
-		if (null == jedisCluster) {
+		if (null == redisBusines) {
 			return false;
 		}
 		// 获取令牌缓存数据
 		byte[] bytesInfo = null;
 		try {
-			bytesInfo = jedisCluster.get(adoptToken.getBytes("utf-8"));
+			bytesInfo = redisBusines.get(adoptToken.getBytes("utf-8"));
 			if (StringUtil.isNullOrEmpty(bytesInfo)) {
 				return false;
 			}

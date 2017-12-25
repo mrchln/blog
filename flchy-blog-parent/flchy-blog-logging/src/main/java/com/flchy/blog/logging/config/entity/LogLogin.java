@@ -23,6 +23,25 @@ public class LogLogin implements Serializable {
 	private Date loginTime;
 	private String userAgent;
 	private String browserType;
+	private Integer isSuccess;
+	private String parameter;
+	
+	
+	public Integer getIsSuccess() {
+		return isSuccess;
+	}
+
+	public void setIsSuccess(Integer isSuccess) {
+		this.isSuccess = isSuccess;
+	}
+
+	public String getParameter() {
+		return parameter;
+	}
+
+	public void setParameter(String parameter) {
+		this.parameter = parameter;
+	}
 
 	public String getLogId() {
 		return logId;

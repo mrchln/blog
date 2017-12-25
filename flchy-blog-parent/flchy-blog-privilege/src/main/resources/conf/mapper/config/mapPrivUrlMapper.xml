@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.zuobiao.analysis.privilege.config.dao.IBaseMapPrivUrlDao">
-    <resultMap id="BaseMapPrivUrlEntityMap" type="com.zuobiao.analysis.privilege.config.entity.BaseMapPrivUrlEntity">
+<mapper namespace="com.flchy.blog.privilege.config.dao.IBaseMapPrivUrlDao">
+    <resultMap id="BaseMapPrivUrlEntityMap" type="com.flchy.blog.privilege.config.entity.BaseMapPrivUrlEntity">
         <result column="pk_id" property="id" />
         <result column="url_id" property="urlId" />
         <result column="priv_visit_id" property="privVisitId" />
@@ -35,7 +35,7 @@
 		</update>
 		
 		
-		<insert id="insertCodeBatch" parameterType="com.zuobiao.analysis.privilege.config.entity.BaseMapPrivUrlEntity">
+		<insert id="insertCodeBatch" parameterType="com.flchy.blog.privilege.config.entity.BaseMapPrivUrlEntity">
 		INSERT INTO `priv_map_visit_url` (
 			`priv_visit_id`,
 			`url_id`,

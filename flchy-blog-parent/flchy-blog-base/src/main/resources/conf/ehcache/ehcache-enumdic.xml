@@ -1,0 +1,7 @@
+<ehcache>
+	<!-- 枚举缓存配置区域 -->
+	<cache name="com.flchy.blog.base.base.enumdic"
+		maxElementsInMemory="10000" eternal="true" maxElementsOnDisk="0"
+		overflowToDisk="true" timeToIdleSeconds="0" timeToLiveSeconds="0"
+		memoryStoreEvictionPolicy="LFU" />	
+</ehcache>

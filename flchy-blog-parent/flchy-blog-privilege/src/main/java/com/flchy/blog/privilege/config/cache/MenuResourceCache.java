@@ -30,7 +30,7 @@ import net.sf.ehcache.Element;
 @Component
 public class MenuResourceCache extends AbstractCacheHolder {
 	private static final Logger logger = LoggerFactory.getLogger(MenuResourceCache.class);
-	private static final String cacheKey = "com.zuobiao.analysis.privilege.menu";
+	private static final String cacheKey = "com.flchy.blog.privilege.menu";
 	private static final String protalMenuKey = "protalMenu";
 	
 	@Autowired

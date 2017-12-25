@@ -47,7 +47,7 @@ public class LoginLog  implements AbstractLog ,ScheduledService{
 	private ArrayBlockingQueue<Map<String,Object>> arrayBlockingQueue;
 	private final static int DEFAULT_QUEUE_CAPACITY = 1024;
 	private final static int BATCH_INSERT_COUNT = 10;
-	private String sqlInsert ="INSERT INTO `log_login` (`log_id`, `session_id`, `opr_user_id`, `main_account`, `server_ip`, `client_ip`, `login_time`, `user_agent`, `browser_type`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	private String sqlInsert ="INSERT INTO `log_login` (`log_id`, `session_id`, `opr_user_id`, `main_account`, `server_ip`, `client_ip`, `login_time`, `user_agent`, `browser_type`,`is_success`,`parameter`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)";
 	private String sqlInsertWithoutValues;
 	
 	private final int[] PARAM_TYPES = new int[] {
@@ -60,7 +60,8 @@ public class LoginLog  implements AbstractLog ,ScheduledService{
 				Types.TIMESTAMP,
 				Types.VARCHAR,
 				Types.VARCHAR,
-				
+				Types.INTEGER,
+				Types.VARCHAR,
 	};
 	
 	@Autowired
@@ -156,6 +157,8 @@ public class LoginLog  implements AbstractLog ,ScheduledService{
 							messageLog.get("login_time"),
 							messageLog.get("user_agent"),
 							messageLog.get("browser_type"),
+							messageLog.get("is_success"),
+							messageLog.get("parameter"),
 					};
 					
 					SqlUtils.appendSqlValues(sqlBuilder, params, PARAM_TYPES);
@@ -201,6 +204,8 @@ public class LoginLog  implements AbstractLog ,ScheduledService{
 								pstmt.setObject(7,messageLog.get("login_time"));
 								pstmt.setString(8, String.valueOf(messageLog.get("user_agent")));
 								pstmt.setString(9, String.valueOf(messageLog.get("browser_type")));
+								pstmt.setInt(10, Integer.valueOf(messageLog.get("is_success").toString()));
+								pstmt.setString(11, String.valueOf(messageLog.get("parameter")));
 								pstmt.executeUpdate();
 							} catch (SQLException ex2) {
 								logger.error("SQL exception while save ods user info : " + ex2.getMessage() + ", failed message: \n\t" + messageLog.toString(), ex2);

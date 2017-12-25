@@ -18,12 +18,17 @@ import com.baomidou.mybatisplus.service.IService;
  */
 public interface ICommentService extends IService<Comment> {
 
-	Comment saveComment(Comment comment);
 
 
 	PageHelperResult selectWebComment(Integer articleId, Integer current, Integer size, String nickName);
 
 
 	Page<Map<String, Object>> selectCommentPage(Page<Map<String, Object>> page, Comment comment);
+
+
+	Comment saveComment(Comment comment, Boolean isDraft);
+
+
+	Comment saveComment(Comment comment);
 	
 }

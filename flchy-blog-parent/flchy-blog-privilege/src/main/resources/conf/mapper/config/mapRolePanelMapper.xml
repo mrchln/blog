@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.zuobiao.analysis.privilege.config.dao.IBaseMapRolePanelDao">
-	<resultMap id="BaseMapRolePanelEntityMap" type="com.zuobiao.analysis.privilege.config.entity.BaseMapRolePanelEntity">
+<mapper namespace="com.flchy.blog.privilege.config.dao.IBaseMapRolePanelDao">
+	<resultMap id="BaseMapRolePanelEntityMap" type="com.flchy.blog.privilege.config.entity.BaseMapRolePanelEntity">
 		<result column="pk_id" property="id" />
 		<result column="role_id" property="roleId" />
 		<result column="panel_id" property="panelId" />
@@ -101,7 +101,7 @@
 	</update>
 	
 	
-	<insert id="insertCodeBatch" parameterType="com.zuobiao.analysis.privilege.config.entity.BaseMapRolePanelEntity">
+	<insert id="insertCodeBatch" parameterType="com.flchy.blog.privilege.config.entity.BaseMapRolePanelEntity">
 		INSERT INTO `priv_map_role_panel` (
 			`role_id`,
 			`panel_id`,

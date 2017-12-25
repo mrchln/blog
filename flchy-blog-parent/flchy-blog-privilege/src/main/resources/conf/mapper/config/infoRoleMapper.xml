@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.zuobiao.analysis.privilege.config.dao.IBaseInfoRoleDao">
-	<resultMap id="BaseInfoRoleEntityMap" type="com.zuobiao.analysis.privilege.config.entity.BaseInfoRoleEntity">
+<mapper namespace="com.flchy.blog.privilege.config.dao.IBaseInfoRoleDao">
+	<resultMap id="BaseInfoRoleEntityMap" type="com.flchy.blog.privilege.config.entity.BaseInfoRoleEntity">
 		<result column="pk_id" property="roleId" />
 		<result column="role_name" property="roleName" />
 		<result column="role_name_qp" property="roleNameQp" />
@@ -32,7 +32,7 @@
 		AND STATUS != -1
 	</select> 
 	
-	<select id="selectRoles" resultMap="BaseInfoRoleEntityMap" parameterType="com.zuobiao.analysis.privilege.config.entity.BaseInfoRoleEntity">
+	<select id="selectRoles" resultMap="BaseInfoRoleEntityMap" parameterType="com.flchy.blog.privilege.config.entity.BaseInfoRoleEntity">
 	select
 		   <include refid="BaseInfoRoleEntityMap_Column_List" />
 		 from `conf_info_role`
@@ -47,7 +47,7 @@
 		 </where>
 	</select>
 	
-	<update id="updateRole" parameterType="com.zuobiao.analysis.privilege.config.entity.BaseInfoRoleEntity">
+	<update id="updateRole" parameterType="com.flchy.blog.privilege.config.entity.BaseInfoRoleEntity">
 	UPDATE `conf_info_role`
 	<set>
 		<if test="roleName != null and roleName != ''">

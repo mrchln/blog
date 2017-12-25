@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.zuobiao.analysis.privilege.config.dao.IBaseMapRoleElementDao">
-	<resultMap id="BaseMapRoleElementEntityMap" type="com.zuobiao.analysis.privilege.config.entity.BaseMapRoleElementEntity">
+<mapper namespace="com.flchy.blog.privilege.config.dao.IBaseMapRoleElementDao">
+	<resultMap id="BaseMapRoleElementEntityMap" type="com.flchy.blog.privilege.config.entity.BaseMapRoleElementEntity">
 		<result column="pk_id" property="id" />
 		<result column="role_id" property="roleId" />
 		<result column="element_id" property="elementId" />
@@ -91,7 +91,7 @@
 			     </foreach>
 		</update>
 		
-			<insert id="insertCodeBatch" parameterType="com.zuobiao.analysis.privilege.config.entity.BaseMapRoleElementEntity">
+			<insert id="insertCodeBatch" parameterType="com.flchy.blog.privilege.config.entity.BaseMapRoleElementEntity">
 					INSERT INTO `priv_map_role_element` (
 						`role_id`,
 						`element_id`,

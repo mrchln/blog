@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.zuobiao.analysis.privilege.config.dao.IBaseResElementDao">
-	<resultMap id="BaseResElementEntityMap" type="com.zuobiao.analysis.privilege.config.entity.BaseResElementEntity">
+<mapper namespace="com.flchy.blog.privilege.config.dao.IBaseResElementDao">
+	<resultMap id="BaseResElementEntityMap" type="com.flchy.blog.privilege.config.entity.BaseResElementEntity">
 		<result column="pk_id" property="elementId" />
 		<result column="element_name" property="elementName" />
 		<result column="element_type" property="elementType" />
@@ -21,7 +21,7 @@
 		 `pk_id` ,  `element_name` , `element_type` , `menu_id` , `panel_id` , `remark` , `status` , `create_user` , `create_time` , `update_user` , `update_time` 
 	</sql>
 	
-	<select id="selectResElement" parameterType="com.zuobiao.analysis.privilege.config.entity.BaseResElementEntity" resultType="com.zuobiao.analysis.privilege.config.entity.BaseResElementEntity">
+	<select id="selectResElement" parameterType="com.flchy.blog.privilege.config.entity.BaseResElementEntity" resultType="com.flchy.blog.privilege.config.entity.BaseResElementEntity">
 		SELECT
 				e.`pk_id` 'elementId',
 				e.`element_name` 'elementName',
@@ -65,7 +65,7 @@
 			 </where>
 	</select>
 	
-	<update id="update" parameterType="com.zuobiao.analysis.privilege.config.entity.BaseResElementEntity" >
+	<update id="update" parameterType="com.flchy.blog.privilege.config.entity.BaseResElementEntity" >
 		UPDATE `conf_info_element`
 		<set>
 			<if test="elementName != null and elementName != ''">

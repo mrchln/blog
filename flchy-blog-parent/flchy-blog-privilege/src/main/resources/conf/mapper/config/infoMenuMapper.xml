@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.zuobiao.analysis.privilege.config.dao.IBaseInfoMenuDao">
-	<resultMap id="BaseInfoMenuEntityMap" type="com.zuobiao.analysis.privilege.config.entity.BaseInfoMenuEntity">
+<mapper namespace="com.flchy.blog.privilege.config.dao.IBaseInfoMenuDao">
+	<resultMap id="BaseInfoMenuEntityMap" type="com.flchy.blog.privilege.config.entity.BaseInfoMenuEntity">
 		<result column="pk_id" property="menuId" />
 		<result column="menu_pid" property="menuPid" />
 		<result column="menu_name" property="menuName" />
@@ -69,11 +69,11 @@
 		AND m.STATUS != - 1 and v.`status` != - 1
 	</select> 
 	
-	<insert id="insert"    parameterType="com.zuobiao.analysis.privilege.config.entity.BaseInfoMenuEntity" useGeneratedKeys="true"  keyProperty="menuId">
+	<insert id="insert"    parameterType="com.flchy.blog.privilege.config.entity.BaseInfoMenuEntity" useGeneratedKeys="true"  keyProperty="menuId">
 		INSERT INTO `conf_info_menu` ( `menu_pid`, `menu_name`,`alias`, `menu_name_qp`, `remark`, `menu_type`, `menu_level`, `url_path`, `menu_cls`, `load_target`, `sort_index`, `full_path`, `is_share`, `status`, `create_user`, `create_time`) VALUES (#{menuPid}, #{menuName},#{alias}, #{menuNameQp}, #{remark}, #{menuType}, #{menuLevel}, #{urlPath}, #{menuCls}, #{loadTarget}, #{sortIndex}, #{fullPath}, #{isShare}, #{status}, #{createUser}, #{createTime})
 	</insert>
 	
-	<update id="update" parameterType="com.zuobiao.analysis.privilege.config.entity.BaseInfoMenuEntity" >
+	<update id="update" parameterType="com.flchy.blog.privilege.config.entity.BaseInfoMenuEntity" >
 	UPDATE `conf_info_menu`
 	<set>
 		<if test="menuPid != null and menuPid != ''">

@@ -14,7 +14,8 @@ public enum LoginAuthResultEnums {
 	LOGIN_FAIL_NOT_UNIQUE(-105, "账号不唯一，请联系管理员"),        // 账号不唯一
 	LOGIN_FAIL_UNVISIT_AUTH(-106, "用户无访问权限，请联系管理员"),   // 没有访问权限
 	LOGIN_FAIL_PARAM_NULL(-107, "账号或密码为空"),               // 用户名 或密码参数为空
-	LOGIN_FAIL_REPEAT_LOGIN(-108, "已登录，重复的登录请求");
+	LOGIN_FAIL_REPEAT_LOGIN(-108, "已登录，重复的登录请求"),
+	LOGIN_RESTRICTED(-109, "登录次数太多，限制登录");
 
 	private int code;
 

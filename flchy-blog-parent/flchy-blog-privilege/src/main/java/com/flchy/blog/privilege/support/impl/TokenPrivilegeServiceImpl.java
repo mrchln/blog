@@ -6,16 +6,15 @@ import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import com.flchy.blog.base.holder.PropertiesHolder;
-import com.flchy.blog.plugin.redis.RedisHolder;
+import com.flchy.blog.plugin.redis.RedisBusines;
 import com.flchy.blog.privilege.config.bean.BaseUser;
 import com.flchy.blog.privilege.support.ITokenPrivilegeService;
 import com.flchy.blog.utils.BeanUtil;
-
-import redis.clients.jedis.BinaryJedisCluster;
 
 /**
  * 对外提供自定义控制的登录数据获取
@@ -23,17 +22,15 @@ import redis.clients.jedis.BinaryJedisCluster;
 @Service("tokenPrivilegeService")
 public class TokenPrivilegeServiceImpl implements ITokenPrivilegeService {
 	private static Logger logger = LoggerFactory.getLogger(TokenPrivilegeServiceImpl.class);
-	private static BinaryJedisCluster jedisCluster;
-	static {
-		jedisCluster = RedisHolder.getJedisCluster(PropertiesHolder.getProperty("plugin.redis.address"),PropertiesHolder.getProperty("plugin.redis.password"));
-	}
 
+	@Autowired
+	private RedisBusines redisBusines;
 	@Override
 	public BaseUser getCurrentUser(String adoptToken) {
 		byte[] userBytesInfo = null;
-		if (null != jedisCluster) {
+		if (null != redisBusines) {
 			try {
-				userBytesInfo = jedisCluster.get(adoptToken.getBytes("utf-8"));
+				userBytesInfo = redisBusines.get(adoptToken.getBytes("utf-8"));
 			} catch (UnsupportedEncodingException e) {
 				logger.error("Failed to get redis redis , error message is" + e.getMessage() + " ;Please contact the administrator");
 			}
@@ -167,9 +164,9 @@ public class TokenPrivilegeServiceImpl implements ITokenPrivilegeService {
 	 */
 	@Override
 	public boolean logout(String adoptToken) {
-		if (null != jedisCluster) {
+		if (null != redisBusines) {
 			try {
-				jedisCluster.del(adoptToken.getBytes("utf-8"));
+				redisBusines.del(adoptToken.getBytes("utf-8"));
 			} catch (UnsupportedEncodingException e) {
 				logger.error("Failed to delete redis value , error message is" + e.getMessage() + " ;Please contact the administrator");
 				return false;

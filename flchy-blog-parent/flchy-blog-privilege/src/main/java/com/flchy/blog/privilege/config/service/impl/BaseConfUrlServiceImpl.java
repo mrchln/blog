@@ -8,6 +8,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.flchy.blog.base.holder.PropertiesHolder;
 import com.flchy.blog.base.response.PageHelperResult;
 import com.flchy.blog.base.response.ResponseCommand;
 import com.flchy.blog.base.response.VisitsMapResult;
@@ -30,6 +31,10 @@ public class  BaseConfUrlServiceImpl implements IBaseConfUrlService {
 
 	@Override
 	public BaseConfUrlEntity saveConfUrlByUrlIds(String urlPath, String method) {
+		boolean booleanProperty = PropertiesHolder.getBooleanProperty("default.isAddUrl");
+		if(!booleanProperty){
+			return null;
+		}
 		List<BaseConfUrlEntity> confUrlList = baseConfUrlDao.selectConfUrlByUrlPath(urlPath, method);
 		if (null == confUrlList || confUrlList.isEmpty()) {
 			baseConfUrlDao.saveConfUrlByUrlIds(new NewMapUtil().set("urlPath", urlPath).set("method", method).set("status", 1).set("createUser", "admin").set("createTime", new Date()).get());

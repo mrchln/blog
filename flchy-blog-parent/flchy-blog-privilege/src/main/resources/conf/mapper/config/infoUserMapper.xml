@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.zuobiao.analysis.privilege.config.dao.IBaseInfoUserDao">
+<mapper namespace="com.flchy.blog.privilege.config.dao.IBaseInfoUserDao">
 
-    <resultMap id="BaseInfoUserEntityMap" type="com.zuobiao.analysis.privilege.config.entity.BaseInfoUserEntity">
+    <resultMap id="BaseInfoUserEntityMap" type="com.flchy.blog.privilege.config.entity.BaseInfoUserEntity">
         <result column="pk_id" property="userId" />
         <result column="user_name" property="userName" />
         <result column="passWord" property="passWord" />
@@ -38,7 +38,7 @@
         AND STATUS != -1
     </select>
     
-      <select id="selectUserByUser" parameterType="com.zuobiao.analysis.privilege.config.entity.BaseInfoUserEntity" resultMap="BaseInfoUserEntityMap">
+      <select id="selectUserByUser" parameterType="com.flchy.blog.privilege.config.entity.BaseInfoUserEntity" resultMap="BaseInfoUserEntityMap">
         select
             <include refid="BaseInfoUserEntity_Column_List" />
         from `conf_info_user`
@@ -68,7 +68,7 @@
         </if>
         </where>
     </select>
-      <select id="verificationUserByUser" parameterType="com.zuobiao.analysis.privilege.config.entity.BaseInfoUserEntity" resultMap="BaseInfoUserEntityMap">
+      <select id="verificationUserByUser" parameterType="com.flchy.blog.privilege.config.entity.BaseInfoUserEntity" resultMap="BaseInfoUserEntityMap">
         select
             <include refid="BaseInfoUserEntity_Column_List" />
         from `conf_info_user`
@@ -91,7 +91,7 @@
     </select>
     
     
-     <select id="selectDeletedUser" parameterType="com.zuobiao.analysis.privilege.config.entity.BaseInfoUserEntity" resultMap="BaseInfoUserEntityMap">
+     <select id="selectDeletedUser" parameterType="com.flchy.blog.privilege.config.entity.BaseInfoUserEntity" resultMap="BaseInfoUserEntityMap">
         select
             <include refid="BaseInfoUserEntity_Column_List" />
         from `conf_info_user`
@@ -120,7 +120,7 @@
     </select>
     
     
-    <update id="updateUser" parameterType="com.zuobiao.analysis.privilege.config.entity.BaseInfoUserEntity">
+    <update id="updateUser" parameterType="com.flchy.blog.privilege.config.entity.BaseInfoUserEntity">
     UPDATE `conf_info_user`
 		<set>
 		<if test="userName != null and userName !=''">
