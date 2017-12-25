@@ -169,7 +169,7 @@ public class BlogController {
 		comment.setOsName(system);
 		comment.setClientIp(remoteAddr);
 		Comment saveComment =null;
-		if(commentNum>15){
+		if(commentNum>20){
 			 iCommentService.saveComment(comment,true);
 		}else{
 			 iCommentService.saveComment(comment);
