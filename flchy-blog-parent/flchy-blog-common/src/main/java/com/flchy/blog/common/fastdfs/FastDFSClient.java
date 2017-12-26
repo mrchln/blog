@@ -1,6 +1,5 @@
 package com.flchy.blog.common.fastdfs;
 
-import java.io.File;
 import java.io.IOException;
 
 import org.csource.common.MyException;

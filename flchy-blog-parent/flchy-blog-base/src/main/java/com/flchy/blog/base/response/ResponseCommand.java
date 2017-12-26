@@ -12,7 +12,9 @@ public class ResponseCommand implements Serializable {
 	public final static int STATUS_SUCCESS = 0;//成功
 	public final static int STATUS_ERROR = 1;//请求错误
 	public final static int STATUS_LOGIN_ERROR = 2;//登录过期
+	
 	public final static int STATUS_AUTHORITY_ERROR = 3; //没有权限
+	public final static int STATUS_TOKEN_ERROR = 4;//登录过期
 
 	private int status;
 	private Object result;

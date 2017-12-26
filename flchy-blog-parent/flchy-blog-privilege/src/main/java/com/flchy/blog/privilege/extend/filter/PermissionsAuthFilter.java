@@ -67,7 +67,7 @@ public class PermissionsAuthFilter implements Filter {
 			chain.doFilter(request, response);
 			return ;
 		}
-		String curOrigin = httpResponse.getHeader("Origin");
+		String curOrigin = httpRequest.getHeader("Origin");
 		httpResponse.setHeader("Access-Control-Allow-Origin", curOrigin);
 		httpResponse.setHeader("Access-Control-Allow-Headers", "*");
 		httpResponse.setHeader("Access-Control-Allow-Methods", "*");
@@ -75,7 +75,7 @@ public class PermissionsAuthFilter implements Filter {
 	
 		//判断adoptToken是否为空  不是登录接口    否则 返回
 		if (StringUtil.isNullOrEmpty(adoptToken) && !requestUri.equals(loginAction) && (!requestUri.startsWith("/flchy/"))) {
-			httpResponse.getWriter().write(JSON.toJSONString(new ResponseCommand(ResponseCommand.STATUS_ERROR, new VisitsMapResult(new NewMapUtil("message", "Request token is not invalid, Please login again to get the new token ").get()))));
+			response.getWriter().write(JSON.toJSONString(new ResponseCommand(ResponseCommand.STATUS_TOKEN_ERROR, new VisitsMapResult(new NewMapUtil("message", "Request token is not invalid, Please login again to get the new token ").get()))));
 			return;
 		}
 		// 未传递令牌且非登录请求
@@ -84,12 +84,12 @@ public class PermissionsAuthFilter implements Filter {
 			String md5Addr = MD5.encryptToHex(InternetProtocol.getRemoteAddr(WebUtils.toHttp(request)));
 			if(!StringUtil.isNullOrEmpty(md5Addr)){
 				if(!adoptToken.startsWith(md5Addr)){
-					httpResponse.getWriter().write(JSON.toJSONString(new ResponseCommand(ResponseCommand.STATUS_ERROR, new VisitsMapResult(new NewMapUtil("message", "Request token is not invalid, Please login again to get the new token ").get()))));
+					response.getWriter().write(JSON.toJSONString(new ResponseCommand(ResponseCommand.STATUS_TOKEN_ERROR, new VisitsMapResult(new NewMapUtil("message", "Request token is not invalid, Please login again to get the new token ").get()))));
 					return;
 				}
 			}
 			if(!tokenPrivilegeService.isAuthenticated(adoptToken)){
-				httpResponse.getWriter().write(JSON.toJSONString(new ResponseCommand(ResponseCommand.STATUS_ERROR, new VisitsMapResult(new NewMapUtil("message", "Request token is not invalid, Please login again to get the new token ").get()))));
+				response.getWriter().write(JSON.toJSONString(new ResponseCommand(ResponseCommand.STATUS_TOKEN_ERROR, new VisitsMapResult(new NewMapUtil("message", "Request token is not invalid, Please login again to get the new token ").get()))));
 				return;
 			}
 
@@ -98,7 +98,7 @@ public class PermissionsAuthFilter implements Filter {
 					//httpRequest.getMethod() 获取请求类型  如get  post delete等
 					boolean isAccessAllowed =this.isAccessAllowed(requestUri, adoptToken,httpRequest.getMethod());
 					if (!isAccessAllowed) {
-						httpResponse.getWriter().write(JSON.toJSONString(new ResponseCommand(ResponseCommand.STATUS_AUTHORITY_ERROR, new VisitsMapResult(new NewMapUtil("message", "Request address not authorized, Please contact the administrator ").get()))));
+						response.getWriter().write(JSON.toJSONString(new ResponseCommand(ResponseCommand.STATUS_AUTHORITY_ERROR, new VisitsMapResult(new NewMapUtil("message", "Request address not authorized, Please contact the administrator ").get()))));
 						return;
 					}
 				}
