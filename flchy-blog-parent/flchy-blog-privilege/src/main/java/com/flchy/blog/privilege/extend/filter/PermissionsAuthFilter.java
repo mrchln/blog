@@ -22,6 +22,7 @@ import org.apache.shiro.web.util.WebUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSON;
 import com.flchy.blog.base.holder.PropertiesHolder;
@@ -38,6 +39,7 @@ import com.flchy.blog.utils.MD5;
 import com.flchy.blog.utils.NewMapUtil;
 import com.flchy.blog.utils.ip.InternetProtocol;
 
+@Component
 public class PermissionsAuthFilter implements Filter {
 	private static Logger logger = LoggerFactory.getLogger(PermissionsAuthFilter.class);
 	private static String loginAction = "/authc/login";
@@ -48,7 +50,9 @@ public class PermissionsAuthFilter implements Filter {
 	public void destroy() {
 		System.out.println("请求访问权限过滤器销毁");
 	}
-
+	static{
+		getAllowedUrls();
+	}
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		ITokenPrivilegeService tokenPrivilegeService = SpringContextHolder.getBean("tokenPrivilegeService", ITokenPrivilegeService.class);
@@ -70,12 +74,12 @@ public class PermissionsAuthFilter implements Filter {
 		httpResponse.setHeader("Access-Control-Allow-Credentials", "true");
 	
 		//判断adoptToken是否为空  不是登录接口    否则 返回
-		if (StringUtil.isNullOrEmpty(adoptToken) && !requestUri.equals(loginAction)) {
+		if (StringUtil.isNullOrEmpty(adoptToken) && !requestUri.equals(loginAction) && (!requestUri.startsWith("/flchy/"))) {
 			httpResponse.getWriter().write(JSON.toJSONString(new ResponseCommand(ResponseCommand.STATUS_ERROR, new VisitsMapResult(new NewMapUtil("message", "Request token is not invalid, Please login again to get the new token ").get()))));
 			return;
 		}
 		// 未传递令牌且非登录请求
-		if (!StringUtil.isNullOrEmpty(adoptToken) && !requestUri.equals(loginAction)) {
+		if (!StringUtil.isNullOrEmpty(adoptToken) && !requestUri.equals(loginAction)  && (!requestUri.startsWith("/flchy/"))) {
 			//判断 请求token是否恶意
 			String md5Addr = MD5.encryptToHex(InternetProtocol.getRemoteAddr(WebUtils.toHttp(request)));
 			if(!StringUtil.isNullOrEmpty(md5Addr)){
@@ -89,7 +93,7 @@ public class PermissionsAuthFilter implements Filter {
 				return;
 			}
 
-			if (null != allowedUrls && !java.util.Arrays.asList(allowedUrls).contains(requestUri)) {
+			if (null != allowedUrls && !java.util.Arrays.asList(allowedUrls).contains(requestUri) && (null != allowedUrls && !java.util.Arrays.asList(allowedUrls).contains(requestUri))) {
 				if (!tokenPrivilegeService.isSuperAdmin(adoptToken)) {
 					//httpRequest.getMethod() 获取请求类型  如get  post delete等
 					boolean isAccessAllowed =this.isAccessAllowed(requestUri, adoptToken,httpRequest.getMethod());
@@ -106,12 +110,12 @@ public class PermissionsAuthFilter implements Filter {
 
 	@Override
 	public void init(FilterConfig config) throws ServletException {
-		System.out.println("请求访问权限过滤器初始化");
-
+			System.out.println("请求访问权限过滤器初始化");
 	}
 	/**
 	 * 获取全局受信任请求地址
 	 */
+	@SuppressWarnings("unused")
 	private static void getAllowedUrls(){
 		String allowedUrl = PropertiesHolder.getProperty("access.allowed");
 		if(!StringUtil.isNullOrEmpty(allowedUrl)){
