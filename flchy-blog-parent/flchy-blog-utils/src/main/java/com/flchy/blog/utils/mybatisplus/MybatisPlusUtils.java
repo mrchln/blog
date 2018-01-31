@@ -71,8 +71,8 @@ public class MybatisPlusUtils {
 	        });
 	        dsc.setDriverName("com.mysql.jdbc.Driver");
 	        dsc.setUsername("root");
-	        dsc.setPassword("root");
-	        dsc.setUrl("jdbc:mysql://localhost:3307/db_flchy?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC&useSSL=false");
+	        dsc.setPassword("Cube_2016");
+	        dsc.setUrl("jdbc:mysql://125.208.1.67:33665/service_number?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC&useSSL=false");
 	        mpg.setDataSource(dsc);
 
 	        // 策略配置
@@ -80,7 +80,11 @@ public class MybatisPlusUtils {
 	        // strategy.setCapitalMode(true);// 全局大写命名 ORACLE 注意
 	       // strategy.setTablePrefix(new String[] { "tlog_", "tsys_" });// 此处可以修改为您的表前缀
 	        strategy.setNaming(NamingStrategy.underline_to_camel);// 表名生成策略
-	        strategy.setInclude(new String[] { "images"}); // 需要生成的表
+	        strategy.setInclude(new String[] {
+	        		 "service_info_message",
+	        }); // 需要生成的表
+	        
+	        
 	        // strategy.setExclude(new String[]{"test"}); // 排除生成的表
 	        // 自定义实体父类
 	        //strategy.setSuperEntityClass("com.spf.model.Entity");
@@ -104,9 +108,9 @@ public class MybatisPlusUtils {
 
 	        // 包配置
 	        PackageConfig pc = new PackageConfig();
-	        pc.setParent("com.flchy.blog");
+	        pc.setParent("service.number.backmgr");
 	        pc.setController("controller");
-	        pc.setEntity("pojo");
+	        pc.setEntity("entity");
 	        pc.setMapper("dao");
 	        pc.setService("service");
 	        pc.setServiceImpl("service.impl");
